@@ -1,0 +1,2 @@
+include ':crashkios'
+enableFeaturePreview('GRADLE_METADATA')
