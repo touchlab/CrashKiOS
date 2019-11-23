@@ -1,0 +1,59 @@
+repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+}
+
+group 'com.example'
+version '0.0.1'
+
+apply plugin: 'org.jetbrains.kotlin.multiplatform'
+apply plugin: 'org.jetbrains.kotlin.native.cocoapods'
+apply plugin: 'maven-publish'
+
+kotlin {
+    // This is for iPhone emulator
+    // Switch here to iosArm64 (or iosArm32) to build library for iPhone device
+    def onPhone = System.getenv('SDK_NAME')?.startsWith("iphoneos")
+    if(onPhone){
+        iosArm64("ios"){
+            binaries.all {
+                freeCompilerArgs += "-Xg0"
+                if(it instanceof org.jetbrains.kotlin.gradle.plugin.mpp.Framework) {
+                    isStatic = true
+                }
+            }
+        }
+    }else{
+        iosX64("ios"){
+            binaries.all {
+                freeCompilerArgs += "-Xg0"
+                if(it instanceof org.jetbrains.kotlin.gradle.plugin.mpp.Framework) {
+                    isStatic = true
+                }
+            }
+        }
+    }
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation kotlin('stdlib-common')
+            }
+        }
+        iosMain {
+            dependencies {
+                api project(":crashkios")
+            }
+        }
+    }
+
+    cocoapods {
+        // Configure fields required by CocoaPods.
+        summary = "Test Crashes"
+        homepage = "https://touchlab.co"
+    }
+}
+
+configurations {
+    compileClasspath
+}

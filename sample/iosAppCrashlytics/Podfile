@@ -1,0 +1,10 @@
+use_frameworks!
+
+platform :ios, '9.0'
+
+target 'iosApp' do
+    pod 'sample', :path => '..'
+    pod 'Fabric'
+    pod 'Crashlytics'
+    pod 'Firebase/Analytics'
+end

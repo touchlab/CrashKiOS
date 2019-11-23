@@ -1,2 +1,3 @@
 include ':crashkios'
+include ':sample'
 enableFeaturePreview('GRADLE_METADATA')

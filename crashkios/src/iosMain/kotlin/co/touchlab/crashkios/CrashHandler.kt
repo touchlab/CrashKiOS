@@ -20,14 +20,9 @@ open class CrashHandler {
                         !frameString.contains("Exception.<init>")
             ) {
                 break
-            } else {
-                println("skipping: $frameString")
             }
-            index++
-        }
 
-        stackTrace.forEach {
-            println("debugframe [$it]")
+            index++
         }
 
         val trimmedAddresses = addresses.subList(index, addresses.size)
