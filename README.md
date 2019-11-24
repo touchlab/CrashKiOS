@@ -58,7 +58,7 @@ fun crashInit(handler: CrashHandler){
 ```
 
 In our sample, we put this in a file called `CrashIntegration.kt`. If it's in a different file, you'll
-need to know that for the Swift config.
+need to know that for the Swift config. [See CrashIntegration.kt](sample/src/iosMain/kotlin/sample/CrashIntegration.kt)
 
 This will be called from your iOS code to set the default crash handler. There are other options,
 but this is generally what you want to do. The name `crashInit` is unimportant, but creating this
@@ -104,6 +104,8 @@ Inside `AppDelegate.swift`, or wherever you do app setup, add the following:
     CrashIntegrationKt.crashInit(handler: CrashlyticsCrashHandler())
 ```
 
+To see all of this code in a sample app, see [sample/iosAppCrashlytics](sample/iosAppCrashlytics)
+
 #### Bugsnag
 
 Bugsnag's setup is a little more complicated. We create an extension of `NSException` which is provided
@@ -143,4 +145,21 @@ Inside `AppDelegate.swift`, or wherever you do app setup, add the following:
 
 ```swift
     CrashIntegrationKt.crashInit(handler: BugsnagCrashHandler())
+```
+
+To see all of this code in a sample app, see [sample/iosAppBugsnag](sample/iosAppBugsnag)
+
+## Status
+
+Release builds will show method names from the stack, but not line numbers. Debug builds include line numbers. There may be a setting to 
+change that, but we haven't found it yet.
+
+We currently add the following config to each build binary. We still need to experiment and may be able to remove some
+of the config.
+
+```groovy
+freeCompilerArgs += "-Xg0"
+if(it instanceof org.jetbrains.kotlin.gradle.plugin.mpp.Framework) {
+    isStatic = true
+}
 ```
