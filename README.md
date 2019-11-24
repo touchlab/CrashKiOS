@@ -18,6 +18,16 @@ is forcibly crashed. You can see the crash info from the local device and from t
 assuming the user reported it, but crash reporting services like Crashlytics and Bugsnag 
 only get the stack trace from the iOS/Kotlin interface. Not where the crash actually happened.
 
+TL;DR, you'll see this:
+
+![Abort report](kotlinabort.png)
+
+You *want* to see this:
+
+![Abort report](kotlinlines.png)
+
+That's what this library is for.
+
 ## The Solution
 
  With some stack trace visibility improvements included in Kotlin 1.3.60, we can report 
