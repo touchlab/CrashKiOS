@@ -39,13 +39,10 @@ fun setupUnhandledExceptionHook(handler: CrashHandler){
 }
 
 fun <T> catchAndReport(handler: CrashHandler? = null, block:()->T):T{
-    println("cr1")
     try {
         return block()
     } catch (t: Throwable) {
-        println("cr2")
-        DefaultCrashHandler.handler.value.crash(t)
-//        (handler ?: DefaultCrashHandler.handler.value).crash(t)
+        (handler ?: DefaultCrashHandler.handler.value).crash(t)
         throw t
     }
 }
