@@ -17,22 +17,25 @@ package co.touchlab.crashkios
 
 import kotlin.native.concurrent.AtomicReference
 import kotlin.native.concurrent.freeze
-import kotlin.native.getStackTraceAddresses
 
 open class CrashHandler {
     open fun crash(t: Throwable) {
+
+        fun throwableBoilerplate(frameString: String, lookFor: String) =
+            !frameString.contains("kotlin.${lookFor}")
+                    &&
+                    !frameString.contains("${lookFor}.<init>")
 
         val addresses: List<Long> = t.getStackTraceAddresses()
 
         var index = 0
 
         val stackTrace = t.getStackTrace()
-        for (i in 0 until stackTrace.size) {
-            val frameString = stackTrace[i]
+        for (element in stackTrace) {
             if (
-                !frameString.contains("kotlin.Exception")
-                &&
-                        !frameString.contains("Exception.<init>")
+                throwableBoilerplate(element, "Exception")
+                ||
+                throwableBoilerplate(element, "Throwable")
             ) {
                 break
             }
