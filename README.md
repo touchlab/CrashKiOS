@@ -173,3 +173,33 @@ if(it instanceof org.jetbrains.kotlin.gradle.plugin.mpp.Framework) {
     isStatic = true
 }
 ```
+
+### Upload dSYMs to Crashlytics
+
+If you find that you're missing events, or you're getting a warning message in the Crashlytics dashboard about missing dSYMs, then following instructions can help you ensure that Crashlytics always has your most up-to-date dSYMs.
+
+In Xcode, select the iosApp project on the lefthand side, then switch to the Build Phases tab. Beneath that, on the left, is a "+" button (circled in the image below). Select that, and then in the dropdown menu that appears, select "New run script phase". Name the new script something along the lines of "Upload Crashlytics dSYMs", or something similarly descriptive.
+
+![](CrashlyticsUploadScript.png)
+
+Paste in the following script:
+
+```Pods/Fabric/upload-symbols -gsp iosApp/GoogleServiceInfo.plist -p ios ../build/bin/ios/debugFramework/sample.framework.dSYM/
+Pods/Fabric/upload-symbols -gsp iosApp/GoogleService-Info.plist -p ios ../build/bin/ios/releaseFramework/sample.framework.dSYM/
+```
+
+Note a few things about this script:
+
+- It will upload both your debug and release dSYMs every time you run your project in order to ensure that Firebase has any and all relevant dSYMs.
+- Depending on the configuration of your project, the relative paths in the script may need to be different. Ensure that you're pointing to the following:
+  - GoogleService-Info.plist
+  - Debug [shared_library_name].framework.dSYM
+  - Release [shared_library_name].framework.dSYM
+
+If the folder structure of your shared Kotlin library is different than what it is here, or you're having difficulty finding your dSYMs for any reason, you can use the following script to print a list of them:
+
+```find ../build -name "*.dSYM"```
+
+Note again that the `../build` relative path is configured to this repository's structure. Be sure that the script points to your Kotlin library's `/build` folder, which may be somewhere else, based on the configuration of your project.
+
+The primary resource for these tips was [this page of Firebase's Crashlytics guide](https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports).
