@@ -92,15 +92,11 @@ class CrashlyticsCrashHandler: CrashkiosCrashHandler {
         addresses: [KotlinLong],
         exceptionType: String,
         message: String) {
-        let clsStackTrace = addresses.map {
-            CLSStackFrame(address: UInt(truncating: $0))
+        let exceptionModel = ExceptionModel(name: exceptionType, reason: message)
+        exceptionModel.stackTrace = addresses.map {
+            StackFrame(address: UInt(truncating: $0))
         }
-
-        Crashlytics.sharedInstance().recordCustomExceptionName(
-            exceptionType,
-            reason: message,
-            frameArray: clsStackTrace
-        )
+        Crashlytics.crashlytics().record(exceptionModel: exceptionModel)
     }
 }
 ```
@@ -184,8 +180,8 @@ In Xcode, select the iosApp project on the lefthand side, then switch to the Bui
 
 Paste in the following script:
 
-```Pods/Fabric/upload-symbols -gsp iosApp/GoogleServiceInfo.plist -p ios ../build/bin/ios/debugFramework/sample.framework.dSYM/
-Pods/Fabric/upload-symbols -gsp iosApp/GoogleService-Info.plist -p ios ../build/bin/ios/releaseFramework/sample.framework.dSYM/
+```Pods/FirebaseCrashlytics/upload-symbols -gsp iosApp/GoogleServiceInfo.plist -p ios ../build/bin/ios/debugFramework/sample.framework.dSYM/
+Pods/FirebaseCrashlytics/upload-symbols -gsp iosApp/GoogleService-Info.plist -p ios ../build/bin/ios/releaseFramework/sample.framework.dSYM/
 ```
 
 Note a few things about this script:
