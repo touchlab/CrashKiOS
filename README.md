@@ -3,6 +3,10 @@
 Thin library that provides symbolicated crash reports for Kotlin code on 
 iOS. Currently implemented for Crashlytics and Bugsnag.
 
+> ## **We're Hiring!**
+>
+> Touchlab is looking for a Mobile Developer, with Android/Kotlin experience, who is eager to dive into Kotlin Multiplatform Mobile (KMM) development. Come join the remote-first team putting KMM in production. [More info here](https://go.touchlab.co/careers-gh).
+
 ## The Problem
 
 Kotlin's design has obviously been influenced by Java. In Java, exceptions
@@ -201,9 +205,5 @@ If the folder structure of your shared Kotlin library is different than what it 
 ```find ../build -name "*.dSYM"```
 
 Note again that the `../build` relative path is configured to this repository's structure. Be sure that the script points to your Kotlin library's `/build` folder, which may be somewhere else, based on the configuration of your project.
-
-> ## **We're Hiring!**
->
-> Touchlab is looking for a Mobile Developer, with Android/Kotlin experience, who is eager to dive into Kotlin Multiplatform Mobile (KMM) development. Come join the remote-first team putting KMM in production. [More info here](https://go.touchlab.co/careers-gh).
 
 The primary resource for these tips was [this page of Firebase's Crashlytics guide](https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports).
