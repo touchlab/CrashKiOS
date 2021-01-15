@@ -50,7 +50,7 @@ kotlin {
     sourceSets {
         iosMain {
             dependencies {
-                api "co.touchlab:crashkios:0.2.1"
+                api "co.touchlab:crashkios:0.3.1"
             }
         } 
     }
