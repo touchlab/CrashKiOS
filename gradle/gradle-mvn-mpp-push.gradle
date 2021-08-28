@@ -1,5 +1,6 @@
 
-// TODO tie this into the normal gradle-mvn-push script
+//Mostly copied from sqldelight config
+
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
@@ -9,12 +10,12 @@ def isReleaseBuild() {
 
 def getReleaseRepositoryUrl() {
   return hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL :
-      "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+          "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 }
 
 def getSnapshotRepositoryUrl() {
   return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL :
-      "https://oss.sonatype.org/content/repositories/snapshots/"
+          "https://oss.sonatype.org/content/repositories/snapshots/"
 }
 
 def getRepositoryUsername() {
@@ -32,8 +33,16 @@ task emptyJavadocJar(type: Jar) {
   classifier = 'javadoc'
 }
 
+def getGpgKey() {
+  return hasProperty('SIGNING_KEY') ? SIGNING_KEY : ""
+}
+
 signing {
   required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+  def gpgKey = getGpgKey()
+  if(gpgKey != "") {
+    useInMemoryPgpKeys(getGpgKey(), "")
+  }
   sign(publishing.publications)
 }
 
@@ -69,13 +78,6 @@ publishing {
           }
         }
       }
-    }
-  }
-
-  afterEvaluate {
-    publications.getByName('kotlinMultiplatform') {
-//      // Source jars are only created for platforms, not the common artifact.
-//      artifact emptySourcesJar
     }
   }
 
