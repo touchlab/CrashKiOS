@@ -51,17 +51,21 @@ kotlin {
             iosX64Test.kotlin.srcDirs(iosTest.kotlin.srcDirs)
         }
 
-        configure([/*targets.iosX64,*/
-                   targets.macosX64,
-                   targets.iosArm32,
-                   targets.iosArm64,
-                   targets.iosX64,
-                   targets.watchosArm32,
-                   targets.watchosArm64,
-                   targets.watchosX86,
-                   targets.watchosX64,
-                   targets.tvosArm64,
-                   targets.tvosX64
+        configure([
+                targets.macosX64,
+                targets.macosArm64,
+                targets.iosX64,
+                targets.iosArm64,
+                targets.iosArm32,
+                targets.iosSimulatorArm64,
+                targets.tvosArm64,
+                targets.tvosSimulatorArm64,
+                targets.tvosX64,
+                targets.watchosArm32,
+                targets.watchosArm64,
+                targets.watchosSimulatorArm64,
+                targets.watchosX86,
+                targets.watchosX64
         ]) {
             compilations.main.source(sourceSets.iosMain)
             compilations.test.source(sourceSets.iosTest)
