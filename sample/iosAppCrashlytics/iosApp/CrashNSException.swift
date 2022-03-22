@@ -8,21 +8,17 @@
 
 import Foundation
 import sample
-import Crashlytics
+import FirebaseCrashlytics
 
 class CrashlyticsCrashHandler: CrashkiosCrashHandler {
     override func crashParts(
         addresses: [KotlinLong],
         exceptionType: String,
         message: String) {
-        let clsStackTrace = addresses.map {
-            CLSStackFrame(address: UInt(truncating: $0))
+        let exceptionModel = ExceptionModel(name: exceptionType, reason: message)
+        exceptionModel.stackTrace = addresses.map {
+            StackFrame(address: UInt(truncating: $0))
         }
-
-        Crashlytics.sharedInstance().recordCustomExceptionName(
-            exceptionType,
-            reason: message,
-            frameArray: clsStackTrace
-        )
+        Crashlytics.crashlytics().record(exceptionModel: exceptionModel)
     }
 }
