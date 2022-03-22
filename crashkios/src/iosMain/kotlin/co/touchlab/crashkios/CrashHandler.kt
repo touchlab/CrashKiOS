@@ -20,36 +20,13 @@ import kotlin.native.concurrent.freeze
 
 open class CrashHandler {
     open fun crash(t: Throwable) {
-
-        fun throwableBoilerplate(frameString: String, lookFor: String) =
-            !frameString.contains("kotlin.${lookFor}")
-                    &&
-                    !frameString.contains("${lookFor}.<init>")
-
-        val addresses: List<Long> = t.getStackTraceAddresses()
-
-        var index = 0
-
-        val stackTrace = t.getStackTrace()
-        for (element in stackTrace) {
-            if (
-                throwableBoilerplate(element, "Exception")
-                ||
-                throwableBoilerplate(element, "Throwable")
-            ) {
-                break
-            }
-
-            index++
+        transformException(t){name, message, addresses ->
+            crashParts(
+                addresses,
+                name,
+                message
+            )
         }
-
-        val trimmedAddresses = addresses.subList(index, addresses.size)
-
-        crashParts(
-            trimmedAddresses,
-            t::class.simpleName ?: "(Unknown Type)",
-            t.message ?: ""
-        )
     }
 
     open fun crashParts(addresses: List<Long>, exceptionType: String, message: String) {

@@ -11,10 +11,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/crashkios" />
+            <option value="$PROJECT_DIR$/crashkios-core" />
             <option value="$PROJECT_DIR$/sample" />
           </set>
         </option>
-        <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
   </component>
