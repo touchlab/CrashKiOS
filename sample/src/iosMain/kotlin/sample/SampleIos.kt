@@ -18,7 +18,7 @@ class CrashBot() {
             try {
                 it.goCrash()
             } catch (t: Throwable) {
-                terminate(t)
+//                terminate(t)
             }
         }
     }
@@ -117,5 +117,3 @@ class CrashBot() {
 
 class SampleException(message:String? = null, cause:Throwable? = null): Exception(message, cause)
 
-@SymbolName("TerminateWithUnhandledException")
-private external fun terminate(t: Throwable)

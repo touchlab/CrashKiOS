@@ -15,7 +15,7 @@
  */
 package co.touchlab.crashkios
 
-import kotlin.native.concurrent.freeze
+import co.touchlab.crashkios.internal.maybeFreeze
 
 fun setupCrashHandler(handler: CrashHandler){
     DefaultCrashHandler.crashHandler(handler)
@@ -27,7 +27,7 @@ fun setupDefaultUnhandledExceptionHook(){
         DefaultCrashHandler.handler.value.crash(t)
     }
 
-    setUnhandledExceptionHook(unhandMe.freeze())
+    setUnhandledExceptionHook(unhandMe.maybeFreeze())
 }
 
 fun setupUnhandledExceptionHook(handler: CrashHandler){
@@ -35,7 +35,7 @@ fun setupUnhandledExceptionHook(handler: CrashHandler){
         handler.crash(t)
     }
 
-    setUnhandledExceptionHook(unhandMe.freeze())
+    setUnhandledExceptionHook(unhandMe.maybeFreeze())
 }
 
 fun <T> catchAndReport(handler: CrashHandler? = null, block:()->T):T{

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="crashkios-jvm-0.6.0">
+    <output-path>$PROJECT_DIR$/crashkios/build/libs</output-path>
+    <root id="archive" name="crashkios-jvm-0.6.0.jar">
+      <element id="module-output" name="CrashKiOS.crashkios.jvmMain" />
+    </root>
+  </artifact>
+</component>

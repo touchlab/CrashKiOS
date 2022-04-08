@@ -15,8 +15,8 @@
  */
 package co.touchlab.crashkios
 
+import co.touchlab.crashkios.internal.maybeFreeze
 import kotlin.native.concurrent.AtomicReference
-import kotlin.native.concurrent.freeze
 
 open class CrashHandler {
     open fun crash(t: Throwable) {
@@ -43,7 +43,7 @@ object LogCrashHandler : CrashHandler() {
 object DefaultCrashHandler {
     internal val handler = AtomicReference<CrashHandler>(LogCrashHandler)
     fun crashHandler(h: CrashHandler) {
-        handler.value = h.freeze()
+        handler.value = h.maybeFreeze()
     }
 
     fun myHandler(): CrashHandler = handler.value
