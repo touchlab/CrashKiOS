@@ -1,4 +1,6 @@
-include ':crashkios-core'
-include ':crashkios'
-include ':sample'
-enableFeaturePreview('GRADLE_METADATA')
+include ':reporter'
+include ':bugsnag'
+include ':crashlytics'
+include ':utils'
+//include ':sample'
+

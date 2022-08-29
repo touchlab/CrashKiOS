@@ -1,0 +1,3 @@
+package = co.touchlab.crashkios.crashlytics
+language = Objective-C
+headers = FIRCrashlytics.h FIRExceptionModel.h FIRStackFrame.h Private/FIRCLSException.h

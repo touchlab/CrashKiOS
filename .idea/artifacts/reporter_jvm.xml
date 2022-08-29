@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="reporter-jvm">
+    <output-path>$PROJECT_DIR$/reporter/build/libs</output-path>
+    <root id="archive" name="reporter-jvm.jar">
+      <element id="module-output" name="CrashKiOS.reporter.jvmMain" />
+    </root>
+  </artifact>
+</component>

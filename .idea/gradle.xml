@@ -10,9 +10,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/crashkios" />
-            <option value="$PROJECT_DIR$/crashkios-core" />
-            <option value="$PROJECT_DIR$/sample" />
+            <option value="$PROJECT_DIR$/bugsnag" />
+            <option value="$PROJECT_DIR$/crashlytics" />
+            <option value="$PROJECT_DIR$/reporter" />
+            <option value="$PROJECT_DIR$/utils" />
           </set>
         </option>
       </GradleProjectSettings>
