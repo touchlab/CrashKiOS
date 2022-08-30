@@ -1,7 +1,7 @@
 //include(":reporter")
 include(":bugsnag")
 //include(":crashlytics")
-include(":utils")
+//include(":utils")
 //include ':sample'
 
 pluginManagement {
