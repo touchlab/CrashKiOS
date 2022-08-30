@@ -17,7 +17,7 @@ actual object BugsnagKotlin {
         sendException(throwable, false)
     }
 
-    actual fun setCustomValue(key: String, value: Any, section: String) {
+    actual fun setCustomValue(section: String, key: String, value: Any) {
         Bugsnag.addMetadata(value, key, section)
     }
 
