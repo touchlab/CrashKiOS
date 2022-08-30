@@ -12,17 +12,22 @@
  */
 
 plugins {
+    id("com.android.library")
     kotlin("multiplatform")
 }
 
 val NSEXCEPTION_KT_VERSION: String by project
 val GROUP: String by project
 val VERSION_NAME: String by project
+val BUGSNAG_ANDROID_VERSION: String by project
 
 group = GROUP
 version = VERSION_NAME
 
 kotlin {
+    android {
+        publishAllLibraryVariants()
+    }
     val commonMain by sourceSets.getting
     val commonTest by sourceSets.getting
     val darwinMain by sourceSets.creating {
@@ -63,7 +68,7 @@ kotlin {
     }
 
     commonMain.dependencies {
-        api(project(":reporter"))
+//        api(project(":reporter"))
     }
 
     commonTest.dependencies {
@@ -71,8 +76,26 @@ kotlin {
         implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
     }
 
+    val androidMain by sourceSets.getting {
+        dependencies {
+            implementation("org.jetbrains.kotlin:kotlin-stdlib")
+            implementation("com.bugsnag:bugsnag-android:$BUGSNAG_ANDROID_VERSION")
+        }
+    }
+
     darwinMain.dependencies {
         implementation("com.rickclephas.kmp:nsexception-kt-core:$NSEXCEPTION_KT_VERSION")
+    }
+}
+
+android {
+    compileSdkVersion(30)
+    defaultConfig {
+        minSdkVersion(15)
+    }
+
+    val main by sourceSets.getting {
+        manifest.srcFile("src/androidMain/AndroidManifest.xml")
     }
 }
 

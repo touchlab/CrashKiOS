@@ -1,20 +1,24 @@
 package co.touchlab.crashkios.bugsnag
 
-import co.touchlab.crashkios.CrashInfoWriter
 import com.rickclephas.kmp.nsexceptionkt.core.asNSException
 import com.rickclephas.kmp.nsexceptionkt.core.causes
 
-class BugsnagCrashInfoWriter : CrashInfoWriter {
-    override fun logMessage(message: String) {
+actual object BugsnagKotlin {
+
+    actual fun logMessage(message: String) {
         Bugsnag.leaveBreadcrumbWithMessage(message)
     }
 
-    override fun sendHandledException(throwable: Throwable) {
+    actual fun sendHandledException(throwable: Throwable) {
         sendException(throwable, true)
     }
 
-    override fun sendFatalException(throwable: Throwable) {
+    actual fun sendFatalException(throwable: Throwable) {
         sendException(throwable, false)
+    }
+
+    actual fun setCustomValue(key: String, value: Any, section: String) {
+        Bugsnag.addMetadata(value, key, section)
     }
 
     private fun sendException(throwable: Throwable, handled: Boolean) {
@@ -40,7 +44,4 @@ class BugsnagCrashInfoWriter : CrashInfoWriter {
         }
     }
 
-    override fun setCustomValue(key: String, value: Any, section: String?) {
-        Bugsnag.addMetadata(value, key, section ?: "")
-    }
 }
