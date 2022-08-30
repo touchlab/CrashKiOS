@@ -12,24 +12,21 @@
  */
 
 plugins {
+    id("com.android.library")
     kotlin("multiplatform")
 }
 
 val NSEXCEPTION_KT_VERSION: String by project
 val GROUP: String by project
 val VERSION_NAME: String by project
+val CRASHLYTICS_ANDROID_VERSION: String by project
 
 group = GROUP
 version = VERSION_NAME
 
 kotlin {
-    val commonMain by sourceSets.getting
-    val commonTest by sourceSets.getting
-    val darwinMain by sourceSets.creating {
-        dependsOn(commonMain)
-    }
-    val darwinTest by sourceSets.creating {
-        dependsOn(commonTest)
+    android {
+        publishAllLibraryVariants()
     }
 
     macosX64()
@@ -47,6 +44,34 @@ kotlin {
     tvosSimulatorArm64()
     tvosX64()
 
+    val commonMain by sourceSets.getting
+    val commonTest by sourceSets.getting
+    val darwinMain by sourceSets.creating {
+        dependsOn(commonMain)
+    }
+    val darwinTest by sourceSets.creating {
+        dependsOn(commonTest)
+    }
+
+    commonMain.dependencies {
+    }
+
+    commonTest.dependencies {
+        implementation("org.jetbrains.kotlin:kotlin-test-common")
+        implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
+    }
+
+    val androidMain by sourceSets.getting {
+        dependencies {
+            implementation("org.jetbrains.kotlin:kotlin-stdlib")
+            implementation("com.google.firebase:firebase-crashlytics:$CRASHLYTICS_ANDROID_VERSION")
+        }
+    }
+
+    darwinMain.dependencies {
+        implementation("com.rickclephas.kmp:nsexception-kt-core:$NSEXCEPTION_KT_VERSION")
+    }
+
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
         val mainCompilation = compilations.getByName("main")
         val mainSourceSet = mainCompilation.defaultSourceSet
@@ -61,18 +86,16 @@ kotlin {
 //            extraOpts("-mode", "sourcecode")
         }
     }
+}
 
-    commonMain.dependencies {
-        api(project(":reporter"))
+android {
+    compileSdk = 30
+    defaultConfig {
+        minSdk = 15
     }
 
-    commonTest.dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-test-common")
-        implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    }
-
-    darwinMain.dependencies {
-        implementation("com.rickclephas.kmp:nsexception-kt-core:$NSEXCEPTION_KT_VERSION")
+    val main by sourceSets.getting {
+        manifest.srcFile("src/androidMain/AndroidManifest.xml")
     }
 }
 

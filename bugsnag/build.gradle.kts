@@ -28,14 +28,6 @@ kotlin {
     android {
         publishAllLibraryVariants()
     }
-    val commonMain by sourceSets.getting
-    val commonTest by sourceSets.getting
-    val darwinMain by sourceSets.creating {
-        dependsOn(commonMain)
-    }
-    val darwinTest by sourceSets.creating {
-        dependsOn(commonTest)
-    }
 
     macosX64()
     macosArm64()
@@ -52,19 +44,13 @@ kotlin {
     tvosSimulatorArm64()
     tvosX64()
 
-    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
-        val mainCompilation = compilations.getByName("main")
-        val mainSourceSet = mainCompilation.defaultSourceSet
-        val testSourceSet = compilations.getByName("test").defaultSourceSet
-
-        mainSourceSet.dependsOn(darwinMain)
-        testSourceSet.dependsOn(darwinTest)
-
-        mainCompilation.cinterops.create("bugsnag") {
-            includeDirs("$projectDir/src/include")
-            compilerOpts("-DNS_FORMAT_ARGUMENT(A)=", "-D_Nullable_result=_Nullable")
-//            extraOpts("-mode", "sourcecode")
-        }
+    val commonMain by sourceSets.getting
+    val commonTest by sourceSets.getting
+    val darwinMain by sourceSets.creating {
+        dependsOn(commonMain)
+    }
+    val darwinTest by sourceSets.creating {
+        dependsOn(commonTest)
     }
 
     commonMain.dependencies {
@@ -86,12 +72,27 @@ kotlin {
     darwinMain.dependencies {
         implementation("com.rickclephas.kmp:nsexception-kt-core:$NSEXCEPTION_KT_VERSION")
     }
+
+    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
+        val mainCompilation = compilations.getByName("main")
+        val mainSourceSet = mainCompilation.defaultSourceSet
+        val testSourceSet = compilations.getByName("test").defaultSourceSet
+
+        mainSourceSet.dependsOn(darwinMain)
+        testSourceSet.dependsOn(darwinTest)
+
+        mainCompilation.cinterops.create("bugsnag") {
+            includeDirs("$projectDir/src/include")
+            compilerOpts("-DNS_FORMAT_ARGUMENT(A)=", "-D_Nullable_result=_Nullable")
+//            extraOpts("-mode", "sourcecode")
+        }
+    }
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
     defaultConfig {
-        minSdkVersion(15)
+        minSdk = 15
     }
 
     val main by sourceSets.getting {

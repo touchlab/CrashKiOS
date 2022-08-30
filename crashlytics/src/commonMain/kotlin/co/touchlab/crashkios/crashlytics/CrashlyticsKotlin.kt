@@ -1,8 +1,8 @@
-package co.touchlab.crashkios
+package co.touchlab.crashkios.crashlytics
 
-interface CrashInfoWriter {
+expect object CrashlyticsKotlin {
     fun logMessage(message: String)
     fun sendHandledException(throwable: Throwable)
     fun sendFatalException(throwable: Throwable)
-    fun setCustomValue(key: String, value: Any, section: String? = null)
+    fun setCustomValue(key: String, value: Any)
 }

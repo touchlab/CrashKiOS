@@ -1,6 +1,6 @@
 //include(":reporter")
 include(":bugsnag")
-//include(":crashlytics")
+include(":crashlytics")
 //include(":utils")
 //include ':sample'
 
