@@ -16,10 +16,8 @@ plugins {
     kotlin("multiplatform")
 }
 
-val NSEXCEPTION_KT_VERSION: String by project
 val GROUP: String by project
 val VERSION_NAME: String by project
-val BUGSNAG_ANDROID_VERSION: String by project
 
 group = GROUP
 version = VERSION_NAME
@@ -44,47 +42,32 @@ kotlin {
     tvosSimulatorArm64()
     tvosX64()
 
-    val commonMain by sourceSets.getting {
+    val commonMain by sourceSets.getting
+    val commonTest by sourceSets.getting {
         dependencies {
-            implementation(project(":core"))
+            implementation("org.jetbrains.kotlin:kotlin-test-common")
+            implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
         }
     }
-    val commonTest by sourceSets.getting
     val darwinMain by sourceSets.creating {
         dependsOn(commonMain)
-        dependencies {
-            implementation("com.rickclephas.kmp:nsexception-kt-core:$NSEXCEPTION_KT_VERSION")
-        }
     }
     val darwinTest by sourceSets.creating {
         dependsOn(commonTest)
     }
 
-    commonTest.dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-test-common")
-        implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    }
-
     val androidMain by sourceSets.getting {
         dependencies {
             implementation("org.jetbrains.kotlin:kotlin-stdlib")
-            implementation("com.bugsnag:bugsnag-android:$BUGSNAG_ANDROID_VERSION")
         }
     }
 
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
-        val mainCompilation = compilations.getByName("main")
-        val mainSourceSet = mainCompilation.defaultSourceSet
+        val mainSourceSet = compilations.getByName("main").defaultSourceSet
         val testSourceSet = compilations.getByName("test").defaultSourceSet
 
         mainSourceSet.dependsOn(darwinMain)
         testSourceSet.dependsOn(darwinTest)
-
-        mainCompilation.cinterops.create("bugsnag") {
-            includeDirs("$projectDir/src/include")
-            compilerOpts("-DNS_FORMAT_ARGUMENT(A)=", "-D_Nullable_result=_Nullable")
-//            extraOpts("-mode", "sourcecode")
-        }
     }
 }
 

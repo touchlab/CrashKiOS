@@ -1,4 +1,5 @@
 //include(":reporter")
+include(":core")
 include(":bugsnag")
 include(":crashlytics")
 //include(":utils")

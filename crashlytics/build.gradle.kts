@@ -44,16 +44,20 @@ kotlin {
     tvosSimulatorArm64()
     tvosX64()
 
-    val commonMain by sourceSets.getting
+    val commonMain by sourceSets.getting {
+        dependencies {
+            implementation(project(":core"))
+        }
+    }
     val commonTest by sourceSets.getting
     val darwinMain by sourceSets.creating {
         dependsOn(commonMain)
+        dependencies {
+            implementation("com.rickclephas.kmp:nsexception-kt-core:$NSEXCEPTION_KT_VERSION")
+        }
     }
     val darwinTest by sourceSets.creating {
         dependsOn(commonTest)
-    }
-
-    commonMain.dependencies {
     }
 
     commonTest.dependencies {
@@ -66,10 +70,6 @@ kotlin {
             implementation("org.jetbrains.kotlin:kotlin-stdlib")
             implementation("com.google.firebase:firebase-crashlytics:$CRASHLYTICS_ANDROID_VERSION")
         }
-    }
-
-    darwinMain.dependencies {
-        implementation("com.rickclephas.kmp:nsexception-kt-core:$NSEXCEPTION_KT_VERSION")
     }
 
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {

@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/bugsnag" />
+            <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/crashlytics" />
           </set>
         </option>

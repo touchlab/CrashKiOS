@@ -2,20 +2,20 @@ package co.touchlab.crashkios.crashlytics
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
-actual object CrashlyticsKotlin {
-    actual fun logMessage(message: String) {
+actual class CrashlyticsCallsActual : CrashlyticsCalls {
+    override fun logMessage(message: String) {
         FirebaseCrashlytics.getInstance().log(message)
     }
 
-    actual fun sendHandledException(throwable: Throwable) {
+    override fun sendHandledException(throwable: Throwable) {
         FirebaseCrashlytics.getInstance().recordException(throwable)
     }
 
-    actual fun sendFatalException(throwable: Throwable) {
+    override fun sendFatalException(throwable: Throwable) {
         FirebaseCrashlytics.getInstance().recordException(throwable)
     }
 
-    actual fun setCustomValue(key: String, value: Any) {
+    override fun setCustomValue(key: String, value: Any) {
         when(value){
             is Boolean -> FirebaseCrashlytics.getInstance().setCustomKey(key, value)
             is Double -> FirebaseCrashlytics.getInstance().setCustomKey(key, value)
@@ -29,3 +29,5 @@ actual object CrashlyticsKotlin {
         }
     }
 }
+
+internal actual fun setHook() {}

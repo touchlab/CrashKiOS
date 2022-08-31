@@ -3,21 +3,21 @@ package co.touchlab.crashkios.bugsnag
 import com.rickclephas.kmp.nsexceptionkt.core.asNSException
 import com.rickclephas.kmp.nsexceptionkt.core.causes
 
-actual object BugsnagKotlin {
+actual class BugsnagCallsActual : BugsnagCalls {
 
-    actual fun logMessage(message: String) {
+    override fun logMessage(message: String) {
         Bugsnag.leaveBreadcrumbWithMessage(message)
     }
 
-    actual fun sendHandledException(throwable: Throwable) {
+    override fun sendHandledException(throwable: Throwable) {
         sendException(throwable, true)
     }
 
-    actual fun sendFatalException(throwable: Throwable) {
+    override fun sendFatalException(throwable: Throwable) {
         sendException(throwable, false)
     }
 
-    actual fun setCustomValue(section: String, key: String, value: Any) {
+    override fun setCustomValue(section: String, key: String, value: Any) {
         Bugsnag.addMetadata(value, key, section)
     }
 
@@ -43,5 +43,8 @@ actual object BugsnagKotlin {
             true
         }
     }
+}
 
+internal actual fun setHook() {
+    setBugsnagUnhandledExceptionHook()
 }
