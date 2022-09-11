@@ -5,6 +5,12 @@ import com.rickclephas.kmp.nsexceptionkt.core.causes
 import com.rickclephas.kmp.nsexceptionkt.core.wrapUnhandledExceptionHook
 import platform.Foundation.NSException
 
+public fun startBugsnag(config: BugsnagConfiguration){
+    configureBugsnag(config)
+    Bugsnag.startWithConfiguration(config)
+    setBugsnagUnhandledExceptionHook()
+}
+
 /**
  * Configures Bugsnag to ignore the Kotlin termination crash.
  */

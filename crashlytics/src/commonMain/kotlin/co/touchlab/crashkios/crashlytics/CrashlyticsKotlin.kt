@@ -26,7 +26,7 @@ object CrashlyticsKotlin {
  * Call in startup code in an actual app. Tests should generally skip this. In Kotlin/Native, not calling this
  * for tests avoids linker issues.
  */
-fun enableBugsnag() {
+fun enableCrashlytics() {
     CrashlyticsKotlin.implementation = CrashlyticsCallsActual()
     setHook()
 }

@@ -28,10 +28,7 @@ object BugsnagKotlin {
  */
 fun enableBugsnag(){
     BugsnagKotlin.implementation = BugsnagCallsActual()
-    setHook()
 }
-
-internal expect fun setHook()
 
 internal object EmptyCalls : BugsnagCalls {
     override fun logMessage(message: String) {

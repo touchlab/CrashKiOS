@@ -19,5 +19,3 @@ actual class BugsnagCallsActual : BugsnagCalls {
         Bugsnag.addMetadata(section, key, value)
     }
 }
-
-internal actual fun setHook() {}

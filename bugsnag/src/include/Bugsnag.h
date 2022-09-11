@@ -81,11 +81,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface BugsnagClient : NSObject
+@end
+
 @interface Bugsnag : NSObject <BugsnagClassLevelMetadataStore>
 
 + (void)notify:(NSException *_Nonnull)exception block:(BugsnagOnErrorBlock _Nullable)block;
 + (void)addFeatureFlagWithName:(nonnull NSString *)name;
 + (void)leaveBreadcrumbWithMessage:(NSString *_Nonnull)message;
++ (BugsnagClient *_Nonnull)startWithConfiguration:(BugsnagConfiguration *_Nonnull)configuration;
 
 @end
 

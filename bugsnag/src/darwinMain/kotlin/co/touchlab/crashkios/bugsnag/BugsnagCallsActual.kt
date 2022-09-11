@@ -44,7 +44,3 @@ actual class BugsnagCallsActual : BugsnagCalls {
         }
     }
 }
-
-internal actual fun setHook() {
-    setBugsnagUnhandledExceptionHook()
-}
