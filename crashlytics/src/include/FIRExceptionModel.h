@@ -22,6 +22,8 @@
 @interface FIRExceptionModel : NSObject
 
 - (nonnull instancetype)initWithName:(nonnull NSString *)name reason:(nonnull NSString *)reason;
++ (instancetype)exceptionModelWithName:(NSString *)name
+                                reason:(NSString *)reason NS_SWIFT_UNAVAILABLE("");
 @property(nonatomic, copy) NSArray<FIRStackFrame *> *_Nonnull stackTrace;
 
 @end

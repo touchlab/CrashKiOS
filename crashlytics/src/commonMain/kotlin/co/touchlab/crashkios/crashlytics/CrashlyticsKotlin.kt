@@ -28,10 +28,7 @@ object CrashlyticsKotlin {
  */
 fun enableCrashlytics() {
     CrashlyticsKotlin.implementation = CrashlyticsCallsActual()
-    setHook()
 }
-
-internal expect fun setHook()
 
 internal object EmptyCalls : CrashlyticsCalls {
     override fun logMessage(message: String) {

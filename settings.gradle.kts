@@ -1,9 +1,7 @@
-//include(":reporter")
 include(":core")
 include(":bugsnag")
 include(":crashlytics")
-//include(":utils")
-//include ':sample'
+include(":utils")
 
 pluginManagement {
     resolutionStrategy {

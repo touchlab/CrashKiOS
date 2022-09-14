@@ -21,6 +21,7 @@ fun org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension.sentryLinkerCon
 fun org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension.crashlyticsLinkerConfig() {
     crashLinkerConfig(
         "-U _FIRCLSExceptionRecordNSException " +
+                "-U _OBJC_CLASS_\$_FIRStackFrame " +
                 "-U _OBJC_CLASS_\$_FIRExceptionModel " +
                 "-U _OBJC_CLASS_\$_FIRCrashlytics "
     )

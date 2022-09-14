@@ -25,5 +25,6 @@
 - (void)recordExceptionModel:(nonnull FIRExceptionModel *)exceptionModel;
 - (void)log:(NSString *)msg;
 - (void)setCustomValue:(nullable id)value forKey:(NSString *)key;
-
+- (void)recordExceptionModel:(FIRExceptionModel *)exceptionModel
+    NS_SWIFT_NAME(record(exceptionModel:));
 @end

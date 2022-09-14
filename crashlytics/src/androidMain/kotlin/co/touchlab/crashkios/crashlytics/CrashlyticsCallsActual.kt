@@ -29,5 +29,3 @@ actual class CrashlyticsCallsActual : CrashlyticsCalls {
         }
     }
 }
-
-internal actual fun setHook() {}
