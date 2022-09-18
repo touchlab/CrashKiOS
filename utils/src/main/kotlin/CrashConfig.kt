@@ -23,7 +23,7 @@ fun org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension.crashlyticsLink
         "-U _FIRCLSExceptionRecordNSException " +
                 "-U _OBJC_CLASS_\$_FIRStackFrame " +
                 "-U _OBJC_CLASS_\$_FIRExceptionModel " +
-                "-U _OBJC_CLASS_\$_FIRCrashlytics "
+                "-U _OBJC_CLASS_\$_FIRCrashlytics"
     )
 }
 
@@ -33,14 +33,11 @@ fun org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension.bugsnagLinkerCo
                 "-U _OBJC_CLASS_\$_BugsnagStackframe " +
                 "-U _OBJC_CLASS_\$_FIRStackFrame " +
                 "-U _OBJC_CLASS_\$_BugsnagFeatureFlag " +
-                "-U _OBJC_CLASS_\$_BugsnagError "
+                "-U _OBJC_CLASS_\$_BugsnagError"
     )
 }
 
 private fun org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension.crashLinkerConfig(linkerOpts: String) {
-    targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java).map { target ->
-        target.compilations.findByName("main")
-    }
     targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java)
         .map { target ->
             val mainCompilation = target.compilations.getByName("main")
