@@ -75,3 +75,90 @@ ld: symbol(s) not found for architecture x86_64
 ```
 
 To resolve this, you should tell the linker that Crashlytics will be added later. To do that, call `crashlyticsLinkerConfig()` in the `kotlin` section of your `build.gradle.kts`.
+
+## Bugsnag Usage
+
+Add the dependency.
+
+```kotlin
+val commonMain by sourceSets.getting {
+    dependencies {
+        implementation("co.touchlab.crashkios:bugsnag:x.y.z")
+    }
+}
+```
+
+Bugsnag is somewhat more complex than Crashlytics. On startup, on iOS only, the library needs to suppress an extra error report from being sent. That requires some extra calls on iOS, or you can use a helper function that will handle the calls.
+
+The detailed calls you need to make are the following:
+
+In the iOS init, before starting Bugsnag, you need to call `configureBugsnag` with an instance of `BugsnagConfiguration`. The simplest way to get `BugsnagConfiguration` from Swift is by calling:
+
+```swift
+let config = BugsnagConfiguration.loadConfig()
+```
+
+Call `configureBugsnag` with that config. This *must* be called before starting Bugsnag.
+
+```swift
+BugsnagConfigKt.configureBugsnag(config: config)
+```
+
+Start Bugsnag
+
+```swift
+Bugsnag.start(with: config)
+```
+
+Then set the default exception handler hook
+
+```swift
+BugsnagConfigKt.setBugsnagUnhandledExceptionHook()
+```
+
+Alternatively, call the helper function
+
+```swift
+BugsnagConfigKt.startBugsnag(config: config)
+```
+
+That function calls `configureBugsnag`, `Bugsnag.start`, and `setBugsnagUnhandledExceptionHook`.
+
+For both Android and iOS, you must call the following:
+
+```kotlin
+enableBugsnag()
+```
+
+Once initialized, you call methods on `BugsnagKotlin`
+
+```kotlin
+BugsnagKotlin.logMessage("Some message")
+BugsnagKotlin.sendHandledException(Exception("Some exception"))
+BugsnagKotlin.sendFatalException(Exception("Some exception"))
+BugsnagKotlin.setCustomValue("someKey", "someValue")
+```
+
+### Testing
+
+You test code should not call `enableBugsnag()`. Before calling `enableBugsnag()`, calls to `BugsnagKotlin` are all no-ops. Also, on iOS, avoiding `enableBugsnag()` means you don't need to worry about Bugsnag linker issues.
+
+### Linking
+
+If you are using dynamic frameworks, you'll see a linker error when building your framework.
+
+```
+Undefined symbols for architecture x86_64:
+  "_OBJC_CLASS_$_BugsnagFeatureFlag", referenced from:
+      objc-class-ref in libco.touchlab.crashkios:bugsnag-cache.a(result.o)
+  "_OBJC_CLASS_$_BugsnagStackframe", referenced from:
+      objc-class-ref in libco.touchlab.crashkios:bugsnag-cache.a(result.o)
+  "_OBJC_CLASS_$_BugsnagError", referenced from:
+      objc-class-ref in libco.touchlab.crashkios:bugsnag-cache.a(result.o)
+  "_OBJC_CLASS_$_Bugsnag", referenced from:
+      objc-class-ref in libco.touchlab.crashkios:bugsnag-cache.a(result.o)
+      objc-class-ref in libco.touchlab:kermit-bugsnag-cache.a(result.o)
+ld: symbol(s) not found for architecture x86_64
+```
+
+To resolve this, you should tell the linker that Bugsnag will be added later. To do that, call `bugsnagLinkerConfig()` in the `kotlin` section of your `build.gradle.kts`.
