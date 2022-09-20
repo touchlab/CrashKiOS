@@ -21,4 +21,4 @@ val VERSION_NAME: String by project
 group = GROUP
 version = VERSION_NAME
 
-apply(from = "../gradle/gradle-mvn-mpp-push.gradle")
+apply(plugin = "com.vanniktech.maven.publish")
