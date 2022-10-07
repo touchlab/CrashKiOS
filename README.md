@@ -5,9 +5,10 @@ iOS. If you would like to log exceptions you can use CrashKiOS directly, but
 you'll probably want to check out [Kermit](https://github.com/touchlab/Kermit/). Kermit is a logging library that
 also includes implementations for Crashlytics and Bugsnag.
 
-> ## **We're Hiring!**
+> ## Subscribe!
 >
-> Touchlab is looking for a Mobile Developer, with Android/Kotlin experience, who is eager to dive into Kotlin Multiplatform Mobile (KMM) development. Come join the remote-first team putting KMM in production. [More info here](https://go.touchlab.co/careers-gh).
+> We build solutions that get teams started smoothly with Kotlin Multiplatform Mobile and ensure their success in production. Join our community to learn how your peers are adopting KMM.
+ [Sign up here](https://go.touchlab.co/newsletter)!
 
 ## The Problem
 
