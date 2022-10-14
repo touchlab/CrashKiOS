@@ -46,3 +46,8 @@ DSYM data, the crash reporting tools can trace that back to source code file and
 You can use CrashKiOS directly, but it would be easier to integrate [Kermit](https://github.com/touchlab/Kermit/) and
 use those implementations for Crashlytices and Bugsnag.
 
+## Getting Help
+
+CrashKiOS support can be found in the Kotlin Community Slack, [request access here](http://slack.kotlinlang.org/). Post in the "[#touchlab-tools](https://kotlinlang.slack.com/archives/CTJB58X7X)" channel.
+
+For direct assistance, please [contact Touchlab](https://go.touchlab.co/contactus-gh) to discuss support options.
