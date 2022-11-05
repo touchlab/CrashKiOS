@@ -4,10 +4,6 @@ Thin library that provides symbolicated crash reports for Kotlin code on iOS. Su
 
 To use crash reporting with general logging support, check out [Kermit](https://github.com/touchlab/Kermit/).
 
-> ## **We're Hiring!**
->
-> Touchlab is looking for a Mobile Developer, with Android/Kotlin experience, who is eager to dive into Kotlin Multiplatform Mobile (KMM) development. Come join the remote-first team putting KMM in production. [More info here](https://go.touchlab.co/careers-gh).
-
 ## The Problem
 
 Crash reporter clients on iOS take the stack of active threads at the moment of crash. Kotlin on iOS, like Kotlin on the JVM, bubbles exceptions up until they are caught or reach the top of the call stack, at which point an unhandled exception hook is called. Because this differs from how iOS works, the crash report shows the point at which we call into Kotlin from Swift/Objc.
@@ -55,7 +51,7 @@ CrashlyticsKotlin.setCustomValue("someKey", "someValue")
 
 ### Testing
 
-You test code should not call `enableCrashlytics()`. Before calling `enableCrashlytics()`, calls to `CrashlyticsKotlin` are all no-ops. Also, on iOS, avoiding `enableCrashlytics()` means you don't need to worry about Crashlytics linker issues.
+Your test code should not call `enableCrashlytics()`. Before calling `enableCrashlytics()`, calls to `CrashlyticsKotlin` are all no-ops. Also, on iOS, avoiding `enableCrashlytics()` means you don't need to worry about Crashlytics linker issues.
 
 ### Linking
 
@@ -162,3 +158,7 @@ ld: symbol(s) not found for architecture x86_64
 ```
 
 To resolve this, you should tell the linker that Bugsnag will be added later. To do that, call `bugsnagLinkerConfig()` in the `kotlin` section of your `build.gradle.kts`.
+
+## NSExceptionKt
+
+CrashKiOS and Kermit previously created 2 reports on a crash because none of the crash reporting clients had an obvious way to do one. [Rick Clephas](https://github.com/rickclephas) has done some excellent work figuring that out with [NSExceptionKt](https://github.com/rickclephas/NSExceptionKt). CrashKiOS now uses part of that library as a base and we've merged the cinterop from Kermit and NSExeptionKt to handle crashes as well as breadcrumb values and log statements.
