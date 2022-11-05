@@ -4,6 +4,11 @@ Thin library that provides symbolicated crash reports for Kotlin code on iOS. Su
 
 To use crash reporting with general logging support, check out [Kermit](https://github.com/touchlab/Kermit/).
 
+> ## Subscribe!
+>
+> We build solutions that get teams started smoothly with Kotlin Multiplatform Mobile and ensure their success in production. Join our community to learn how your peers are adopting KMM.
+ [Sign up here](https://go.touchlab.co/newsletter-gh)!
+
 ## The Problem
 
 Crash reporter clients on iOS take the stack of active threads at the moment of crash. Kotlin on iOS, like Kotlin on the JVM, bubbles exceptions up until they are caught or reach the top of the call stack, at which point an unhandled exception hook is called. Because this differs from how iOS works, the crash report shows the point at which we call into Kotlin from Swift/Objc.
@@ -174,3 +179,9 @@ plugins {
 ## NSExceptionKt
 
 CrashKiOS and Kermit previously created 2 reports on a crash because none of the crash reporting clients had an obvious way to do one. [Rick Clephas](https://github.com/rickclephas) has done some excellent work figuring that out with [NSExceptionKt](https://github.com/rickclephas/NSExceptionKt). CrashKiOS now uses part of that library as a base and we've merged the cinterop from Kermit and NSExeptionKt to handle crashes as well as breadcrumb values and log statements.
+
+## Getting Help
+
+CrashKiOS support can be found in the Kotlin Community Slack, [request access here](http://slack.kotlinlang.org/). Post in the "[#touchlab-tools](https://kotlinlang.slack.com/archives/CTJB58X7X)" channel.
+
+For direct assistance, please [contact Touchlab](https://go.touchlab.co/contactus-gh) to discuss support options.
