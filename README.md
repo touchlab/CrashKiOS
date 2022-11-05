@@ -70,7 +70,13 @@ Undefined symbols for architecture x86_64:
 ld: symbol(s) not found for architecture x86_64
 ```
 
-To resolve this, you should tell the linker that Crashlytics will be added later. To do that, call `crashlyticsLinkerConfig()` in the `kotlin` section of your `build.gradle.kts`.
+To resolve this, you should tell the linker that Crashlytics will be added later. To do that, add a Gradle plugin that will configure your linker settings.
+
+```kotlin
+plugins {
+  id("co.touchlab.crashkios.crashlyticslink") version "x.y.z"
+}
+```
 
 ## Bugsnag Usage
 
@@ -157,7 +163,13 @@ Undefined symbols for architecture x86_64:
 ld: symbol(s) not found for architecture x86_64
 ```
 
-To resolve this, you should tell the linker that Bugsnag will be added later. To do that, call `bugsnagLinkerConfig()` in the `kotlin` section of your `build.gradle.kts`.
+To resolve this, you should tell the linker that Bugsnag will be added later. To do that, add a Gradle plugin that will configure your linker settings.
+
+```kotlin
+plugins {
+  id("co.touchlab.crashkios.bugsnaglink") version "x.y.z"
+}
+```
 
 ## NSExceptionKt
 
