@@ -38,14 +38,7 @@ captures/
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-/.idea/encodings.xml
-/.idea/codeStyles/Project.xml
+.idea
 .DS_Store
 /build
 /captures
