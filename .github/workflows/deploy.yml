@@ -35,6 +35,9 @@ jobs:
       - name: Echo Version
         run: echo ${{ steps.version-match.outputs.group1 }}
 
+      - name: Echo Repo
+        run: echo ${{ github.repository }}
+
       - uses: actions/setup-java@v2
         with:
           distribution: "adopt"
