@@ -20,6 +20,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Samplecrashlogging">
+        <meta-data
+                android:name="com.bugsnag.android.API_KEY"
+<!--                android:value="[your key here!]"/>-->
         <activity
             android:name="co.touchlab.crashkiossamplecrashlog.MainActivity"
             android:exported="true">

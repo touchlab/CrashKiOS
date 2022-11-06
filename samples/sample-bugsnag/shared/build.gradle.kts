@@ -7,7 +7,6 @@
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-import co.touchlab.faktory.bugsnagLinkerConfig
 
 plugins {
     id("com.android.library")
@@ -41,7 +40,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-                api("co.touchlab.crashkios:bugsnag:${CRASHKIOS_VERSION}")
+                api("co.touchlab.crashkios:bugsnag")
             }
         }
 
@@ -71,10 +70,8 @@ kotlin {
         summary = "Sample for CrashKiOS"
         homepage = "https://www.touchlab.co"
         framework {
-            export("co.touchlab.crashkios:bugsnag:${CRASHKIOS_VERSION}")
+            export("co.touchlab.crashkios:bugsnag")
             isStatic = false
         }
     }
-
-    bugsnagLinkerConfig()
 }

@@ -44,4 +44,5 @@ android {
 dependencies {
     implementation(project(":shared"))
     implementation(libs.bundles.android)
+    implementation("com.bugsnag:bugsnag-android:5.+")
 }
