@@ -30,7 +30,8 @@ jobs:
         id: version-match
         with:
           text: ${{ steps.props.outputs.content }}
-          regex: '^VERSION_NAME=(.*?)'
+          regex: '^VERSION_NAME=(.*?)$'
+          flags: gm
 
       - name: Echo Version
         run: echo ${{ steps.version-match.outputs.group1 }}
