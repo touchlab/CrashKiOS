@@ -4,6 +4,7 @@ import kotlin.native.concurrent.AtomicReference
 import kotlin.native.concurrent.freeze
 import kotlin.reflect.KProperty
 
+@OptIn(FreezingIsDeprecated::class)
 actual class ThreadSafeVar<T> actual constructor(target: T) {
     private val atom = AtomicReference(target)
 
