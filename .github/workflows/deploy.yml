@@ -1,5 +1,4 @@
 name: deploy
-
 on: workflow_dispatch
 
 jobs:
@@ -20,12 +19,18 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+
+      - name: Echo Version
+        run: echo ${{ steps.read_version.outputs.value }}
+
       - uses: actions/setup-java@v2
         with:
           distribution: "adopt"
           java-version: "11"
+
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
+
       - name: Cache gradle
         uses: actions/cache@v2
         with:
@@ -33,6 +38,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('*.gradle.kts') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+
       - name: Cache konan
         uses: actions/cache@v2
         with:
@@ -47,9 +53,6 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
-
-      - name: Echo Version
-        run: echo ${{ steps.read_version.outputs.value }}
 
 #      - name: Create Release
 #        if: ${{ contains(steps.read_version.outputs.value, 'SNAPSHOT') == false }}
