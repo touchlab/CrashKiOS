@@ -1,28 +1,49 @@
 name: deploy
 on: workflow_dispatch
-#on:
-#  pull_request:
-#    branches:
-#      - main
-#  push:
-#    branches:
-#      - main
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [macOS-latest]
-    runs-on: ${{matrix.os}}
+#  find-release:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout the repo
+#        uses: actions/checkout@v2
+#      - name: Read version from gradle.properties
+#        id: read_version
+#        uses: christian-draeger/read-properties@1.0.1
+#        with:
+#          path: './gradle.properties'
+#          property: 'VERSION_NAME'
+
+  deploy:
+    runs-on: macOS-latest
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+
+      - name: Read gradle.properties
+        id: props
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./gradle.properties
+
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: version-match
+        with:
+          text: ${{ steps.props.outputs.content }}
+          regex: '^VERSION_NAME=(.*?)$'
+          flags: gm
+
+      - name: Echo Version
+        run: echo ${{ steps.version-match.outputs.group1 }}
+
       - uses: actions/setup-java@v2
         with:
           distribution: "adopt"
           java-version: "11"
+
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
+
       - name: Cache gradle
         uses: actions/cache@v2
         with:
@@ -30,6 +51,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('*.gradle.kts') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+
       - name: Cache konan
         uses: actions/cache@v2
         with:
@@ -37,12 +59,19 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('*.gradle.kts') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Publish Mac Artifacts
-        if: matrix.os == 'macOS-latest'
-        run: ./gradlew publish --no-daemon --stacktrace
+
+      - name: Publish
+        run: ./gradlew publish --no-daemon --stacktrace --no-build-cache
         env:
-          ORG_GRADLE_PROJECT_SONATYPE_NEXUS_USERNAME: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
-          ORG_GRADLE_PROJECT_SONATYPE_NEXUS_PASSWORD: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
-          ORG_GRADLE_PROJECT_SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+
+      - name: Create Release
+        if: ${{ contains(steps.version-match.outputs.group1, 'SNAPSHOT') == false }}
+        uses: touchlab/release-action@v1.10.0
+        with:
+          tag: ${{ steps.version-match.outputs.group1 }}
+
 env:
   GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"

@@ -1,7 +1,8 @@
 include(":core")
 include(":bugsnag")
+include(":bugsnag-ios-link")
 include(":crashlytics")
-include(":utils")
+include(":crashlytics-ios-link")
 
 pluginManagement {
     resolutionStrategy {

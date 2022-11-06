@@ -68,7 +68,7 @@ kotlin {
     val androidMain by sourceSets.getting {
         dependencies {
             implementation("org.jetbrains.kotlin:kotlin-stdlib")
-            implementation("com.google.firebase:firebase-crashlytics:$CRASHLYTICS_ANDROID_VERSION")
+            compileOnly("com.google.firebase:firebase-crashlytics:$CRASHLYTICS_ANDROID_VERSION")
         }
     }
 

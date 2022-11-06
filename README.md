@@ -4,9 +4,10 @@ Thin library that provides symbolicated crash reports for Kotlin code on iOS. Su
 
 To use crash reporting with general logging support, check out [Kermit](https://github.com/touchlab/Kermit/).
 
-> ## **We're Hiring!**
+> ## Subscribe!
 >
-> Touchlab is looking for a Mobile Developer, with Android/Kotlin experience, who is eager to dive into Kotlin Multiplatform Mobile (KMM) development. Come join the remote-first team putting KMM in production. [More info here](https://go.touchlab.co/careers-gh).
+> We build solutions that get teams started smoothly with Kotlin Multiplatform Mobile and ensure their success in production. Join our community to learn how your peers are adopting KMM.
+ [Sign up here](https://go.touchlab.co/newsletter-gh)!
 
 ## The Problem
 
@@ -55,7 +56,7 @@ CrashlyticsKotlin.setCustomValue("someKey", "someValue")
 
 ### Testing
 
-You test code should not call `enableCrashlytics()`. Before calling `enableCrashlytics()`, calls to `CrashlyticsKotlin` are all no-ops. Also, on iOS, avoiding `enableCrashlytics()` means you don't need to worry about Crashlytics linker issues.
+Your test code should not call `enableCrashlytics()`. Before calling `enableCrashlytics()`, calls to `CrashlyticsKotlin` are all no-ops. Also, on iOS, avoiding `enableCrashlytics()` means you don't need to worry about Crashlytics linker issues.
 
 ### Linking
 
@@ -74,7 +75,13 @@ Undefined symbols for architecture x86_64:
 ld: symbol(s) not found for architecture x86_64
 ```
 
-To resolve this, you should tell the linker that Crashlytics will be added later. To do that, call `crashlyticsLinkerConfig()` in the `kotlin` section of your `build.gradle.kts`.
+To resolve this, you should tell the linker that Crashlytics will be added later. To do that, add a Gradle plugin that will configure your linker settings.
+
+```kotlin
+plugins {
+  id("co.touchlab.crashkios.crashlyticslink") version "x.y.z"
+}
+```
 
 ## Bugsnag Usage
 
@@ -161,4 +168,20 @@ Undefined symbols for architecture x86_64:
 ld: symbol(s) not found for architecture x86_64
 ```
 
-To resolve this, you should tell the linker that Bugsnag will be added later. To do that, call `bugsnagLinkerConfig()` in the `kotlin` section of your `build.gradle.kts`.
+To resolve this, you should tell the linker that Bugsnag will be added later. To do that, add a Gradle plugin that will configure your linker settings.
+
+```kotlin
+plugins {
+  id("co.touchlab.crashkios.bugsnaglink") version "x.y.z"
+}
+```
+
+## NSExceptionKt
+
+CrashKiOS and Kermit previously created 2 reports on a crash because none of the crash reporting clients had an obvious way to do one. [Rick Clephas](https://github.com/rickclephas) has done some excellent work figuring that out with [NSExceptionKt](https://github.com/rickclephas/NSExceptionKt). CrashKiOS now uses part of that library as a base and we've merged the cinterop from Kermit and NSExeptionKt to handle crashes as well as breadcrumb values and log statements.
+
+## Getting Help
+
+CrashKiOS support can be found in the Kotlin Community Slack, [request access here](http://slack.kotlinlang.org/). Post in the "[#touchlab-tools](https://kotlinlang.slack.com/archives/CTJB58X7X)" channel.
+
+For direct assistance, please [contact Touchlab](https://go.touchlab.co/contactus-gh) to discuss support options.
