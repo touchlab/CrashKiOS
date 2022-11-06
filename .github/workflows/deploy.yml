@@ -33,12 +33,6 @@ jobs:
           regex: '^VERSION_NAME=(.*?)$'
           flags: gm
 
-      - name: Echo Version
-        run: echo ${{ steps.version-match.outputs.group1 }}
-
-      - name: Echo Repo
-        run: echo ${{ github.repository }}
-
       - uses: actions/setup-java@v2
         with:
           distribution: "adopt"
@@ -70,11 +64,11 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
 
-#      - name: Create Release
-#        if: ${{ contains(steps.read_version.outputs.value, 'SNAPSHOT') == false }}
-#        uses: touchlab/release-action@v1.10.0
-#        with:
-#          tag: ${{ steps.read_version.outputs.value }}
+      - name: Create Release
+        if: ${{ contains(steps.version-match.outputs.group1, 'SNAPSHOT') == false }}
+        uses: touchlab/release-action@v1.10.0
+        with:
+          tag: ${{ steps.version-match.outputs.group1 }}
 
 env:
   GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
