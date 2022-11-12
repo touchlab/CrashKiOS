@@ -68,7 +68,7 @@ kotlin {
     val androidMain by sourceSets.getting {
         dependencies {
             implementation("org.jetbrains.kotlin:kotlin-stdlib")
-            implementation("com.bugsnag:bugsnag-android:$BUGSNAG_ANDROID_VERSION")
+            compileOnly("com.bugsnag:bugsnag-android:$BUGSNAG_ANDROID_VERSION")
         }
     }
 
