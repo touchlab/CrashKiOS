@@ -7,12 +7,11 @@
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
     kotlin("native.cocoapods")
-    id("co.touchlab.crashkios.bugsnaglink") version ("0.8.0")
+    id("co.touchlab.crashkios.crashlyticslink") version ("0.8.0")
 }
 
 android {
@@ -27,7 +26,7 @@ android {
     }
 }
 
-version = "0.0.1"
+version = "0.1.2"
 
 kotlin {
     android()
@@ -36,31 +35,30 @@ kotlin {
     iosSimulatorArm64()
 
     sourceSets {
-        val commonMain by getting {
+        val commonMain by sourceSets.getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-                api("co.touchlab.crashkios:bugsnag")
+                api("co.touchlab.crashkios:crashlytics")
             }
         }
 
-        val commonTest by getting {
+        val commonTest by sourceSets.getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
 
-        val androidMain by getting
+        val androidMain by sourceSets.getting
 
-        val iosMain by getting
+        val iosMain by sourceSets.getting
+        val iosTest by sourceSets.getting
 
-        val iosTest by getting
-
-        val iosSimulatorArm64Main by getting {
+        val iosSimulatorArm64Main by sourceSets.getting {
             dependsOn(iosMain)
         }
 
-        val iosSimulatorArm64Test by getting {
+        val iosSimulatorArm64Test by sourceSets.getting {
             dependsOn(iosTest)
         }
     }
@@ -68,8 +66,8 @@ kotlin {
     cocoapods {
         summary = "Sample for CrashKiOS"
         homepage = "https://www.touchlab.co"
+        ios.deploymentTarget = "13.5"
         framework {
-            export("co.touchlab.crashkios:bugsnag")
             isStatic = false
         }
     }
