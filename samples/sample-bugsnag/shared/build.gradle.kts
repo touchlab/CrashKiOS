@@ -27,8 +27,6 @@ android {
     }
 }
 
-val CRASHKIOS_VERSION: String by project
-
 version = "0.0.1"
 
 kotlin {

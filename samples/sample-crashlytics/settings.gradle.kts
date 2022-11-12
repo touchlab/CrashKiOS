@@ -11,3 +11,10 @@
 include(":app", ":shared")
 
 enableFeaturePreview("VERSION_CATALOGS")
+
+includeBuild("../..") {
+    dependencySubstitution {
+        substitute(module("co.touchlab.crashkios:crashlytics"))
+            .using(project(":crashlytics")).because("we want to auto-wire up sample dependency")
+    }
+}

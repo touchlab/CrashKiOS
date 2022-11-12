@@ -7,12 +7,11 @@
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-import co.touchlab.faktory.crashlyticsLinkerConfig
-
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
     kotlin("native.cocoapods")
+    id("co.touchlab.crashkios.crashlyticslink") version ("0.8.0")
 }
 
 android {
@@ -27,8 +26,6 @@ android {
     }
 }
 
-val CRASHKIOS_VERSION: String by project
-
 version = "0.1.2"
 
 kotlin {
@@ -41,7 +38,7 @@ kotlin {
         val commonMain by sourceSets.getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-                api("co.touchlab.crashkios:crashlytics:${CRASHKIOS_VERSION}")
+                api("co.touchlab.crashkios:crashlytics")
             }
         }
 
@@ -71,10 +68,7 @@ kotlin {
         homepage = "https://www.touchlab.co"
         ios.deploymentTarget = "13.5"
         framework {
-//            export("co.touchlab.crashkios:crashlytics:${CRASHKIOS_VERSION}")
             isStatic = false
         }
     }
-
-    crashlyticsLinkerConfig()
 }
