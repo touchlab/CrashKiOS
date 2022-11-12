@@ -18,6 +18,7 @@ class SampleApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        Bugsnag.start(this)
         enableBugsnag()
     }
 }

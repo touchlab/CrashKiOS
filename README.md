@@ -4,22 +4,12 @@ Thin library that provides symbolicated crash reports for Kotlin code on iOS. Su
 
 To use crash reporting with general logging support, check out [Kermit](https://github.com/touchlab/Kermit/).
 
+If you're wondering *why* you need this library, please see [the problem](THE_PROBLEM.md).
+
 > ## Subscribe!
 >
 > We build solutions that get teams started smoothly with Kotlin Multiplatform Mobile and ensure their success in production. Join our community to learn how your peers are adopting KMM.
- [Sign up here](https://go.touchlab.co/newsletter-gh)!
-
-## The Problem
-
-Crash reporter clients on iOS take the stack of active threads at the moment of crash. Kotlin on iOS, like Kotlin on the JVM, bubbles exceptions up until they are caught or reach the top of the call stack, at which point an unhandled exception hook is called. Because this differs from how iOS works, the crash report shows the point at which we call into Kotlin from Swift/Objc.
-
-<img src="kotlinabort.png" alt="Abort report" style="zoom:50%;" />
-
-We want to get the caught exception and record that instead:
-
-<img src="kotlinlines.png" alt="Abort report" style="zoom: 67%;" />
-
-That's what this library is for.
+> [Sign up here](https://go.touchlab.co/newsletter-gh)!
 
 ## Crashlytics Usage
 
@@ -33,11 +23,15 @@ val commonMain by sourceSets.getting {
 }
 ```
 
-For both Android and iOS, you must call the following:
+The library by default has noop implementations of the crash logging calls. This is because in test situations you generally don't want to interact with the crash logging. On iOS specifically, this will allow you to run tests without needing to link against the Crashlytics runtime library.
+
+As a result, in the live app you need to initialize CrashKiOS. For both Android and iOS, you must call the following:
 
 ```kotlin
 enableCrashlytics()
 ```
+
+You sould generally do this as part of app initialization, after you make the calls to start Crashlytics itself.
 
 On iOS, you should also set the unhandled exception hook:
 
@@ -45,7 +39,7 @@ On iOS, you should also set the unhandled exception hook:
 setCrashlyticsUnhandledExceptionHook()
 ```
 
-Once initialized, you call methods on `CrashlyticsKotlin`
+Once initialized, you call methods on `CrashlyticsKotlin`, from common code or platform-specific code.
 
 ```kotlin
 CrashlyticsKotlin.logMessage("Some message")
@@ -75,13 +69,17 @@ Undefined symbols for architecture x86_64:
 ld: symbol(s) not found for architecture x86_64
 ```
 
-To resolve this, you should tell the linker that Crashlytics will be added later. To do that, add a Gradle plugin that will configure your linker settings.
+To resolve this, you should tell the linker that Crashlytics will be added later. You can do that directly, or you can use our Gradle plugin. It will find all Xcode Frameworks being built by Kotlin and add the necessary linker arguments.
 
 ```kotlin
 plugins {
   id("co.touchlab.crashkios.crashlyticslink") version "x.y.z"
 }
 ```
+
+### Crashlytics Sample
+
+See [samples/sample-crashlytics](samples/sample-crashlytics).
 
 ## Bugsnag Usage
 
@@ -95,7 +93,19 @@ val commonMain by sourceSets.getting {
 }
 ```
 
-Bugsnag is somewhat more complex than Crashlytics. On startup, on iOS only, the library needs to suppress an extra error report from being sent. That requires some extra calls on iOS, or you can use a helper function that will handle the calls.
+The library by default has noop implementations of the crash logging calls. This is because in test situations you generally don't want to interact with the crash logging. On iOS specifically, this will allow you to run tests without needing to link against the Bugsnag runtime library.
+
+As a result, in the live app you need to initialize CrashKiOS. For both Android and iOS, you must call the following:
+
+```kotlin
+enableBugsnag()
+```
+
+You sould generally do this as part of app initialization, after you make the calls to start Bugsnag itself.
+
+### iOS Only
+
+Bugsnag is somewhat more complex than Crashlytics on iOS. On startup, the library needs to suppress an extra error report from being sent. That requires some extra calls, or you can use a helper function that will handle everything.
 
 The detailed calls you need to make are the following:
 
@@ -104,6 +114,8 @@ In the iOS init, before starting Bugsnag, you need to call `configureBugsnag` wi
 ```swift
 let config = BugsnagConfiguration.loadConfig()
 ```
+
+#### Option 1: Manual Calls
 
 Call `configureBugsnag` with that config. This *must* be called before starting Bugsnag.
 
@@ -123,19 +135,25 @@ Then set the default exception handler hook
 BugsnagConfigKt.setBugsnagUnhandledExceptionHook()
 ```
 
-Alternatively, call the helper function
+If you haven't done so, call:
+
+```swift
+BugsnagConfigKt.enableBugsnag()
+```
+
+
+
+#### Option 2: Helper Calls
+
+You can call a single function that performs the 4 steps above.
 
 ```swift
 BugsnagConfigKt.startBugsnag(config: config)
 ```
 
-That function calls `configureBugsnag`, `Bugsnag.start`, and `setBugsnagUnhandledExceptionHook`.
+That function calls `configureBugsnag`, `Bugsnag.start`, `setBugsnagUnhandledExceptionHook`, and `enableBugsnag()`.
 
-For both Android and iOS, you must call the following:
-
-```kotlin
-enableBugsnag()
-```
+### Using the Library
 
 Once initialized, you call methods on `BugsnagKotlin`
 
@@ -148,7 +166,7 @@ BugsnagKotlin.setCustomValue("someKey", "someValue")
 
 ### Testing
 
-You test code should not call `enableBugsnag()`. Before calling `enableBugsnag()`, calls to `BugsnagKotlin` are all no-ops. Also, on iOS, avoiding `enableBugsnag()` means you don't need to worry about Bugsnag linker issues.
+Your test code should not call `enableBugsnag()`. Before calling `enableBugsnag()`, calls to `BugsnagKotlin` are all no-ops. Also, on iOS, avoiding `enableBugsnag()` means you don't need to worry about Bugsnag linker issues.
 
 ### Linking
 
@@ -168,13 +186,17 @@ Undefined symbols for architecture x86_64:
 ld: symbol(s) not found for architecture x86_64
 ```
 
-To resolve this, you should tell the linker that Bugsnag will be added later. To do that, add a Gradle plugin that will configure your linker settings.
+To resolve this, you should tell the linker that Bugsnag will be added later. You can do that directly, or you can use our Gradle plugin. It will find all Xcode Frameworks being built by Kotlin and add the necessary linker arguments.
 
 ```kotlin
 plugins {
   id("co.touchlab.crashkios.bugsnaglink") version "x.y.z"
 }
 ```
+
+### Bugsnag Sample
+
+See [samples/sample-bugsnag](samples/sample-bugsnag).
 
 ## NSExceptionKt
 

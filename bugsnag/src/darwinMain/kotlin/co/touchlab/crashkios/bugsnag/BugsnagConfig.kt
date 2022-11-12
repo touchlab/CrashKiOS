@@ -9,6 +9,7 @@ public fun startBugsnag(config: BugsnagConfiguration){
     configureBugsnag(config)
     Bugsnag.startWithConfiguration(config)
     setBugsnagUnhandledExceptionHook()
+    enableBugsnag()
 }
 
 /**
