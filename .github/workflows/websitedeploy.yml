@@ -11,8 +11,9 @@ jobs:
       - name: Checkout the docs repo
         run: |
           mkdir build
+          cd build
           mkdir docusauruspath
-          cd build/docusauruspath
+          cd docusauruspath
           git clone https://github.com/touchlab/TouchlabDocusaurusOssTemplate.git
 
 #        uses: actions/checkout@v3
