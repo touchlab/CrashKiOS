@@ -10,7 +10,8 @@ jobs:
 
       - name: Checkout the docs repo
         run: |
-          mkdir build/docusauruspath
+          mkdir build
+          mkdir docusauruspath
           cd build/docusauruspath
           git clone https://github.com/touchlab/TouchlabDocusaurusOssTemplate.git
 
