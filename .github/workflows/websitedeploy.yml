@@ -1,4 +1,4 @@
-name: KMM Bridge Github Workflow
+name: Publish the website
 on: workflow_dispatch
 
 jobs:
