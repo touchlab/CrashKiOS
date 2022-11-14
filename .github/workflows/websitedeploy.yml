@@ -1,0 +1,36 @@
+name: Publish the website
+on: workflow_dispatch
+
+jobs:
+  docusaurus-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+
+      - name: Checkout the docs repo
+        uses: actions/checkout@v3
+        with:
+          name: touchlab/TouchlabDocusaurusOssTemplate
+          path: build/docusauruspath
+
+      - uses: actions/setup-java@v2
+        with:
+          distribution: "adopt"
+          java-version: "11"
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Build Main
+        run: ./gradlew copyDocusaurus -PDOCUSAURUS_SOURCE_PATH=./build/docusauruspath --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
+
+      - name: Publish website
+        run: |
+          git config --global user.email "kgalligan@gmail.com"
+          git config --global user.name "Kevin Galligan"
+          cd website
+          npm install
+          GIT_USER=ciuser GIT_PASS=${{ secrets.GITHUB_TOKEN }} yarn deploy

@@ -74,3 +74,8 @@ fastlane/test_output
 buildboth.sh
 Pods
 GoogleService-Info.plist
+
+/website/*
+!/website/docs
+!/website/blog
+!/website/docusaurus.config.js

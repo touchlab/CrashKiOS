@@ -15,7 +15,9 @@ pluginManagement {
     repositories {
         google()
         gradlePluginPortal()
+        mavenLocal()
         mavenCentral()
+        maven("https://oss.sonatype.org/content/repositories/snapshots")
     }
     val KOTLIN_VERSION: String by settings
     plugins {
