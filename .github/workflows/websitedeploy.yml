@@ -9,10 +9,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Checkout the docs repo
-        uses: actions/checkout@v3
-        with:
-          name: touchlab/TouchlabDocusaurusOssTemplate
-          path: ./build/docusauruspath
+        run: |
+          mkdir build/docusauruspath
+          cd build/docusauruspath
+          git clone https://github.com/touchlab/TouchlabDocusaurusOssTemplate.git
+
+#        uses: actions/checkout@v3
+#        with:
+#          name: touchlab/TouchlabDocusaurusOssTemplate
+#          path: ./build/docusauruspath
 
       - uses: actions/setup-java@v2
         with:
@@ -23,7 +28,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Build Main
-        run: ./gradlew copyDocusaurus -PDOCUSAURUS_SOURCE_PATH=./build/docusauruspath --no-daemon --stacktrace
+        run: ./gradlew copyDocusaurus -PDOCUSAURUS_SOURCE_PATH=./build/docusauruspath/TouchlabDocusaurusOssTemplate --no-daemon --stacktrace
         env:
           GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
 
