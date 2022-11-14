@@ -14,7 +14,7 @@ jobs:
           cd build
           mkdir docusauruspath
           cd docusauruspath
-          git clone https://github.com/touchlab/TouchlabDocusaurusOssTemplate.git
+          git clone https://github.com/touchlab-lab/TouchlabDocusaurusOssTemplate.git
 
 #        uses: actions/checkout@v3
 #        with:
