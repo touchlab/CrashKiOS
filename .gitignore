@@ -68,14 +68,22 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 
-#Because ugh
-.DS_Store
-
 buildboth.sh
 Pods
 GoogleService-Info.plist
 
-/website/*
-!/website/docs
-!/website/blog
-!/website/docusaurus.config.js
+/website/babel.config.js
+/website/package.json
+/website/package-lock.json
+/website/README.md
+/website/sidebars.js
+/website/staticwebapp.config.json
+/website/tsconfig.json
+/website/website.iml
+/website/src/components/*
+/website/src/css/*
+/website/src/pages/*
+/website/src/theme/*
+/website/static
+/website/WEB-INF
+!/website/src/components/HomepageFeatures
