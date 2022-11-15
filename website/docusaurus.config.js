@@ -130,8 +130,8 @@ const docProjectName = "CrashKiOS"
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: docProjectName,
-  tagline: 'Kotlin Mobile Multiplatform Packaging',
-  url: 'https://crashkios.touchlab.dev/',
+  tagline: 'Kotlin Mobile Multiplatform Crash Reporting for iOS',
+  url: 'https://crashkios.touchlab.co/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',

@@ -12,7 +12,7 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'KMMBridge Documentation',
+    title: 'CrashKiOS Documentation',
     Svg: require('@site/static/img/books.svg').default,
     url: '/intro',
     description: (
