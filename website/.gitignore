@@ -36,3 +36,6 @@ src/theme/DocPaginator/index.js
 src/pages/index.tsx
 src/pages/index.module.css
 src/pages/markdown-page.md
+.docusaurus
+node_modules
+yarn.lock
