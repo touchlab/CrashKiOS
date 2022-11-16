@@ -84,7 +84,7 @@ plugins {
 
 ### Crashlytics Sample
 
-See [samples/sample-crashlytics](samples/sample-crashlytics).
+See [samples/sample-crashlytics](https://github.com/touchlab/CrashKiOS/tree/main/samples/sample-crashlytics).
 
 ## Bugsnag Usage
 
@@ -201,7 +201,7 @@ plugins {
 
 ### Bugsnag Sample
 
-See [samples/sample-bugsnag](samples/sample-bugsnag).
+See [samples/sample-bugsnag](https://github.com/touchlab/CrashKiOS/tree/main/samples/sample-bugsnag).
 
 ## NSExceptionKt
 
