@@ -11,6 +11,26 @@ If you're wondering *why* you need this library, please see [the problem](THE_PR
 > We build solutions that get teams started smoothly with Kotlin Multiplatform Mobile and ensure their success in production. Join our community to learn how your peers are adopting KMM.
 > [Sign up here](https://go.touchlab.co/newsletter-gh)!
 
+## Dynamic linking with bitcode generation
+
+The `ld` (linker) does not support bitcode generation together with `-U` flag (this flag tells the linker that it's ok not to have a definition for some symbol - because it will be dynamically linked). We use the `-U` flag in CrashKiOS - but only if the resulting Kotlin framework is dynamically linked.
+
+This means that it's not possible to use CrashKiOS, dynamic linking, and bitcode generation at the same time (any other combination is fine).
+
+If you wish to use dynamic linking, disable bitcode generation. For example:
+
+```kotlin
+kotlin {
+    targets.withType<KotlinNativeTarget> {
+        binaries {
+            framework {
+                embedBitcode = BitcodeEmbeddingMode.DISABLE
+            }
+        }
+    }
+}
+```
+
 ## Crashlytics Usage
 
 Add the dependency.
