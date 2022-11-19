@@ -150,6 +150,7 @@ const config = {
   },
 
   // plugins: ['@docusaurus/plugin-content-tldocs'],
+  plugins: ['@docusaurus/plugin-google-analytics'],
 
   presets: [
     [
@@ -175,8 +176,12 @@ const config = {
   ],
 
   themeConfig:
+
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({
+        googleAnalytics: {
+          trackingID: 'G-6T3LZJGPGZ'
+        },
         colorMode: {
           defaultMode: 'dark',
         },
