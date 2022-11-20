@@ -150,7 +150,15 @@ const config = {
   },
 
   // plugins: ['@docusaurus/plugin-content-tldocs'],
-  plugins: ['@docusaurus/plugin-google-analytics'],
+  plugins: [
+    [
+      '@docusaurus/plugin-google-gtag',
+      {
+        trackingID: 'G-6T3LZJGPGZ',
+        anonymizeIP: true,
+      },
+    ],
+  ],
 
   presets: [
     [
@@ -179,9 +187,7 @@ const config = {
 
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({
-        googleAnalytics: {
-          trackingID: 'G-6T3LZJGPGZ'
-        },
+
         colorMode: {
           defaultMode: 'dark',
         },
