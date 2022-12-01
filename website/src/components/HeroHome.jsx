@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import Modal from '../utils/Modal';
 
-import HeroImage from '@site/static/docimages/stackbig.png';
+import HeroImage from '@site/static/docimages/crashtest2.jpg';
 
 function HeroHome() {
-
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   return (
     <section>
@@ -25,7 +22,7 @@ function HeroHome() {
         </div>
 
         {/* Hero content */}
-        <div className="relative pt-32 pb-10 md:pt-20 md:pb-16">
+        <div className="relative pt-12 pb-10 md:pt-10 md:pb-16">
 
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
@@ -44,18 +41,8 @@ function HeroHome() {
           {/* Hero image */}
           <div>
             <div className="relative flex justify-center items-center" data-aos="fade-up" data-aos-delay="200">
-              <a className=" group" href="#0" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setVideoModalOpen(true); }} aria-controls="modal">
-                <img className="mx-auto" src={HeroImage} width="855" height="430" alt="Hero" />
-              </a>
+              <img className="mx-auto auto-height" src={HeroImage} width="900" height="488" alt="Hero" />
             </div>
-            
-            {/* Modal */}
-            <Modal id="modal" ariaLabel="modal-headline" show={videoModalOpen} handleClose={() => setVideoModalOpen(false)}>
-              <div className="relative">
-                <img className="mx-auto" src={HeroImage} width="1282" height="645" alt="Hero" />
-              </div>
-            </Modal>
-
           </div>
 
         </div>

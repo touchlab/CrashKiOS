@@ -1,6 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Modal from "../utils/Modal";
+
+import StackImage from '@site/static/docimages/stackbig.png';
 
 function Process() {
+
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+
   return (
     <section>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -51,6 +57,23 @@ function Process() {
               <h4 className="h4 mb-2"><span className="text-gray-400">3</span>. Fatal Crashes</h4>
               <p className="text-lg text-gray-400 text-center">Captures fatal crashes as well as handled exception reports.</p>
             </div>
+
+          </div>
+
+          {/* Hero image */}
+          <div>
+            <div className="relative flex justify-center items-center pt-20" data-aos="fade-up" data-aos-delay="200">
+              <a className=" group" href="#0" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setVideoModalOpen(true); }} aria-controls="modal">
+                <img className="mx-auto auto-height" src={StackImage} width="855" height="430" alt="Hero" />
+              </a>
+            </div>
+
+            {/* Modal */}
+            <Modal id="modal" ariaLabel="modal-headline" show={videoModalOpen} handleClose={() => setVideoModalOpen(false)}>
+              <div className="relative">
+                <img className="mx-auto auto-height w-full" src={StackImage} alt="Hero" />
+              </div>
+            </Modal>
 
           </div>
 

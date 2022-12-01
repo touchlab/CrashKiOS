@@ -29,8 +29,8 @@ function Newsletter() {
               <p className="text-cyan-200 text-lg">Join the Touchlab Kotlin Multiplatform Insiders newsletter.</p>
             </div>
 
-            <div className="flex flex-col w-80 justify-center mx-auto">
-              <a className="btn w-full text-cyan-600 bg-cyan-100 hover:bg-white shadow text-xl" href="https://form.typeform.com/to/MJTpmm">Subscribe</a>
+            <div className="flex flex-col w-1/2 justify-center mx-auto">
+              <a className="btn text-cyan-600 bg-cyan-100 hover:bg-white shadow text-xl" href="https://form.typeform.com/to/MJTpmm">Subscribe</a>
             </div>
 
           </div>
