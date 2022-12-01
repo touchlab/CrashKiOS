@@ -4,6 +4,20 @@
  * work well for content-centric websites.
  */
 
+/*@tailwind base;*/
+/*@tailwind components;*/
+@tailwind utilities;
+
+@import 'additional-styles/utility-patterns.css';
+@import 'additional-styles/range-slider.css';
+@import 'additional-styles/toggle-switch.css';
+@import 'additional-styles/theme.css';
+
+.auto-height{
+  max-width: 100%;
+  height: auto;
+}
+
 /* You can override the default Infima variables here. */
 :root {
   /*--ifm-color-primary: #007521;*/
