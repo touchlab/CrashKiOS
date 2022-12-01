@@ -15,7 +15,7 @@ buildscript {
 plugins {
 //    kotlin("multiplatform") apply false
     id("com.android.library") version "7.2.2" apply false
-    id("co.touchlab.touchlabtools.docusaurusosstemplate") version "0.1.6-SNAPSHOT"
+    id("co.touchlab.touchlabtools.docusaurusosstemplate") version "0.1.7-SNAPSHOT"
 }
 
 allprojects {
