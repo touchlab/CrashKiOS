@@ -15,7 +15,7 @@ function Process() {
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
             <h2 className="h2 mb-4" data-aos="fade-up">Production KMM stability monitoring</h2>
-            <p className="text-xl text-gray-400" data-aos="fade-up" data-aos-delay="200">Report stability issues in your mobile applications directly from common Kotlin code.</p>
+            <p className="text-xl dark:text-gray-400 text-gray-700" data-aos="fade-up" data-aos-delay="200">Report stability issues in your mobile applications directly from common Kotlin code.</p>
           </div>
 
           {/* Items */}
@@ -29,8 +29,8 @@ function Process() {
                 <path className="stroke-current text-cyan-300" strokeWidth="2" strokeLinecap="square" d="M21 23h22v18H21z" fill="none" fillRule="evenodd" />
                 <path className="stroke-current text-cyan-100" d="M26 28h12M26 32h12M26 36h5" strokeWidth="2" strokeLinecap="square" />
               </svg>
-              <h4 className="h4 mb-2"><span className="text-gray-400">1</span>. Symbolication</h4>
-              <p className="text-lg text-gray-400 text-center">iOS crash handling is different between Swift and Kotlin. CrashKiOS properly symbolicates Kotlin stack traces.</p>
+              <h4 className="h4 mb-2"><span className="dark:text-gray-400 text-gray-700">1</span>. Symbolication</h4>
+              <p className="text-lg dark:text-gray-400 text-gray-700 text-center">iOS crash handling is different between Swift and Kotlin. CrashKiOS properly symbolicates Kotlin stack traces.</p>
             </div>
 
             {/* 2nd item */}
@@ -43,8 +43,8 @@ function Process() {
                   <path className="stroke-current text-cyan-100" strokeWidth="2" strokeLinecap="square" d="M36 32l-4-3-4 3V22h8z" />
                 </g>
               </svg>
-              <h4 className="h4 mb-2"><span className="text-gray-400">2</span>. Metadata</h4>
-              <p className="text-lg text-gray-400 text-center">Log breadcrumbs and custom key/value data directly from common Kotlin code to both platforms.</p>
+              <h4 className="h4 mb-2"><span className="dark:text-gray-400 text-gray-700">2</span>. Metadata</h4>
+              <p className="text-lg dark:text-gray-400 text-gray-700 text-center">Log breadcrumbs and custom key/value data directly from common Kotlin code to both platforms.</p>
             </div>
 
             {/* 3rd item */}
@@ -54,8 +54,8 @@ function Process() {
                 <path className="stroke-current text-cyan-300" strokeWidth="2" strokeLinecap="square" d="M21 35l4 4 12-15" fill="none" fillRule="evenodd" />
                 <path className="stroke-current text-cyan-100" d="M42 29h-3M42 34h-7M42 39H31" strokeWidth="2" strokeLinecap="square" />
               </svg>
-              <h4 className="h4 mb-2"><span className="text-gray-400">3</span>. Fatal Crashes</h4>
-              <p className="text-lg text-gray-400 text-center">Captures fatal crashes as well as handled exception reports.</p>
+              <h4 className="h4 mb-2"><span className="dark:text-gray-400 text-gray-700">3</span>. Fatal Crashes</h4>
+              <p className="text-lg dark:text-gray-400 text-gray-700 text-center">Captures fatal crashes as well as handled exception reports.</p>
             </div>
 
           </div>

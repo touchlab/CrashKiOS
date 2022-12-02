@@ -16,7 +16,7 @@ function HeroAbout() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
         <div className="pt-32 pb-12 md:pt-40 md:pb-20">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="h1 mb-4 drop-shadow-lg" data-aos="fade-up">CrashKiOS - KMM Crash Reporting</h1>
+            <h1 className="h1 mb-4 drop-shadow-lg text-white" data-aos="fade-up">CrashKiOS - KMM Crash Reporting</h1>
             <p className="text-xl text-gray-400 mb-8 drop-shadow-lg" data-aos="fade-up" data-aos-delay="200">Symbolicated crash reporting for Kotlin Multiplatform Mobile, supporting Firebase Crashlytics and Bugsnag.</p>
               <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
                   <div data-aos="fade-up" data-aos-delay="400">
