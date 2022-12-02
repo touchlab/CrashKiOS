@@ -22,17 +22,11 @@ function NewsletterDoc() {
               </svg>
             </div>
 
-            <div className="relative flex flex-col lg:flex-row justify-between items-center">
+            <div className="relative flex flex-col xl:flex-row justify-between items-center">
 
               {/* CTA content */}
-              <div className="mb-6 lg:mr-16 lg:mb-0 text-center lg:text-left">
-                <h4 className="h4 text-white mb-2">Stay in the loop</h4>
-                <p className="text-cyan-200 text-lg">Join the Touchlab Kotlin Multiplatform Insiders newsletter.</p>
-              </div>
-
-              <div className="flex flex-col justify-center mx-auto">
+                <h4 className="h4 text-white xl:mb-0 text-center">Touchlab KMP Insiders Newsletter</h4>
                 <a className="btn text-cyan-600 bg-cyan-100 hover:bg-white shadow text-xl" href="https://form.typeform.com/to/MJTpmm">Subscribe</a>
-              </div>
 
             </div>
 
