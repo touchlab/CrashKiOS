@@ -18,6 +18,10 @@
   height: auto;
 }
 
+.navbar {
+  opacity: .9;
+}
+
 /* You can override the default Infima variables here. */
 :root {
   /*--ifm-color-primary: #007521;*/

@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Process from '@site/src/components/Process';
+import HeroAbout from '@site/src/components/HeroAbout';
 import HeroHome from '@site/src/components/HeroHome';
 import Newsletter from '@site/src/components/Newsletter';
 import AOS from 'aos';
@@ -23,7 +24,8 @@ export default function Home(): JSX.Element {
     <Layout
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />">
-      <HeroHome />
+      <HeroAbout/>
+      {/*<HeroHome />*/}
       <Process/>
       <Newsletter/>
       <div>&nbsp;</div>
