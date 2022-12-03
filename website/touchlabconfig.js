@@ -12,7 +12,7 @@ const docusaurusConfig = {
 };
 
 const extraConfig = {
-    trackingID: 'G-6T3LZJGPGZ',
+    trackingID: 'G-2F7SVSTJQS',
 }
 
 module.exports = {
