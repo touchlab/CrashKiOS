@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import HeroImage from '@site/static/docimages/crashtest2.jpg';
+import HeroImage from '@site/static/componentimg/hero.jpg';
 
 function HeroHome() {
 

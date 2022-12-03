@@ -4,14 +4,16 @@
  * work well for content-centric websites.
  */
 
-/*@tailwind base;*/
-/*@tailwind components;*/
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Inter:wght@400;500;600;700;800;900&display=fallback');
+
+/*@tailwind base;
+@tailwind components;*/
 @tailwind utilities;
 
 @import 'additional-styles/utility-patterns.css';
 @import 'additional-styles/range-slider.css';
 @import 'additional-styles/toggle-switch.css';
-@import 'additional-styles/theme.css';
+/*@import 'additional-styles/theme.css';*/
 
 .auto-height{
   max-width: 100%;
