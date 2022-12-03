@@ -6,24 +6,24 @@ import HeroAbout from '@site/src/components/HeroAbout';
 import HeroHome from '@site/src/components/HeroHome';
 import Newsletter from '@site/src/components/Newsletter';
 import AOS from 'aos';
-import 'aos/dist/aos.css';
+// import 'aos/dist/aos.css';
 
 export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
 
-  useEffect(() => {
+  /*useEffect(() => {
     AOS.init({
       once: true,
       disable: 'phone',
       duration: 350,
       easing: 'ease-out-sine',
     });
-  });
+  });*/
 
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={`CrashKiOS - KMM Crash Reporting`}
+      description="Symbolicated crash reporting for Kotlin Multiplatform Mobile, supporting Firebase Crashlytics and Bugsnag">
       <HeroAbout/>
       {/*<HeroHome />*/}
       <Process/>
