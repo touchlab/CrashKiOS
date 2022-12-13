@@ -78,6 +78,26 @@ To workaround this, we need to tell the compiler that these symbols are find and
   id("co.touchlab.crashkios.crashlyticslink") version "x.y.z"
 ```
 
+## Step 3b - Send dSYMS for Dynamic Framework
+If you're using a dynamic framework you may also see a warning on the Crashlytics dashboard about missing dSYMS or "Missing UUID" in the stack trace of Kotlin crashes. If that happens adding a build phase to push the Kotlin framework dSYM to Crashlytics separately should resolve it. 
+
+In Xcode, select your project on the left sidebar, open the Build Phases Tab, and press the `+` in the top left. The select 
+"New Run Script Phase" and give it a name like "Upload Kotlin dSYM".
+Add this script to the build phase 
+```bash
+Pods/FirebaseCrashlytics/upload-symbols -gsp ios/GoogleService-Info.plist -p ios ../shared/build/cocoapods/framework/shared.framework.dSYM
+```
+![img.png](add_build_phase.png)
+
+You may need to make slight changes to this script to fit your project. In The snippet above we're using `shared` as our 
+Kotlin module and framework name, and we're exporting to iOS using CocoaPods. Make sure the directory and framework name 
+matches what's in your project by looking in the build folder for your Kotlin module and getting the relative path. 
+If you're not using CocoaPods, you may need to find the dSYMs your project generates and make sure to upload each one 
+separately with the above command. Use this in the shared Kotlin module's directory to get a lis of all of the dSYMs 
+```bash
+find ./build -name "*.dSYM"
+```
+
 ## Sending Extra Info to Crashlytics
 CrashKiOS-crashlytics also provides shared code wrappers for sending logs and  custom key values to Crashlytics. When there is a crash, these will show up in the Logs and Keys tabs on the dashboard respectively. 
 ```kotlin
