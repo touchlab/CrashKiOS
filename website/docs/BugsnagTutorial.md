@@ -20,15 +20,15 @@ shared module.
 ```kotlin
 val commonMain by sourceSets.getting {
     dependencies {
-        api("co.touchlab.crashkios:bugsnag:x.y.z") // More on why api later
+        api("co.touchlab.crashkios:bugsnag:{{LATEST_GITHUB_VERSION}}") // More on why api later
     }
 }
 ```
 Then disable caching in your `gradle.properties` file. We're currently working to update things to avoid this, for now 
 we need it to deal with iOS linking issues.
-TODO: WHATS THE M1 ONE? 
 ```
 kotlin.native.cacheKind.iosX64=none
+kotlin.native.cacheKind.iosSimulatorArm64=none
 ```
 
 After a Gradle sync, make a call to `enableBugsnag()` somewhere in your startup code for each app. This switches from the
@@ -51,7 +51,7 @@ This is why we need to add the CrashKiOS dependency with `api()` rather than `im
 ```kotlin
 cocoapods {
     framework {
-        export("co.touchlab.crashkios:bugsnag:0.8.1")
+        export("co.touchlab.crashkios:bugsnag:{{LATEST_GITHUB_VERSION}}")
     }
     ...
 }
@@ -87,7 +87,7 @@ This is because on iOS only the definitions for Bugsnag are added when comiling 
 
 To work around this, we need to tell the compiler that these symbols are find and will be there later. Doing it manually is a bit messy so you can just add our gradle plugin to handle it 
 ```kotlin
-  id("co.touchlab.crashkios.bugsnaglink") version "x.y.z"
+  id("co.touchlab.crashkios.bugsnaglink") version "{{LATEST_GITHUB_VERSION}}"
 ```
 
 ## Sending Extra Info to Bugsnag

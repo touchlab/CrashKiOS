@@ -22,15 +22,15 @@ shared module.
 ```kotlin
 val commonMain by sourceSets.getting {
     dependencies {
-        implementation("co.touchlab.crashkios:crashlytics:x.y.z")
+        implementation("co.touchlab.crashkios:crashlytics:{{LATEST_GITHUB_VERSION}}")
     }
 }
 ```
 Then disable caching in your `gradle.properties` file. We're currently working to update things to avoid this, for now 
 we need it to deal with iOS linking issues.
-TODO: WHATS THE M1 ONE? 
 ```
 kotlin.native.cacheKind.iosX64=none
+kotlin.native.cacheKind.iosSimulatorArm64=none
 ```
 
 After a Gradle sync, make a call to `enableCrashlytics()` somewhere in your startup code for each app. This switches from the
@@ -75,7 +75,7 @@ This is because on iOS only the definitions for Crashlytics are added when comil
 
 To workaround this, we need to tell the compiler that these symbols are find and will be there later. Doing it manually is a bit messy so you can just add our gradle plugin to handle it 
 ```kotlin
-  id("co.touchlab.crashkios.crashlyticslink") version "x.y.z"
+  id("co.touchlab.crashkios.crashlyticslink") version "{{LATEST_GITHUB_VERSION}}"
 ```
 
 ## Step 3b - Send dSYMS for Dynamic Framework
