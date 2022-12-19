@@ -18,15 +18,26 @@ class CrashBot() {
         internalDispatch()
     }
 
+    fun otherCrash() {
+        crashyCrash()
+    }
+
+    private fun crashyCrash() {
+        throw RuntimeException("oopsie")
+    }
+
+
     private val dispatchCall = {
-        val door = Random.nextInt(4)
-        when(door){
+        val door = Random.nextInt(5)
+        when (door) {
             0 -> goCrash0()
             1 -> goCrash1()
             2 -> goCrash2()
             3 -> goCrash3()
+            4 -> goCrash25()
         }
     }
+
     private fun internalDispatch() = dispatchCall()
     private fun internalDispatch1() = dispatchCall()
     private fun internalDispatch2() = dispatchCall()
@@ -43,11 +54,15 @@ class CrashBot() {
         internalDispatch2()
     }
 
+    private fun goCrash25() {
+        internalDispatch()
+    }
+
     private fun goCrash3() {
         okCrash()
     }
 
-    private fun okCrash(){
-        throw IllegalStateException("Nap time ...")
+    private fun okCrash() {
+        throw IllegalStateException("oops")
     }
 }

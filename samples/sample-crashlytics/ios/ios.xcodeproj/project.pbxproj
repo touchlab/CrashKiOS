@@ -12,7 +12,7 @@
 		6381FFA2277D0BEC00EF27B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6381FFA1277D0BEC00EF27B0 /* Assets.xcassets */; };
 		6381FFA5277D0BEC00EF27B0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6381FFA4277D0BEC00EF27B0 /* Preview Assets.xcassets */; };
 		6381FFAE277D0E1200EF27B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6381FFAC277D0E1200EF27B0 /* AppDelegate.swift */; };
-		A30FA4F028DB17F400E4D5A3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A30FA4EF28DB17F400E4D5A3 /* GoogleService-Info.plist */; };
+		7626E9E92943C83F00F736A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7626E9E82943C83F00F736A6 /* GoogleService-Info.plist */; };
 		E3B345D7F7CB0D13E629AF26 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 091D28CBC7DE88C8F19D392C /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,7 +25,7 @@
 		6381FFA1277D0BEC00EF27B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6381FFA4277D0BEC00EF27B0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6381FFAC277D0E1200EF27B0 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A30FA4EF28DB17F400E4D5A3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7626E9E82943C83F00F736A6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BB62DCDD1B787390B57E1E4C /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,8 +79,8 @@
 		6381FF9C277D0BE900EF27B0 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				7626E9E82943C83F00F736A6 /* GoogleService-Info.plist */,
 				6381FFAC277D0E1200EF27B0 /* AppDelegate.swift */,
-				A30FA4EF28DB17F400E4D5A3 /* GoogleService-Info.plist */,
 				6381FF9D277D0BE900EF27B0 /* iosApp.swift */,
 				6381FF9F277D0BE900EF27B0 /* ContentView.swift */,
 				6381FFA1277D0BEC00EF27B0 /* Assets.xcassets */,
@@ -110,6 +110,7 @@
 				6381FF98277D0BE900EF27B0 /* Resources */,
 				6755B982E6A25ABA23A6DDB7 /* [CP] Embed Pods Frameworks */,
 				6381FFAF277D0F0500EF27B0 /* ShellScript */,
+				76C802912948F46D0083007C /* Upload Share dsym */,
 			);
 			buildRules = (
 			);
@@ -160,7 +161,7 @@
 			files = (
 				6381FFA5277D0BEC00EF27B0 /* Preview Assets.xcassets in Resources */,
 				6381FFA2277D0BEC00EF27B0 /* Assets.xcassets in Resources */,
-				A30FA4F028DB17F400E4D5A3 /* GoogleService-Info.plist in Resources */,
+				7626E9E92943C83F00F736A6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,6 +225,25 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ios/Pods-ios-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		76C802912948F46D0083007C /* Upload Share dsym */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Share dsym";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nPods/FirebaseCrashlytics/upload-symbols -gsp ios/GoogleService-Info.plist -p ios ../shared/build/cocoapods/framework/shared.framework.dSYM\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

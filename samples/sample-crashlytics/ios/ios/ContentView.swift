@@ -36,7 +36,7 @@ struct ContentView: View {
                 .font(.title)
             }
             Button(action: {
-               self.cb.goCrash()
+               self.cb.otherCrash()
            }){
                Text("Kotlin Crash").padding()
                .background(Color.blue)
@@ -45,6 +45,7 @@ struct ContentView: View {
            }
 
             Button(action: {
+                print("crashing")
                realCrash()
            }){
                Text("Swift Crash").padding()
