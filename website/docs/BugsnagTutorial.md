@@ -1,6 +1,11 @@
-# Setting Up CrashKiOS with Bugsnag
+---
+id: bugsnag
+---
+
+# Bugsnag
+
 If you use Bugsnag and an uncaught exception gets thrown from shared Kotlin code running on iOS, the crash report generated 
-won't be very helpful in determining the cause, see [The Problem](THE_PROBLEM.md) for more details. CrashKiOS was made 
+won't be very helpful in determining the cause, see [The Problem](misc/THE_PROBLEM.md) for more details. CrashKiOS was made 
 to remedy this issue and provide meaningful stack traces for Kotlin crashes. 
 
 ## Step 1 - Add Bugsnag to Your Apps

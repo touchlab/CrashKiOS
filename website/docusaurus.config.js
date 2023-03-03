@@ -48,7 +48,21 @@ const config = {
         },
       };
     },
-
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+      ({
+        // ... Your options.
+        // `hashed` is recommended as long-term-cache of index file is possible.
+        hashed: true,
+        indexDocs: true,
+        docsRouteBasePath: "/"
+        // For Docs using Chinese, The `language` is recommended to set to:
+        // ```
+        // language: ["en", "zh"],
+        // ```
+      }),
+    ],
   ],
 
   presets: [
@@ -57,7 +71,6 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -98,7 +111,7 @@ const config = {
           items: [
             {
               type: 'doc',
-              docId: 'intro',
+              docId: 'index',
               position: 'left',
               label: 'Docs',
             },

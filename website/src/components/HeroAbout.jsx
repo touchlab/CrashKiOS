@@ -1,6 +1,6 @@
 import React from 'react';
 
-import HeroImage from '@site/static/docimages/crashtest2.jpg';
+import HeroImage from '@site/static/docimages/frog.jpg';
 
 function HeroAbout() {
   return (
