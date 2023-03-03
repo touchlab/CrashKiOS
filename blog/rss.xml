@@ -11,7 +11,7 @@
         <item>
             <title><![CDATA[First Blog Post]]></title>
             <link>https://crashkios.touchlab.co/blog/first-blog-post</link>
-            <guid>first-blog-post</guid>
+            <guid>https://crashkios.touchlab.co/blog/first-blog-post</guid>
             <pubDate>Thu, 01 Dec 2022 00:00:00 GMT</pubDate>
             <description><![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet]]></description>
             <content:encoded><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet</p>]]></content:encoded>

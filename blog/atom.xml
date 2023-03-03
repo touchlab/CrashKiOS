@@ -9,7 +9,7 @@
     <icon>https://crashkios.touchlab.co/img/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[First Blog Post]]></title>
-        <id>first-blog-post</id>
+        <id>https://crashkios.touchlab.co/blog/first-blog-post</id>
         <link href="https://crashkios.touchlab.co/blog/first-blog-post"/>
         <updated>2022-12-01T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet]]></summary>
