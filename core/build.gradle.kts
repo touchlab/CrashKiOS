@@ -23,7 +23,7 @@ group = GROUP
 version = VERSION_NAME
 
 kotlin {
-    android {
+    androidTarget {
         publishAllLibraryVariants()
     }
 
@@ -43,43 +43,39 @@ kotlin {
     tvosSimulatorArm64()
     tvosX64()
 
-    val commonMain by sourceSets.getting
-    val commonTest by sourceSets.getting {
-        dependencies {
-            implementation("org.jetbrains.kotlin:kotlin-test-common")
-            implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
+    sourceSets {
+        val commonMain by getting
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
         }
-    }
-    val darwinMain by sourceSets.creating {
-        dependsOn(commonMain)
-    }
-    val darwinTest by sourceSets.creating {
-        dependsOn(commonTest)
-    }
-
-    val androidMain by sourceSets.getting {
-        dependencies {
-            implementation("org.jetbrains.kotlin:kotlin-stdlib")
+        val darwinMain by creating {
+            dependsOn(commonMain)
         }
-    }
+        val darwinTest by creating {
+            dependsOn(commonTest)
+        }
 
-    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
-        val mainSourceSet = compilations.getByName("main").defaultSourceSet
-        val testSourceSet = compilations.getByName("test").defaultSourceSet
+        targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
+            val mainSourceSet = compilations.getByName("main").defaultSourceSet
+            val testSourceSet = compilations.getByName("test").defaultSourceSet
 
-        mainSourceSet.dependsOn(darwinMain)
-        testSourceSet.dependsOn(darwinTest)
+            mainSourceSet.dependsOn(darwinMain)
+            testSourceSet.dependsOn(darwinTest)
+        }
     }
 }
 
 android {
-    compileSdk = 30
+    namespace = "co.touchlab.crashkios.core"
+    compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
-        minSdk = 15
+        minSdk = libs.versions.minSdk.get().toInt()
     }
-
-    val main by sourceSets.getting {
-        manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 

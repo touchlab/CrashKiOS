@@ -1,0 +1,57 @@
+[versions]
+## SDK Versions
+minSdk = "21"
+targetSdk = "34"
+compileSdk = "34"
+
+# Dependencies
+kotlin = "1.9.10"
+android-gradle-plugin = "8.1.0"
+mavenPublish = "0.25.3"
+touchlab-docusaurus-template = "0.1.10"
+gradlePublish = "1.2.1"
+nsexceptionKt = "0.1.10"
+firebase-crashlytics = "18.4.1"
+bugsnag = "5.31.1"
+crashkios = "0.8.2"
+
+# Sample Apps
+androidx-core = "1.12.0"
+androidx-appcompat = "1.6.1"
+androidx-constraintLayout = "2.1.4"
+androidx-navigationFragment = "2.7.2"
+androidx-navigationUI = "2.7.2"
+androidx-coordinatorLayout = "1.2.0"
+
+[libraries]
+nsexceptionKt-core = { module = "com.rickclephas.kmp:nsexception-kt-core", version.ref = "nsexceptionKt" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx",version.ref = "firebase-crashlytics" }
+bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag" }
+
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintLayout" }
+androidx-navigationFragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigationFragment" }
+androidx-navigationUI = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigationUI" }
+androidx-coordinatorLayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "androidx-coordinatorLayout" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+touchlab-docusaurus-template = { id = "co.touchlab.touchlabtools.docusaurusosstemplate", version.ref = "touchlab-docusaurus-template" }
+gradle-publish = { id = "com.gradle.plugin-publish", version.ref = "gradlePublish" }
+
+# For Samples
+crashkios-crashlyticslink = { id = "co.touchlab.crashkios.crashlyticslink", version.ref = "crashkios" }
+crashkios-bugsnaglink = { id = "co.touchlab.crashkios.bugsnaglink", version.ref = "crashkios" }
+
+[bundles]
+android = [
+    "androidx-core",
+    "androidx-appcompat",
+    "androidx-constraintLayout",
+    "androidx-navigationFragment",
+    "androidx-navigationUI",
+    "androidx-coordinatorLayout",
+]

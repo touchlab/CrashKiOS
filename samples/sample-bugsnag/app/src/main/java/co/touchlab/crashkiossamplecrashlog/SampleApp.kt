@@ -12,6 +12,7 @@ package co.touchlab.crashkiossamplecrashlog
 
 import android.app.Application
 import co.touchlab.crashkios.bugsnag.enableBugsnag
+import com.bugsnag.android.Bugsnag
 
 class SampleApp : Application() {
 

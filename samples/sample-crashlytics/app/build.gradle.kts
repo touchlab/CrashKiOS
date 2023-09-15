@@ -15,23 +15,18 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-repositories {
-    mavenLocal()
-    google()
-    mavenCentral()
-}
-
 android {
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    namespace = "co.touchlab.crashkiossamplecrashlog"
+    compileSdk = projectLibs.versions.compileSdk.get().toInt()
     defaultConfig {
         applicationId = "co.touchlab.crashkiossamplecrashlog"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
+        minSdk = projectLibs.versions.minSdk.get().toInt()
+        targetSdk = projectLibs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "0.0.1"
     }
-    packagingOptions {
-        exclude("META-INF/*.kotlin_module")
+    packaging {
+        resources.excludes.add("META-INF/*.kotlin_module")
     }
     buildTypes {
         getByName("release")  {
@@ -40,8 +35,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         viewBinding = true
@@ -50,10 +45,10 @@ android {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(libs.bundles.android)
+    implementation(projectLibs.bundles.android)
 
     // Crash reporters
-    implementation (platform(libs.firebase.bom))
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation("co.touchlab.crashkios:crashlytics")
