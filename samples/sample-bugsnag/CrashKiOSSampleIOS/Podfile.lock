@@ -1,5 +1,5 @@
 PODS:
-  - Bugsnag (6.22.3)
+  - Bugsnag (6.27.2)
   - shared (0.0.1)
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: "../shared"
 
 SPEC CHECKSUMS:
-  Bugsnag: 17fe7e9fcf60c1877a6a638a77327dce99590991
+  Bugsnag: d7b2e5e78eaf66246d635240c61a6c8a18e3922c
   shared: db2bfa2f9309d3a03ed92c95da4d0b121dfc7d02
 
 PODFILE CHECKSUM: 334109894bf80203c54092dcc680f36bc85b527c
