@@ -4,6 +4,7 @@ import com.rickclephas.kmp.nsexceptionkt.core.asNSException
 import com.rickclephas.kmp.nsexceptionkt.core.getFilteredStackTraceAddresses
 import kotlinx.cinterop.convert
 
+@OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
 actual class CrashlyticsCallsActual : CrashlyticsCalls {
     override fun logMessage(message: String) {
         FIRCrashlytics.crashlytics().log(message)

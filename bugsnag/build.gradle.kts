@@ -14,18 +14,18 @@
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
+    id("com.vanniktech.maven.publish")
 }
 
-val NSEXCEPTION_KT_VERSION: String by project
 val GROUP: String by project
 val VERSION_NAME: String by project
-val BUGSNAG_ANDROID_VERSION: String by project
 
 group = GROUP
 version = VERSION_NAME
 
 kotlin {
-    android {
+    targetHierarchy.default()
+    androidTarget {
         publishAllLibraryVariants()
     }
 
@@ -44,60 +44,59 @@ kotlin {
     tvosArm64()
     tvosSimulatorArm64()
     tvosX64()
-
-    val commonMain by sourceSets.getting {
-        dependencies {
-            implementation(project(":core"))
+    
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":core"))
+            }
         }
-    }
-    val commonTest by sourceSets.getting
-    val darwinMain by sourceSets.creating {
-        dependsOn(commonMain)
-        dependencies {
-            implementation("com.rickclephas.kmp:nsexception-kt-core:$NSEXCEPTION_KT_VERSION")
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
         }
-    }
-    val darwinTest by sourceSets.creating {
-        dependsOn(commonTest)
-    }
-
-    commonTest.dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-test-common")
-        implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    }
-
-    val androidMain by sourceSets.getting {
-        dependencies {
-            implementation("org.jetbrains.kotlin:kotlin-stdlib")
-            compileOnly("com.bugsnag:bugsnag-android:$BUGSNAG_ANDROID_VERSION")
+        val darwinMain by creating {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(libs.nsexceptionKt.core)
+            }
         }
-    }
+        val darwinTest by creating {
+            dependsOn(commonTest)
+        }
 
-    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
-        val mainCompilation = compilations.getByName("main")
-        val mainSourceSet = mainCompilation.defaultSourceSet
-        val testSourceSet = compilations.getByName("test").defaultSourceSet
+        val androidMain by getting {
+            dependencies {
+                compileOnly(libs.bugsnag.android)
+            }
+        }
 
-        mainSourceSet.dependsOn(darwinMain)
-        testSourceSet.dependsOn(darwinTest)
+        targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
+            val mainCompilation = compilations.getByName("main")
+            val mainSourceSet = mainCompilation.defaultSourceSet
+            val testSourceSet = compilations.getByName("test").defaultSourceSet
 
-        mainCompilation.cinterops.create("bugsnag") {
-            includeDirs("$projectDir/src/include")
-            compilerOpts("-DNS_FORMAT_ARGUMENT(A)=", "-D_Nullable_result=_Nullable")
+            mainSourceSet.dependsOn(darwinMain)
+            testSourceSet.dependsOn(darwinTest)
+
+            mainCompilation.cinterops.create("bugsnag") {
+                includeDirs("$projectDir/src/include")
+                compilerOpts("-DNS_FORMAT_ARGUMENT(A)=", "-D_Nullable_result=_Nullable")
 //            extraOpts("-mode", "sourcecode")
-        }
+            }
+        }   
     }
 }
 
 android {
-    compileSdk = 30
+    namespace = "co.touchlab.crashkios.bugsnag"
+    compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
-        minSdk = 16
+        minSdk = libs.versions.minSdk.get().toInt()
     }
-
-    val main by sourceSets.getting {
-        manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
-
-apply(plugin = "com.vanniktech.maven.publish")

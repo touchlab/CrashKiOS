@@ -10,11 +10,26 @@
 
 include(":app", ":shared")
 
-enableFeaturePreview("VERSION_CATALOGS")
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("projectLibs") {
+            from(files("../../gradle/libs.versions.toml"))
+        }
+    }
+}
 
 includeBuild("../..") {
     dependencySubstitution {
         substitute(module("co.touchlab.crashkios:bugsnag"))
             .using(project(":bugsnag")).because("we want to auto-wire up sample dependency")
+    }
+}
+
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+        maven("https://oss.sonatype.org/content/repositories/snapshots")
     }
 }

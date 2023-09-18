@@ -7,29 +7,17 @@
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-buildscript {
-    repositories {
-        google()
-        mavenLocal()
-        mavenCentral()
-        maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
-    }
-    dependencies {
-        fun readParentKotlin():String = java.util.Properties().apply { load(java.io.StringReader(File("${projectDir.path}/../../gradle.properties").readText())) }.get("KOTLIN_VERSION") as String
-        classpath("com.android.tools.build:gradle:7.2.2")
-        classpath(kotlin("gradle-plugin", readParentKotlin()))
-        classpath("com.bugsnag:bugsnag-android-gradle-plugin:7.0.0")
-        //classpath("co.touchlab.crashkios:utils:0.7.1-alpha3")
-    }
+plugins {
+    alias(projectLibs.plugins.kotlin.multiplatform) apply false
+    alias(projectLibs.plugins.android.library) apply false
+    alias(projectLibs.plugins.crashkios.bugsnaglink) apply false
+    alias(libs.plugins.bugsnag.gradle.plugin) apply false
 }
+
 allprojects{
     repositories{
-        mavenLocal()
         mavenCentral()
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         google()
     }
-}
-tasks.register("ciTest") {
-//    dependsOn("build")
 }

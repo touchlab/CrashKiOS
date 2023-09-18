@@ -16,7 +16,7 @@ plugins {
     kotlin("jvm")
     id("java-gradle-plugin")
     id("com.vanniktech.maven.publish.base")
-    id("com.gradle.plugin-publish") version "1.0.0"
+    id("com.gradle.plugin-publish")
 }
 
 repositories {
@@ -25,26 +25,21 @@ repositories {
 }
 
 gradlePlugin {
+    website.set("https://github.com/touchlab/CrashKiOS")
+    vcsUrl.set("https://github.com/touchlab/CrashKiOS.git")
+
+    description = "CrashKiOS linker params for Bugsnag on iOS"
     plugins {
         register("bugsnag-ios-link-plugin") {
             id = "co.touchlab.crashkios.bugsnaglink"
             implementationClass = "co.touchlab.crashkios.BugsnagLinkPlugin"
             displayName = "Bugsnag iOS Link Plugin"
+            tags.set(listOf("kmm", "kotlin", "multiplatform", "mobile", "ios"))
         }
     }
 }
 
-pluginBundle {
-    website = "https://github.com/touchlab/CrashKiOS"
-    vcsUrl = "https://github.com/touchlab/CrashKiOS.git"
-
-    description = "CrashKiOS linker params for Bugsnag on iOS"
-
-    tags = listOf("kmm", "kotlin", "multiplatform", "mobile", "ios")
-}
-
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
     implementation(gradleApi())
     implementation(kotlin("gradle-plugin"))
     implementation(kotlin("compiler-embeddable"))
@@ -53,8 +48,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 val GROUP: String by project

@@ -12,25 +12,26 @@ plugins {
     id("com.android.library")
     kotlin("multiplatform")
     kotlin("native.cocoapods")
-    id("co.touchlab.crashkios.bugsnaglink") version ("0.8.0")
+    id("co.touchlab.crashkios.bugsnaglink")
 }
 
 android {
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    namespace = "co.touchlab.crashkiossample"
+    compileSdk = projectLibs.versions.compileSdk.get().toInt()
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
+        minSdk = projectLibs.versions.minSdk.get().toInt()
     }
-
-    val main by sourceSets.getting {
-        manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
 version = "0.0.1"
 
 kotlin {
-    android()
+    targetHierarchy.default()
+    androidTarget()
     ios()
     // Note: iosSimulatorArm64 target requires that all dependencies have M1 support
     iosSimulatorArm64()
@@ -38,28 +39,21 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(kotlin("stdlib-common"))
                 api("co.touchlab.crashkios:bugsnag")
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(kotlin("test"))
             }
         }
 
-        val androidMain by getting
-
         val iosMain by getting
-
         val iosTest by getting
-
         val iosSimulatorArm64Main by getting {
             dependsOn(iosMain)
         }
-
         val iosSimulatorArm64Test by getting {
             dependsOn(iosTest)
         }

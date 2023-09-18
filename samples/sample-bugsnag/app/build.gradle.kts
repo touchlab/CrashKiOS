@@ -15,16 +15,17 @@ plugins {
 }
 
 android {
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    namespace = "co.touchlab.crashkiossamplecrashlog"
+    compileSdk = projectLibs.versions.compileSdk.get().toInt()
     defaultConfig {
         applicationId = "co.touchlab.crashkiossamplebugsnag"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
+        minSdk = projectLibs.versions.minSdk.get().toInt()
+        targetSdk = projectLibs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "0.0.1"
     }
-    packagingOptions {
-        exclude("META-INF/*.kotlin_module")
+    packaging {
+        resources.excludes.add("META-INF/*.kotlin_module")
     }
     buildTypes {
         getByName("release")  {
@@ -33,8 +34,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         viewBinding = true
@@ -43,6 +44,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(libs.bundles.android)
+    implementation(projectLibs.bundles.android)
     implementation("com.bugsnag:bugsnag-android:5.+")
+    // implementation(projectLibs.bugsnag)
 }
