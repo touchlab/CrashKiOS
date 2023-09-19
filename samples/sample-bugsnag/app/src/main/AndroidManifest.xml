@@ -21,7 +21,7 @@
         android:theme="@style/Theme.Samplecrashlogging">
         <meta-data
                 android:name="com.bugsnag.android.API_KEY"
-                android:value="[your key here!]"/>
+                android:value="e3c4f60ce6e97f5dcbafabf59cbd8f29"/>
         <activity
             android:name="co.touchlab.crashkiossamplecrashlog.MainActivity"
             android:exported="true">
