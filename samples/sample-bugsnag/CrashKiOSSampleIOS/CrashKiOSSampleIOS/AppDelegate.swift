@@ -18,6 +18,7 @@ import Bugsnag
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        Bugsnag.start()
         // Override point for customization after application launch.
         let config = BugsnagConfiguration.loadConfig()
         BugsnagConfigKt.startBugsnag(config: config)

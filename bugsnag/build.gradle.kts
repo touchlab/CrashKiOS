@@ -82,6 +82,7 @@ kotlin {
 
             mainCompilation.cinterops.create("bugsnag") {
                 includeDirs("$projectDir/src/include")
+                includeDirs("$projectDir/src/include/private")
                 compilerOpts("-DNS_FORMAT_ARGUMENT(A)=", "-D_Nullable_result=_Nullable")
 //            extraOpts("-mode", "sourcecode")
             }
