@@ -59,7 +59,7 @@
 	<key>bugsnag</key>
 	<dict>
 		<key>apiKey</key>
-		<string>c928b2fb07591784a0b775ff8ea6ba3d</string>
+		<string>[your key here!]</string>
 	</dict>
 </dict>
 </plist>
