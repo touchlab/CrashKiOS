@@ -1,4 +1,6 @@
 package = co.touchlab.crashkios.bugsnag
 language = Objective-C
-headers = Bugsnag.h BugsnagConfiguration.h BugsnagConfiguration+NSExceptionKt.h BugsnagError.h BugsnagEvent.h BugsnagFeatureFlag.h BugsnagFeatureFlagStore.h BugsnagStackframe.h
+headers = Bugsnag.h BugsnagConfiguration.h BugsnagConfiguration+NSExceptionKt.h BugsnagError.h BugsnagEvent.h \
+BugsnagFeatureFlag.h BugsnagFeatureFlagStore.h BugsnagStackframe.h Private/BugsnagHandledState.h \
+Private/BugsnagHandledState+NSExceptionKt.h
 

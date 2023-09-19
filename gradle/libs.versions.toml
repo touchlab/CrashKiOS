@@ -13,7 +13,7 @@ gradlePublish = "1.2.1"
 nsexceptionKt = "0.1.10"
 firebase-crashlytics = "18.4.1"
 bugsnag = "5.31.1"
-crashkios = "0.8.2"
+crashkios = "0.8.3"
 
 # Sample Apps
 androidx-core = "1.12.0"

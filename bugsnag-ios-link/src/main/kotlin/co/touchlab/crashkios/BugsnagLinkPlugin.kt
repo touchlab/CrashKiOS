@@ -27,7 +27,8 @@ class BugsnagLinkPlugin : Plugin<Project> {
     override fun apply(project: Project): Unit = with(project) {
         afterEvaluate {
             project.kotlinExtension.crashLinkerConfig(
-                "-U _OBJC_CLASS_\$_Bugsnag " +
+                "-U _OBJC_CLASS_\$_BugsnagHandledState " +
+                        "-U _OBJC_CLASS_\$_Bugsnag " +
                         "-U _OBJC_CLASS_\$_BugsnagStackframe " +
                         "-U _OBJC_CLASS_\$_FIRStackFrame " +
                         "-U _OBJC_CLASS_\$_BugsnagFeatureFlag " +
