@@ -10,7 +10,6 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-
 plugins {
     `kotlin-dsl`
     kotlin("jvm")
@@ -48,8 +47,9 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
 }
 
 val GROUP: String by project
