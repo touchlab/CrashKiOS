@@ -27,4 +27,8 @@ actual class CrashlyticsCallsActual : CrashlyticsCalls {
     override fun setCustomValue(key: String, value: Any) {
         FIRCrashlytics.crashlytics().setCustomValue(value, key)
     }
+
+    override fun setUserId(identifier: String) {
+        FIRCrashlytics.crashlytics().setUserID(identifier)
+    }
 }

@@ -20,6 +20,10 @@ object CrashlyticsKotlin {
     fun setCustomValue(key: String, value: Any) {
         implementation.setCustomValue(key, value)
     }
+
+    fun setUserId(identifier: String) {
+        implementation.setUserId(identifier)
+    }
 }
 
 /**
@@ -44,6 +48,10 @@ internal object EmptyCalls : CrashlyticsCalls {
     }
 
     override fun setCustomValue(key: String, value: Any) {
+
+    }
+
+    override fun setUserId(identifier: String) {
 
     }
 }

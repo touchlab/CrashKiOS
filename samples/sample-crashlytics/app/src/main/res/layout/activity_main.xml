@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2021 Touchlab
+  ~ Copyright (c) 2023 Touchlab
   ~ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
@@ -10,36 +10,43 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_gravity="center_vertical"
-    tools:context=".MainActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_gravity="center_vertical"
+              tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/click_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:layout_gravity="center_horizontal"
-        android:text="Click Count" />
+            android:id="@+id/user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Set User Id"/>
 
     <Button
-        android:id="@+id/log_exception"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="32dp"
-        android:text="Log Exception" />
+            android:id="@+id/click_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Click Count"/>
 
     <Button
-        android:id="@+id/crash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="32dp"
-        android:text="Crash" />
+            android:id="@+id/log_exception"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="32dp"
+            android:text="Log Exception"/>
+
+    <Button
+            android:id="@+id/crash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="32dp"
+            android:text="Crash"/>
 
 </LinearLayout>
