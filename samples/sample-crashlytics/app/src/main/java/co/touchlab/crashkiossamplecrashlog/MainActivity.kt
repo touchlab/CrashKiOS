@@ -10,8 +10,8 @@
 
 package co.touchlab.crashkiossamplecrashlog
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import co.touchlab.crashkiossample.CrashBot
 import co.touchlab.crashkiossample.SampleCommon
 import co.touchlab.crashkiossamplecrashlog.databinding.ActivityMainBinding
@@ -23,10 +23,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val sampleCommon = SampleCommon()
-        binding.clickCount.setOnClickListener{
-           sampleCommon.onClick()
+        binding.userId.setOnClickListener {
+            sampleCommon.setUserId("123")
         }
-        binding.logException.setOnClickListener{
+        binding.clickCount.setOnClickListener {
+            sampleCommon.onClick()
+        }
+        binding.logException.setOnClickListener {
             sampleCommon.logException()
         }
         binding.crash.setOnClickListener {

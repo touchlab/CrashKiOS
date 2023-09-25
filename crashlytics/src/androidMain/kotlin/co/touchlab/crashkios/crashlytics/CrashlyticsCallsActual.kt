@@ -28,4 +28,8 @@ actual class CrashlyticsCallsActual : CrashlyticsCalls {
             }
         }
     }
+
+    override fun setUserId(identifier: String) {
+        FirebaseCrashlytics.getInstance().setUserId(identifier)
+    }
 }

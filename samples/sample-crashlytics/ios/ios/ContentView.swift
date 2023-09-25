@@ -20,6 +20,14 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 50){
             Button(action: {
+                self.common.setUserId(identifier: "123")
+            }){
+                Text("Set Uset Id").padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .font(.title)
+            }
+            Button(action: {
                 self.common.onClick()
             }){
                 Text("Click Count").padding()

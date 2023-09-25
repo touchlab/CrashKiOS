@@ -14,12 +14,17 @@ import co.touchlab.crashkios.crashlytics.CrashlyticsKotlin
 
 class SampleCommon {
     private var count = 0
+
+    fun setUserId(identifier: String) {
+        CrashlyticsKotlin.setUserId(identifier)
+    }
+
     fun onClick() {
         count++
         CrashlyticsKotlin.logMessage(message = "Common click count: $count")
     }
 
-    fun logException(){
+    fun logException() {
         CrashlyticsKotlin.sendHandledException(throwable = IllegalStateException("Handled, Common click count: $count"))
     }
 }
