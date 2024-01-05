@@ -5,15 +5,15 @@ targetSdk = "34"
 compileSdk = "34"
 
 # Dependencies
-kotlin = "1.9.10"
-android-gradle-plugin = "8.1.0"
-mavenPublish = "0.25.3"
+kotlin = "1.9.22"
+android-gradle-plugin = "8.2.1"
+mavenPublish = "0.26.0"
 touchlab-docusaurus-template = "0.1.10"
 gradlePublish = "1.2.1"
 nsexceptionKt = "0.1.10"
 firebase-crashlytics = "18.4.1"
 bugsnag = "5.31.1"
-crashkios = "0.8.3"
+crashkios = "0.8.5"
 
 # Sample Apps
 androidx-core = "1.12.0"

@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalForeignApi::class)
+
 package co.touchlab.crashkios.bugsnag
 
 import com.rickclephas.kmp.nsexceptionkt.core.asNSException
 import com.rickclephas.kmp.nsexceptionkt.core.causes
 import com.rickclephas.kmp.nsexceptionkt.core.wrapUnhandledExceptionHook
+import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSException
 
 public fun startBugsnag(config: BugsnagConfiguration){
