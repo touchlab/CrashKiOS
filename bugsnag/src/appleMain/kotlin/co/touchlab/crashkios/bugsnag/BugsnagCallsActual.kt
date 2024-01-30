@@ -2,7 +2,9 @@ package co.touchlab.crashkios.bugsnag
 
 import com.rickclephas.kmp.nsexceptionkt.core.asNSException
 import com.rickclephas.kmp.nsexceptionkt.core.causes
+import kotlinx.cinterop.ExperimentalForeignApi
 
+@OptIn(ExperimentalForeignApi::class)
 actual class BugsnagCallsActual : BugsnagCalls {
 
     override fun logMessage(message: String) {

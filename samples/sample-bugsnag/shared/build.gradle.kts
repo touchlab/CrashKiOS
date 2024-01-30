@@ -35,32 +35,23 @@ tasks.withType<KotlinCompile> {
 version = "0.0.1"
 
 kotlin {
-    targetHierarchy.default()
     androidTarget()
-    ios()
+    iosX64()
+    iosArm64()
     // Note: iosSimulatorArm64 target requires that all dependencies have M1 support
     iosSimulatorArm64()
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api("co.touchlab.crashkios:bugsnag")
             }
         }
 
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test"))
             }
-        }
-
-        val iosMain by getting
-        val iosTest by getting
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
         }
     }
 

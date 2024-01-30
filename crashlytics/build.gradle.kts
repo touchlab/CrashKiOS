@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Touchlab
+ * Copyright (c) 2024 Touchlab
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,6 +10,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -25,7 +26,10 @@ group = GROUP
 version = VERSION_NAME
 
 kotlin {
-    targetHierarchy.default()
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
     androidTarget {
         publishAllLibraryVariants()
     }
@@ -47,27 +51,23 @@ kotlin {
     tvosX64()
     
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(project(":core"))
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test"))
             }
         }
-        val darwinMain by creating {
-            dependsOn(commonMain)
+        appleMain {
             dependencies {
                 implementation(libs.nsexceptionKt.core)
             }
         }
-        val darwinTest by creating {
-            dependsOn(commonTest)
-        }
 
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 compileOnly(libs.firebase.crashlytics)
             }
@@ -75,12 +75,6 @@ kotlin {
 
         targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
             val mainCompilation = compilations.getByName("main")
-            val mainSourceSet = mainCompilation.defaultSourceSet
-            val testSourceSet = compilations.getByName("test").defaultSourceSet
-
-            mainSourceSet.dependsOn(darwinMain)
-            testSourceSet.dependsOn(darwinTest)
-
             mainCompilation.cinterops.create("crashlytics") {
                 includeDirs("$projectDir/src/include")
                 compilerOpts("-DNS_FORMAT_ARGUMENT(A)=", "-D_Nullable_result=_Nullable")

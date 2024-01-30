@@ -2,6 +2,7 @@ package co.touchlab.crashkios.crashlytics
 
 import com.rickclephas.kmp.nsexceptionkt.core.asNSException
 import com.rickclephas.kmp.nsexceptionkt.core.getFilteredStackTraceAddresses
+import kotlinx.cinterop.UnsafeNumber
 import kotlinx.cinterop.convert
 
 @OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
@@ -10,6 +11,7 @@ actual class CrashlyticsCallsActual : CrashlyticsCalls {
         FIRCrashlytics.crashlytics().log(message)
     }
 
+    @OptIn(UnsafeNumber::class)
     override fun sendHandledException(throwable: Throwable) {
         val exceptionClassName = throwable::class.qualifiedName
         val exModel = FIRExceptionModel.exceptionModelWithName(exceptionClassName, throwable.message)!!
