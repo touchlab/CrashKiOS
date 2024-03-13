@@ -6,16 +6,16 @@ import org.gradle.process.ExecOperations
 import java.io.File
 import javax.inject.Inject
 
-abstract class SentryFrameworkValueSource : ValueSource<File, ValueSourceParameters.None> {
+abstract class CrashlyticsFrameworkValueSource : ValueSource<File, ValueSourceParameters.None> {
     @get:Inject
     abstract val execOperations: ExecOperations
 
     override fun obtain(): File {
         val frameworkFile = findFrameworkBinaryFolder(
             execOperations = execOperations,
-            zipUrl = "https://github.com/getsentry/sentry-cocoa/releases/download/8.21.0/Sentry.xcframework.zip",
-            frameworkName = "Sentry",
-            zipRelativeFrameworkPath = "Carthage/Build/Sentry.xcframework"
+            zipUrl = "https://github.com/firebase/firebase-ios-sdk/releases/download/10.22.0/Firebase.zip",
+            frameworkName = "FirebaseCrashlytics",
+            zipRelativeFrameworkPath = "Firebase/FirebaseCrashlytics/FirebaseCrashlytics.xcframework"
         )
 
         return frameworkFile

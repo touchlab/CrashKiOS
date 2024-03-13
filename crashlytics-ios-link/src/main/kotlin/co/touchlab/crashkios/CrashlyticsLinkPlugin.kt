@@ -13,41 +13,67 @@
 
 package co.touchlab.crashkios
 
-import org.gradle.api.*
-import org.gradle.kotlin.dsl.*
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.of
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
-import java.io.*
-import java.util.*
+import org.jetbrains.kotlin.konan.target.HostManager
+import org.jetbrains.kotlin.konan.target.KonanTarget
 
 internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = extensions.getByType()
 
 @Suppress("unused")
 class CrashlyticsLinkPlugin : Plugin<Project> {
     override fun apply(project: Project): Unit = with(project) {
-        afterEvaluate {
-            project.kotlinExtension.crashLinkerConfig(
-                "-U _FIRCLSExceptionRecordNSException " +
-                        "-U _OBJC_CLASS_\$_FIRStackFrame " +
-                        "-U _OBJC_CLASS_\$_FIRExceptionModel " +
-                        "-U _OBJC_CLASS_\$_FIRCrashlytics"
-            )
+        if (HostManager.hostIsMac) {
+            afterEvaluate {
+                val sentryFrameworkProvider = providers.of(CrashlyticsFrameworkValueSource::class) {}
+                val sentryFramework = sentryFrameworkProvider.get()
+
+                project.kotlinExtension.addFrameworkLinkPath(
+                    frameworkFile = sentryFramework,
+                    linkerName = "FirebaseCrashlytics",
+                    subpathBlock = ::findXcframeworkSubfolder
+                )
+            }
         }
     }
 }
 
-private fun KotlinMultiplatformExtension.crashLinkerConfig(linkerOpts: String) {
-    targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java)
-        .map { target ->
-            val mainCompilation = target.compilations.getByName("main")
-            val dynamicFrameworks =
-                target.binaries.filterIsInstance<Framework>().filter { framework -> !framework.isStatic }
+private fun findXcframeworkSubfolder(target: KonanTarget): String? = when (target) {
+    KonanTarget.IOS_ARM64 -> "ios-arm64"
+    KonanTarget.IOS_SIMULATOR_ARM64,
+    KonanTarget.IOS_X64 -> "ios-arm64_x86_64-simulator"
 
-            Pair(mainCompilation, dynamicFrameworks)
-        }
-        .forEach { pair ->
-            if (!pair.second.isEmpty()) {
-                pair.first.kotlinOptions.freeCompilerArgs += listOf("-linker-options", linkerOpts)
-            }
-        }
+    KonanTarget.MACOS_ARM64,
+    KonanTarget.MACOS_X64 -> "macos-arm64_x86_64"
+
+    KonanTarget.TVOS_ARM64 -> "tvos-arm64"
+    KonanTarget.TVOS_SIMULATOR_ARM64,
+    KonanTarget.TVOS_X64 -> "tvos-arm64_x86_64-simulator"
+
+    KonanTarget.WATCHOS_ARM32,
+    KonanTarget.WATCHOS_ARM64,
+    KonanTarget.WATCHOS_DEVICE_ARM64 -> "watchos-arm64_arm64_32_armv7k"
+
+    KonanTarget.WATCHOS_SIMULATOR_ARM64,
+    KonanTarget.WATCHOS_X64 -> "watchos-arm64_i386_x86_64-simulator"
+
+    KonanTarget.IOS_ARM32,
+    KonanTarget.WATCHOS_X86,
+
+    KonanTarget.ANDROID_ARM32,
+    KonanTarget.ANDROID_ARM64,
+    KonanTarget.ANDROID_X64,
+    KonanTarget.ANDROID_X86,
+    KonanTarget.LINUX_ARM32_HFP,
+    KonanTarget.LINUX_ARM64,
+    KonanTarget.LINUX_MIPS32,
+    KonanTarget.LINUX_MIPSEL32,
+    KonanTarget.LINUX_X64,
+    KonanTarget.MINGW_X64,
+    KonanTarget.MINGW_X86,
+    KonanTarget.WASM32,
+    is KonanTarget.ZEPHYR -> null
 }

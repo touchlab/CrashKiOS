@@ -33,6 +33,7 @@ class SentryLinkPlugin : Plugin<Project> {
 
                 project.kotlinExtension.addFrameworkLinkPath(
                     frameworkFile = sentryFramework,
+                    linkerName = null,
                     subpathBlock = ::findXcframeworkSubfolder
                 )
             }

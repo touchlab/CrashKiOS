@@ -25,6 +25,7 @@ import java.util.*
 
 fun KotlinMultiplatformExtension.addFrameworkLinkPath(
     frameworkFile: File,
+    linkerName: String?,
     subpathBlock: (target: KonanTarget) -> String?
 ) {
     targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java)
@@ -35,6 +36,9 @@ fun KotlinMultiplatformExtension.addFrameworkLinkPath(
 
                 if (isExecutable || isDynamicFramework) {
                     subpathBlock(binary.target.konanTarget)?.let { subpath ->
+                        if(linkerName != null) {
+                            binary.linkerOpts.addAll(listOf("-framework", linkerName))
+                        }
                         binary.linkerOpts.add("-F${frameworkFile.absolutePath}/${subpath}/")
                         if (isExecutable) {
                             binary.linkerOpts.addAll(listOf("-rpath", "${frameworkFile.absolutePath}/${subpath}/"))
@@ -48,7 +52,8 @@ fun KotlinMultiplatformExtension.addFrameworkLinkPath(
 fun findFrameworkBinaryFolder(
     execOperations: ExecOperations,
     zipUrl: String,
-    frameworkName: String
+    frameworkName: String,
+    zipRelativeFrameworkPath: String
 ): File {
     val homeDir = File(System.getProperty("user.home"))
     val touchlabDir = File(homeDir, ".touchlab")
@@ -85,7 +90,7 @@ fun findFrameworkBinaryFolder(
     execOperations.exec {
         commandLine(
             "mv",
-            "${outDir.absolutePath}/$tempUuid/Carthage/Build/${frameworkName}.xcframework",
+            "${outDir.absolutePath}/$tempUuid/${zipRelativeFrameworkPath}",
             "${outDir.absolutePath}/"
         )
     }
@@ -97,7 +102,7 @@ fun findFrameworkBinaryFolder(
     }
 
     if (!crashFrameworkDir.exists()) {
-        throw GradleException("${frameworkName} framework not found at ${crashFrameworkDir.absolutePath}")
+        throw GradleException("$frameworkName framework not found at ${crashFrameworkDir.absolutePath}")
     }
 
     return crashFrameworkDir
