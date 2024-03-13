@@ -42,8 +42,6 @@ dependencies {
     implementation(gradleApi())
     implementation(kotlin("gradle-plugin"))
     implementation(kotlin("compiler-embeddable"))
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("commons-io:commons-io:2.15.1")
     implementation(project(":common-ios-link"))
     testImplementation(kotlin("test"))
 }

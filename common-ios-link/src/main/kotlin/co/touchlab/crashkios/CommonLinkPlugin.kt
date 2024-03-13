@@ -13,21 +13,17 @@
 
 package co.touchlab.crashkios
 
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Request.Builder
-import org.apache.commons.io.IOUtils
-import org.gradle.api.*
-import org.gradle.kotlin.dsl.*
-import org.gradle.process.ExecSpec
+import org.gradle.api.GradleException
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
+import org.gradle.process.ExecOperations
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractExecutable
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
-import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 import org.jetbrains.kotlin.konan.target.KonanTarget
-import java.io.*
-import java.util.UUID
+import java.io.File
+import java.util.*
 
 internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = extensions.getByType()
 
@@ -53,96 +49,60 @@ fun KotlinMultiplatformExtension.addFrameworkLinkPath(
         }
 }
 
-fun Project.findFrameworkBinaryFolder(zipUrl: String, frameworkName: String): File {
+fun findFrameworkBinaryFolder(
+    execOperations: ExecOperations,
+    zipUrl: String,
+    frameworkName: String
+): File {
     val homeDir = File(System.getProperty("user.home"))
-    val outDir = File(homeDir, ".touchlab")
+    val touchlabDir = File(homeDir, ".touchlab")
+    val outDir = File(touchlabDir, "crashkios")
 
     val crashFrameworkDir = File(outDir, "${frameworkName}.xcframework")
-
-    println("crashFrameworkDir.exists() ${crashFrameworkDir.exists()}")
 
     if (crashFrameworkDir.exists()) {
         return crashFrameworkDir
     }
 
+    outDir.mkdirs()
+
     val tempUuid = UUID.randomUUID().toString()
-    val client = OkHttpClient.Builder().followRedirects(true).build()
+    val outfile = File(outDir, "${tempUuid}.zip")
 
-    val request: Request = Builder()
-        .url(zipUrl)
-        .build()
-
-    val response = client.newCall(request).execute()
-    response.body?.byteStream()?.let { inp ->
-        outDir.mkdirs()
-        val outfile = File(outDir, "${tempUuid}.zip")
-        val outStream = BufferedOutputStream(FileOutputStream(outfile))
-        IOUtils.copy(inp, outStream)
-        outStream.close()
+    execOperations.exec {
+        commandLine(
+            "curl",
+            "-L",
+            zipUrl,
+            "--output",
+            outfile.absolutePath
+        )
     }
-
-    providers.exec {
+    execOperations.exec {
         commandLine(
             "unzip",
             "${outDir.absolutePath}/${tempUuid}.zip",
             "-d",
             "${outDir.absolutePath}/$tempUuid"
         )
-    }.standardOutput.asText.get()
-
-    providers.exec {
+    }
+    execOperations.exec {
         commandLine(
             "mv",
             "${outDir.absolutePath}/$tempUuid/Carthage/Build/${frameworkName}.xcframework",
             "${outDir.absolutePath}/"
         )
-    }.standardOutput.asText.get()
-
-    providers.exec {
+    }
+    execOperations.exec {
         commandLine("rm", "-rdf", "${outDir.absolutePath}/$tempUuid")
-    }.standardOutput.asText.get()
-    providers.exec {
+    }
+    execOperations.exec {
         commandLine("rm", "${outDir.absolutePath}/${tempUuid}.zip")
-    }.standardOutput.asText.get()
+    }
 
     if (!crashFrameworkDir.exists()) {
         throw GradleException("${frameworkName} framework not found at ${crashFrameworkDir.absolutePath}")
     }
 
     return crashFrameworkDir
-}
-
-/**
- * Run a process. If it fails, write output to gradle error log and throw exception.
- */
-internal fun Project.procRunFailLog(vararg params: String): List<String> {
-    val output = mutableListOf<String>()
-    try {
-        logger.info("Project.procRunFailLog: ${params.joinToString(" ")}")
-        procRun(*params) { line, _ -> output.add(line) }
-    } catch (e: Exception) {
-        output.forEach { logger.error("error: $it") }
-        throw e
-    }
-    return output
-}
-
-internal fun procRun(vararg params: String, processLines: (String, Int) -> Unit) {
-    val process = ProcessBuilder(*params)
-        .redirectErrorStream(true)
-        .start()
-
-    val streamReader = InputStreamReader(process.inputStream)
-    val bufferedReader = BufferedReader(streamReader)
-    var lineCount = 1
-
-    bufferedReader.forEachLine { line ->
-        processLines(line, lineCount)
-        lineCount++
-    }
-
-    bufferedReader.close()
-    val returnValue = process.waitFor()
-    if (returnValue != 0)
-        throw GradleException("Process failed: ${params.joinToString(" ")}")
 }
