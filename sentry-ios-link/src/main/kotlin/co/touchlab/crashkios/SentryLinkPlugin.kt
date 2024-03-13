@@ -13,21 +13,12 @@
 
 package co.touchlab.crashkios
 
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Request.Builder
-import org.apache.commons.io.IOUtils
 import org.gradle.api.*
 import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractExecutable
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
-import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.target.KonanTarget
 import java.io.*
-import java.util.UUID
 
 internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = extensions.getByType()
 
@@ -36,7 +27,7 @@ class SentryLinkPlugin : Plugin<Project> {
     override fun apply(project: Project): Unit = with(project) {
         if (HostManager.hostIsMac) {
             afterEvaluate {
-                val frameworkFile = downloadZip(
+                val frameworkFile = findFrameworkBinaryFolder(
                     zipUrl = "https://github.com/getsentry/sentry-cocoa/releases/download/8.21.0/Sentry.xcframework.zip",
                     frameworkName = "Sentry"
                 )

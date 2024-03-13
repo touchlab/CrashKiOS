@@ -19,38 +19,48 @@ import okhttp3.Request.Builder
 import org.apache.commons.io.IOUtils
 import org.gradle.api.*
 import org.gradle.kotlin.dsl.*
+import org.gradle.process.ExecSpec
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractExecutable
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
+import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 import org.jetbrains.kotlin.konan.target.KonanTarget
 import java.io.*
 import java.util.UUID
 
 internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = extensions.getByType()
 
-fun KotlinMultiplatformExtension.addFrameworkLinkPath(frameworkFile: File, subpathBlock:(target: KonanTarget)->String?) {
+fun KotlinMultiplatformExtension.addFrameworkLinkPath(
+    frameworkFile: File,
+    subpathBlock: (target: KonanTarget) -> String?
+) {
     targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java)
         .forEach { knt ->
-            knt.binaries.filterIsInstance<NativeBinary>().filter { binary ->
-                (binary is Framework && !binary.isStatic) || (binary is AbstractExecutable)
-            }.forEach { binary ->
-                val subpathPath = subpathBlock(binary.target.konanTarget)
-                println("KonanTarget: ${binary.target.konanTarget}")
-                println("subpathPath: $subpathPath")
+            knt.binaries.filterIsInstance<NativeBinary>().forEach { binary ->
+                val isExecutable = binary is AbstractExecutable
+                val isDynamicFramework = binary is Framework && !binary.isStatic
 
-                subpathPath?.let { subpath ->
-                    binary.linkerOpts.add("-F${frameworkFile.absolutePath}/${subpath}/")
+                if (isExecutable || isDynamicFramework) {
+                    subpathBlock(binary.target.konanTarget)?.let { subpath ->
+                        binary.linkerOpts.add("-F${frameworkFile.absolutePath}/${subpath}/")
+                        if (isExecutable) {
+                            binary.linkerOpts.addAll(listOf("-rpath", "${frameworkFile.absolutePath}/${subpath}/"))
+                        }
+                    }
                 }
             }
         }
 }
 
-fun Project.downloadZip(zipUrl:String, frameworkName:String):File {
+fun Project.findFrameworkBinaryFolder(zipUrl: String, frameworkName: String): File {
     val homeDir = File(System.getProperty("user.home"))
     val outDir = File(homeDir, ".touchlab")
 
     val crashFrameworkDir = File(outDir, "${frameworkName}.xcframework")
+
+    println("crashFrameworkDir.exists() ${crashFrameworkDir.exists()}")
+
     if (crashFrameworkDir.exists()) {
         return crashFrameworkDir
     }
@@ -71,23 +81,31 @@ fun Project.downloadZip(zipUrl:String, frameworkName:String):File {
         outStream.close()
     }
 
-    procRunFailLog(
-        "unzip",
-        "${outDir.absolutePath}/${tempUuid}.zip",
-        "-d",
-        "${outDir.absolutePath}/$tempUuid"
-    )
+    providers.exec {
+        commandLine(
+            "unzip",
+            "${outDir.absolutePath}/${tempUuid}.zip",
+            "-d",
+            "${outDir.absolutePath}/$tempUuid"
+        )
+    }.standardOutput.asText.get()
 
-    procRunFailLog(
-        "mv",
-        "${outDir.absolutePath}/$tempUuid/Carthage/Build/${frameworkName}.xcframework",
-        "${outDir.absolutePath}/"
-    )
+    providers.exec {
+        commandLine(
+            "mv",
+            "${outDir.absolutePath}/$tempUuid/Carthage/Build/${frameworkName}.xcframework",
+            "${outDir.absolutePath}/"
+        )
+    }.standardOutput.asText.get()
 
-    procRunFailLog("rm", "-rdf", "${outDir.absolutePath}/$tempUuid")
-    procRunFailLog("rm", "${outDir.absolutePath}/${tempUuid}.zip")
+    providers.exec {
+        commandLine("rm", "-rdf", "${outDir.absolutePath}/$tempUuid")
+    }.standardOutput.asText.get()
+    providers.exec {
+        commandLine("rm", "${outDir.absolutePath}/${tempUuid}.zip")
+    }.standardOutput.asText.get()
 
-    if(!crashFrameworkDir.exists()){
+    if (!crashFrameworkDir.exists()) {
         throw GradleException("${frameworkName} framework not found at ${crashFrameworkDir.absolutePath}")
     }
 
