@@ -39,17 +39,12 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation(gradleApi())
-    implementation(kotlin("gradle-plugin"))
-    implementation(kotlin("compiler-embeddable"))
+    compileOnly(kotlin("gradle-plugin"))
     implementation(project(":common-ios-link"))
-    testImplementation(kotlin("test"))
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
+kotlin {
+    jvmToolchain(11)
 }
 
 val GROUP: String by project

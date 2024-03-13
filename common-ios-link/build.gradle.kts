@@ -23,15 +23,11 @@ repositories {
 }
 
 dependencies {
-    implementation(gradleApi())
-    implementation(kotlin("gradle-plugin"))
-    implementation(kotlin("compiler-embeddable"))
+    compileOnly(kotlin("gradle-plugin"))
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
+kotlin {
+    jvmToolchain(11)
 }
 
 val GROUP: String by project

@@ -14,8 +14,6 @@
 package co.touchlab.crashkios
 
 import org.gradle.api.GradleException
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.getByType
 import org.gradle.process.ExecOperations
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractExecutable
@@ -24,8 +22,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 import org.jetbrains.kotlin.konan.target.KonanTarget
 import java.io.File
 import java.util.*
-
-internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = extensions.getByType()
 
 fun KotlinMultiplatformExtension.addFrameworkLinkPath(
     frameworkFile: File,
