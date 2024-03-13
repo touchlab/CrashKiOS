@@ -1,8 +1,10 @@
 include(":core")
 include(":bugsnag")
 include(":bugsnag-ios-link")
+include(":common-ios-link")
 include(":crashlytics")
 include(":crashlytics-ios-link")
+include(":sentry-ios-link")
 
 pluginManagement {
     repositories {

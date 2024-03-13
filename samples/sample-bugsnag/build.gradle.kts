@@ -17,6 +17,7 @@ plugins {
 allprojects{
     repositories{
         mavenCentral()
+        mavenLocal()
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         google()
     }
