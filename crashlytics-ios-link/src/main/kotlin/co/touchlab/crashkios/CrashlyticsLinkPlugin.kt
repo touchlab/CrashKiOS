@@ -13,25 +13,38 @@
 
 package co.touchlab.crashkios
 
-import org.gradle.api.*
-import org.gradle.kotlin.dsl.*
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.kotlin.gradle.dsl.KotlinArtifactsExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinNativeFrameworkConfig
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
-import java.io.*
-import java.util.*
+import org.jetbrains.kotlin.gradle.targets.native.tasks.artifact.kotlinArtifactsExtension
 
 internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = extensions.getByType()
 
 @Suppress("unused")
 class CrashlyticsLinkPlugin : Plugin<Project> {
     override fun apply(project: Project): Unit = with(project) {
+        val linkerArgs = "-U _FIRCLSExceptionRecordNSException " +
+                "-U _OBJC_CLASS_\$_FIRStackFrame " +
+                "-U _OBJC_CLASS_\$_FIRExceptionModel " +
+                "-U _OBJC_CLASS_\$_FIRCrashlytics"
         afterEvaluate {
-            project.kotlinExtension.crashLinkerConfig(
-                "-U _FIRCLSExceptionRecordNSException " +
-                        "-U _OBJC_CLASS_\$_FIRStackFrame " +
-                        "-U _OBJC_CLASS_\$_FIRExceptionModel " +
-                        "-U _OBJC_CLASS_\$_FIRCrashlytics"
-            )
+            project.kotlinExtension.crashLinkerConfig(linkerArgs)
+            project.kotlinArtifactsExtension.crashLinkerConfigArtifacts(linkerArgs)
+        }
+    }
+}
+
+private fun KotlinArtifactsExtension.crashLinkerConfigArtifacts(linkerOpts: String) {
+    artifactConfigs.withType(KotlinNativeFrameworkConfig::class.java).configureEach {
+        if (!isStatic) {
+            toolOptions {
+                freeCompilerArgs.add("-linker-options")
+                freeCompilerArgs.add(linkerOpts)
+            }
         }
     }
 }
