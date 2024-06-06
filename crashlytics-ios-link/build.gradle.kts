@@ -39,7 +39,7 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation(gradleApi())
+    compileOnly(gradleApi())
     compileOnly(kotlin("gradle-plugin"))
     testImplementation(kotlin("test"))
 }
