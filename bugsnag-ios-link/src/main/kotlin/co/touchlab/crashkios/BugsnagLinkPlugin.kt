@@ -27,7 +27,7 @@ internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = exten
 
 @Suppress("unused")
 class BugsnagLinkPlugin : Plugin<Project> {
-    override fun apply(project: Project): Unit = with(project) {
+    override fun apply(project: Project): Unit = project.withKotlinMultiplatformPlugin {
         val linkerArgs = "-U _OBJC_CLASS_\$_BugsnagHandledState " +
                 "-U _OBJC_CLASS_\$_Bugsnag " +
                 "-U _OBJC_CLASS_\$_BugsnagStackframe " +
@@ -38,6 +38,12 @@ class BugsnagLinkPlugin : Plugin<Project> {
             project.kotlinExtension.crashLinkerConfig(linkerArgs)
             project.kotlinArtifactsExtension.crashLinkerConfigArtifacts(linkerArgs)
         }
+    }
+}
+
+private fun Project.withKotlinMultiplatformPlugin(action: Project.() -> Unit) {
+    pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+        action()
     }
 }
 

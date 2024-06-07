@@ -27,7 +27,8 @@ internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = exten
 
 @Suppress("unused")
 class CrashlyticsLinkPlugin : Plugin<Project> {
-    override fun apply(project: Project): Unit = with(project) {
+
+    override fun apply(project: Project): Unit = project.withKotlinMultiplatformPlugin {
         val linkerArgs = "-U _FIRCLSExceptionRecordNSException " +
                 "-U _OBJC_CLASS_\$_FIRStackFrame " +
                 "-U _OBJC_CLASS_\$_FIRExceptionModel " +
@@ -36,6 +37,12 @@ class CrashlyticsLinkPlugin : Plugin<Project> {
             project.kotlinExtension.crashLinkerConfig(linkerArgs)
             project.kotlinArtifactsExtension.crashLinkerConfigArtifacts(linkerArgs)
         }
+    }
+}
+
+private fun Project.withKotlinMultiplatformPlugin(action: Project.() -> Unit) {
+    pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+        action()
     }
 }
 
