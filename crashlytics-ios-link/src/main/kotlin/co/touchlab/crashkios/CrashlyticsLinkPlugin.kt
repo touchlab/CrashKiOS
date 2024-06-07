@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinArtifactsExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinNativeFrameworkConfig
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.native.tasks.artifact.kotlinArtifactsExtension
 
 internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = extensions.getByType()
@@ -50,17 +51,11 @@ private fun KotlinArtifactsExtension.crashLinkerConfigArtifacts(linkerOpts: Stri
 }
 
 private fun KotlinMultiplatformExtension.crashLinkerConfig(linkerOpts: String) {
-    targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java)
-        .map { target ->
-            val mainCompilation = target.compilations.getByName("main")
-            val dynamicFrameworks =
-                target.binaries.filterIsInstance<Framework>().filter { framework -> !framework.isStatic }
+    targets.withType(KotlinNativeTarget::class.java).configureEach {
+        val hasDynamicFrameworks = binaries.any { it is Framework && !it.isStatic }
 
-            Pair(mainCompilation, dynamicFrameworks)
+        if (hasDynamicFrameworks) {
+            compilations.getByName("main").kotlinOptions.freeCompilerArgs += listOf("-linker-options", linkerOpts)
         }
-        .forEach { pair ->
-            if (!pair.second.isEmpty()) {
-                pair.first.kotlinOptions.freeCompilerArgs += listOf("-linker-options", linkerOpts)
-            }
-        }
+    }
 }
