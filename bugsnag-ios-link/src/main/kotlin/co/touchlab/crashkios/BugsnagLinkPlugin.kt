@@ -13,43 +13,57 @@
 
 package co.touchlab.crashkios
 
-import org.gradle.api.*
-import org.gradle.kotlin.dsl.*
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.kotlin.gradle.dsl.KotlinArtifactsExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinNativeFrameworkConfig
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
-import java.io.*
-import java.util.*
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.targets.native.tasks.artifact.kotlinArtifactsExtension
 
 internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = extensions.getByType()
 
 @Suppress("unused")
 class BugsnagLinkPlugin : Plugin<Project> {
-    override fun apply(project: Project): Unit = with(project) {
+    override fun apply(project: Project): Unit = project.withKotlinMultiplatformPlugin {
+        val linkerArgs = "-U _OBJC_CLASS_\$_BugsnagHandledState " +
+                "-U _OBJC_CLASS_\$_Bugsnag " +
+                "-U _OBJC_CLASS_\$_BugsnagStackframe " +
+                "-U _OBJC_CLASS_\$_FIRStackFrame " +
+                "-U _OBJC_CLASS_\$_BugsnagFeatureFlag " +
+                "-U _OBJC_CLASS_\$_BugsnagError"
         afterEvaluate {
-            project.kotlinExtension.crashLinkerConfig(
-                "-U _OBJC_CLASS_\$_BugsnagHandledState " +
-                        "-U _OBJC_CLASS_\$_Bugsnag " +
-                        "-U _OBJC_CLASS_\$_BugsnagStackframe " +
-                        "-U _OBJC_CLASS_\$_FIRStackFrame " +
-                        "-U _OBJC_CLASS_\$_BugsnagFeatureFlag " +
-                        "-U _OBJC_CLASS_\$_BugsnagError"
-            )
+            project.kotlinExtension.crashLinkerConfig(linkerArgs)
+            project.kotlinArtifactsExtension.crashLinkerConfigArtifacts(linkerArgs)
+        }
+    }
+}
+
+private fun Project.withKotlinMultiplatformPlugin(action: Project.() -> Unit) {
+    pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+        action()
+    }
+}
+
+private fun KotlinArtifactsExtension.crashLinkerConfigArtifacts(linkerOpts: String) {
+    artifactConfigs.withType(KotlinNativeFrameworkConfig::class.java).configureEach {
+        if (!isStatic) {
+            toolOptions {
+                freeCompilerArgs.add("-linker-options")
+                freeCompilerArgs.add(linkerOpts)
+            }
         }
     }
 }
 
 private fun KotlinMultiplatformExtension.crashLinkerConfig(linkerOpts: String) {
-    targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java)
-        .map { target ->
-            val mainCompilation = target.compilations.getByName("main")
-            val dynamicFrameworks =
-                target.binaries.filterIsInstance<Framework>().filter { framework -> !framework.isStatic }
+    targets.withType(KotlinNativeTarget::class.java).configureEach {
+        val hasDynamicFrameworks = binaries.any { it is Framework && !it.isStatic }
 
-            Pair(mainCompilation, dynamicFrameworks)
+        if (hasDynamicFrameworks) {
+            compilations.getByName("main").kotlinOptions.freeCompilerArgs += listOf("-linker-options", linkerOpts)
         }
-        .forEach { pair ->
-            if (!pair.second.isEmpty()) {
-                pair.first.kotlinOptions.freeCompilerArgs += listOf("-linker-options", linkerOpts)
-            }
-        }
+    }
 }

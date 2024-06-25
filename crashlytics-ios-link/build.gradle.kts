@@ -39,10 +39,8 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation(gradleApi())
-    implementation(kotlin("gradle-plugin"))
-    implementation(kotlin("compiler-embeddable"))
-
+    compileOnly(gradleApi())
+    compileOnly(kotlin("gradle-plugin"))
     testImplementation(kotlin("test"))
 }
 
