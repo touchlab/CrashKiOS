@@ -7,16 +7,19 @@ language = Objective-C
 
 extern void FIRCLSExceptionRecordNSException(NSException *exception) __attribute__((weak));
 
-void tryFIRCLSExceptionRecordNSException(NSException *exception) {
-    if (FIRCLSExceptionRecordNSException) {
-        FIRCLSExceptionRecordNSException(exception);
-    } else {
+void __verifyFIRCLSExceptionRecordNSExceptionExists(void) {
+    if (!FIRCLSExceptionRecordNSException) {
         @throw [NSException
             exceptionWithName:@"FIRFunctionNotFound"
             reason:@"Function 'FIRCLSExceptionRecordNSException' not available, make sure you're adding the Firebase Crashlytics dependency."
             userInfo: nil
         ];
     }
+}
+
+void tryFIRCLSExceptionRecordNSException(NSException *exception) {
+    __verifyFIRCLSExceptionRecordNSExceptionExists();
+    FIRCLSExceptionRecordNSException(exception);
 }
 
 #define LoadClass(name)\
@@ -52,8 +55,23 @@ void* FIRMethodForSelector(id _Nonnull target, SEL _Nonnull selector) {
     }
 }
 
-id FIRExceptionModelWithNameAndReason(NSString* _Nonnull name, NSString* _Nonnull reason) {
+Class FIRExceptionModelClass(void) {
     LoadClass(FIRExceptionModel);
+    return objClass;
+}
+
+Class FIRStackFrameClass(void) {
+    LoadClass(FIRStackFrame);
+    return objClass;
+}
+
+Class FIRCrashlyticsClass(void) {
+    LoadClass(FIRCrashlytics);
+    return objClass;
+}
+
+id FIRExceptionModelWithNameAndReason(NSString* _Nonnull name, NSString* _Nonnull reason) {
+    Class objClass = FIRExceptionModelClass();
     SEL selector = NSSelectorFromString(@"exceptionModelWithName:reason:");
     id (*exceptionModelWithNameAndReason)(id, SEL, NSString*, NSString*) = FIRMethodForSelector(objClass, selector);
     return exceptionModelWithNameAndReason(objClass, selector, name, reason);
@@ -66,17 +84,21 @@ void FIRExceptionModelSetStackTrace(id exceptionModel, NSArray<id>* _Nonnull sta
 }
 
 id FIRStackFrameWithAddress(NSUInteger address) {
-    LoadClass(FIRStackFrame);
+    Class objClass = FIRStackFrameClass();
     SEL selector = NSSelectorFromString(@"stackFrameWithAddress:");
     id (*stackFrameWithAddress)(id, SEL, NSUInteger) = FIRMethodForSelector(objClass, selector);
     return stackFrameWithAddress(objClass, selector, address);
 }
 
-id FIRCrashlyticsInstance(void) {
-    LoadClass(FIRCrashlytics);
+id _Nullable FIRCrashlyticsInstanceOrNull(void) {
+    Class objClass = FIRCrashlyticsClass();
     SEL selector = NSSelectorFromString(@"crashlytics");
     id (*crashlytics)(id, SEL) = FIRMethodForSelector(objClass, selector);
-    id instance = crashlytics(objClass, selector);
+    return crashlytics(objClass, selector);
+}
+
+id _Nonnull FIRCrashlyticsInstance(void) {
+    id instance = FIRCrashlyticsInstanceOrNull();
     if (instance) {
         return instance;
     } else {
@@ -119,4 +141,13 @@ void FIRCrashlyticsSetCustomValue(NSString* _Nonnull key, id __nullable value) {
     SEL selector = NSSelectorFromString(@"setCustomValue:forKey:");
     void (*setCustomValueForKey)(id, SEL, id __nullable, NSString* _Nonnull) = FIRMethodForSelector(crashlytics, selector);
     setCustomValueForKey(crashlytics, selector, value, key);
+}
+
+void FIRCheckLinkDependencies(void) {
+    __verifyFIRCLSExceptionRecordNSExceptionExists();
+
+    // Load classes to verify we have them all
+    FIRExceptionModelClass();
+    FIRStackFrameClass();
+    FIRCrashlyticsClass();
 }

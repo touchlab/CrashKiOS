@@ -8,6 +8,9 @@ import kotlinx.cinterop.convert
 @OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
 actual class CrashlyticsCallsActual : CrashlyticsCalls {
 
+    init {
+        FIRCheckLinkDependencies()
+    }
 
     override fun logMessage(message: String) {
         FIRCrashlyticsLog(message)
