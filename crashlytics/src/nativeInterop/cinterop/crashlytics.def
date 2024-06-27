@@ -1,3 +1,122 @@
 package = co.touchlab.crashkios.crashlytics
 language = Objective-C
-headers = FIRCrashlytics.h FIRExceptionModel.h FIRStackFrame.h Private/FIRCLSException.h
+
+---
+
+#import <Foundation/Foundation.h>
+
+extern void FIRCLSExceptionRecordNSException(NSException *exception) __attribute__((weak));
+
+void tryFIRCLSExceptionRecordNSException(NSException *exception) {
+    if (FIRCLSExceptionRecordNSException) {
+        FIRCLSExceptionRecordNSException(exception);
+    } else {
+        @throw [NSException
+            exceptionWithName:@"FIRFunctionNotFound"
+            reason:@"Function 'FIRCLSExceptionRecordNSException' not available, make sure you're adding the Firebase Crashlytics dependency."
+            userInfo: nil
+        ];
+    }
+}
+
+#define LoadClass(name)\
+    static Class objClass;\
+    if (!objClass) {\
+        objClass = NSClassFromString(@OS_STRINGIFY(name));\
+        if (!objClass) {\
+            @throw [NSException\
+                exceptionWithName:@"FIRClassNotFound"\
+                reason: [NSString\
+                    stringWithFormat:@"Class '%@' not available, make sure you're adding the Firebase Crashlytics dependency.",\
+                    @OS_STRINGIFY(name)\
+                ]\
+                userInfo: nil\
+            ];\
+        }\
+    }
+
+void* FIRMethodForSelector(id _Nonnull target, SEL _Nonnull selector) {
+    IMP method = [target methodForSelector:selector];
+    if (!method) {
+        @throw [NSException
+            exceptionWithName:@"FIRMethodNotFound"
+            reason: [NSString
+                stringWithFormat:@"Target '%@' returned nil method for selector '%@'. This is probably a bug in CrashKiOS",
+                target,
+                NSStringFromSelector(selector)
+            ]
+            userInfo: nil
+        ];
+    } else {
+        return method;
+    }
+}
+
+id FIRExceptionModelWithNameAndReason(NSString* _Nonnull name, NSString* _Nonnull reason) {
+    LoadClass(FIRExceptionModel);
+    SEL selector = NSSelectorFromString(@"exceptionModelWithName:reason:");
+    id (*exceptionModelWithNameAndReason)(id, SEL, NSString*, NSString*) = FIRMethodForSelector(objClass, selector);
+    return exceptionModelWithNameAndReason(objClass, selector, name, reason);
+}
+
+void FIRExceptionModelSetStackTrace(id exceptionModel, NSArray<id>* _Nonnull stackFrames) {
+    SEL selector = NSSelectorFromString(@"setStackTrace:");
+    void (*setStackTrace)(id, SEL, NSArray<id>*) = FIRMethodForSelector(exceptionModel, selector);
+    setStackTrace(exceptionModel, selector, stackFrames);
+}
+
+id FIRStackFrameWithAddress(NSUInteger address) {
+    LoadClass(FIRStackFrame);
+    SEL selector = NSSelectorFromString(@"stackFrameWithAddress:");
+    id (*stackFrameWithAddress)(id, SEL, NSUInteger) = FIRMethodForSelector(objClass, selector);
+    return stackFrameWithAddress(objClass, selector, address);
+}
+
+id FIRCrashlyticsInstance(void) {
+    LoadClass(FIRCrashlytics);
+    SEL selector = NSSelectorFromString(@"crashlytics");
+    id (*crashlytics)(id, SEL) = FIRMethodForSelector(objClass, selector);
+    id instance = crashlytics(objClass, selector);
+    if (instance) {
+        return instance;
+    } else {
+        @throw [NSException
+           exceptionWithName:@"FIRCrashlyticsNil"
+           reason: @"[FirCrashlytics crashlytics] returned nil. Make sure you initialize Firebase before using it."
+           userInfo: nil
+       ];
+    }
+}
+
+void FIRCrashlyticsRecordExceptionModel(id crashlytics, id exceptionModel) {
+    SEL selector = NSSelectorFromString(@"recordExceptionModel:");
+    void (*recordExceptionModel)(id, SEL, id) = FIRMethodForSelector(crashlytics, selector);
+    recordExceptionModel(crashlytics, selector, exceptionModel);
+}
+
+void FIRCrashlyticsRecordHandledException(NSString* _Nonnull name, NSString* _Nonnull reason, NSArray<id>* _Nonnull stackFrames) {
+    id exceptionModel = FIRExceptionModelWithNameAndReason(name, reason);
+    FIRExceptionModelSetStackTrace(exceptionModel, stackFrames);
+    FIRCrashlyticsRecordExceptionModel(FIRCrashlyticsInstance(), exceptionModel);
+}
+
+void FIRCrashlyticsLog(NSString* _Nonnull message) {
+    id crashlytics = FIRCrashlyticsInstance();
+    SEL selector = NSSelectorFromString(@"log:");
+    void (*log)(id, SEL, NSString* _Nonnull) = FIRMethodForSelector(crashlytics, selector);
+    log(crashlytics, selector, message);
+}
+
+void FIRCrashlyticsSetUserID(NSString* _Nonnull identifier) {
+    id crashlytics = FIRCrashlyticsInstance();
+    SEL selector = NSSelectorFromString(@"setUserID:");
+    void (*setUserID)(id, SEL, NSString* _Nonnull) = FIRMethodForSelector(crashlytics, selector);
+    setUserID(crashlytics, selector, identifier);
+}
+
+void FIRCrashlyticsSetCustomValue(NSString* _Nonnull key, id __nullable value) {
+    id crashlytics = FIRCrashlyticsInstance();
+    SEL selector = NSSelectorFromString(@"setCustomValue:forKey:");
+    void (*setCustomValueForKey)(id, SEL, id __nullable, NSString* _Nonnull) = FIRMethodForSelector(crashlytics, selector);
+    setCustomValueForKey(crashlytics, selector, value, key);
+}

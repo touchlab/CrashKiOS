@@ -29,10 +29,7 @@ internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = exten
 class CrashlyticsLinkPlugin : Plugin<Project> {
 
     override fun apply(project: Project): Unit = project.withKotlinMultiplatformPlugin {
-        val linkerArgs = "-U _FIRCLSExceptionRecordNSException " +
-                "-U _OBJC_CLASS_\$_FIRStackFrame " +
-                "-U _OBJC_CLASS_\$_FIRExceptionModel " +
-                "-U _OBJC_CLASS_\$_FIRCrashlytics"
+        val linkerArgs = "-U _FIRCLSExceptionRecordNSException"
         afterEvaluate {
             project.kotlinExtension.crashLinkerConfig(linkerArgs)
             project.kotlinArtifactsExtension.crashLinkerConfigArtifacts(linkerArgs)
