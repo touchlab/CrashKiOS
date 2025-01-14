@@ -76,7 +76,7 @@ Undefined symbols for architecture x86_64:
       _co_touchlab_crashkios_crashlytics_FIRCLSExceptionRecordNSException_wrapper0 in result.o
 ld: symbol(s) not found for architecture x86_64
 ```
-This is because on iOS only the definitions for Crashlytics are added when comiling the Kotlin code and building the framework. The binary (the actual Crashlytics library) isn't added until later when you build the iOS app. When building a dynamic framework, the Kotlin compile expects to be able to resolve everything, so you'll see the above error because Crashlytics isn't there yet. 
+This is because on iOS only the definitions for Crashlytics are added when compiling the Kotlin code and building the framework. The binary (the actual Crashlytics library) isn't added until later when you build the iOS app. When building a dynamic framework, the Kotlin compile expects to be able to resolve everything, so you'll see the above error because Crashlytics isn't there yet. 
 
 To workaround this, we need to tell the compiler that these symbols are find and will be there later. Doing it manually is a bit messy so you can just add our gradle plugin to handle it 
 ```kotlin
