@@ -8,7 +8,7 @@ import com.rickclephas.kmp.nsexceptionkt.core.wrapUnhandledExceptionHook
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSException
 
-public fun startBugsnag(config: BugsnagConfiguration){
+public fun startBugsnag(config: BugsnagConfiguration) {
     configureBugsnag(config)
     Bugsnag.startWithConfiguration(config)
     setBugsnagUnhandledExceptionHook()
@@ -53,6 +53,7 @@ public fun setBugsnagUnhandledExceptionHook(): Unit = wrapUnhandledExceptionHook
 /**
  * Feature flag used to mark the Kotlin termination crash.
  */
+@Suppress("ktlint:standard:property-naming")
 private const val kotlinCrashedFeatureFlag = "crashkios.kotlin_crashed"
 
 /**
