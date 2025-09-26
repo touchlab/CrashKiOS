@@ -136,6 +136,13 @@ void FIRCrashlyticsSetUserID(NSString* _Nonnull identifier) {
     setUserID(crashlytics, selector, identifier);
 }
 
+void FIRCrashlyticsSetCollectionEnabled(BOOL enabled) {
+    id crashlytics = FIRCrashlyticsInstance();
+    SEL selector = NSSelectorFromString(@"setCrashlyticsCollectionEnabled:");
+    void (*setCrashlyticsCollectionEnabled)(id, SEL, BOOL) = FIRMethodForSelector(crashlytics, selector);
+    setCrashlyticsCollectionEnabled(crashlytics, selector, enabled);
+}
+
 void FIRCrashlyticsSetCustomValue(NSString* _Nonnull key, id __nullable value) {
     id crashlytics = FIRCrashlyticsInstance();
     SEL selector = NSSelectorFromString(@"setCustomValue:forKey:");

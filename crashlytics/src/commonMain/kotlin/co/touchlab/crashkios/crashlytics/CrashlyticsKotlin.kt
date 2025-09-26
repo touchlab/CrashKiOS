@@ -24,6 +24,10 @@ object CrashlyticsKotlin {
     fun setUserId(identifier: String) {
         implementation.setUserId(identifier)
     }
+
+    fun setCollectionEnabled(enabled: Boolean) {
+        implementation.setCollectionEnabled(enabled)
+    }
 }
 
 /**
@@ -52,6 +56,10 @@ internal object EmptyCalls : CrashlyticsCalls {
     }
 
     override fun setUserId(identifier: String) {
+
+    }
+
+    override fun setCollectionEnabled(enabled: Boolean) {
 
     }
 }

@@ -6,6 +6,7 @@ interface CrashlyticsCalls {
     fun sendFatalException(throwable: Throwable)
     fun setCustomValue(key: String, value: Any)
     fun setUserId(identifier: String)
+    fun setCollectionEnabled(enabled: Boolean)
 }
 
 expect class CrashlyticsCallsActual() : CrashlyticsCalls
