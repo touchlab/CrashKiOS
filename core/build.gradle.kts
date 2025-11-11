@@ -18,7 +18,10 @@ plugins {
     kotlin("multiplatform")
 }
 
+@Suppress("ktlint:standard:property-naming")
 val GROUP: String by project
+
+@Suppress("ktlint:standard:property-naming")
 val VERSION_NAME: String by project
 
 group = GROUP
@@ -60,9 +63,15 @@ kotlin {
 
 android {
     namespace = "co.touchlab.crashkios.core"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.compileSdk
+            .get()
+            .toInt()
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
+        minSdk =
+            libs.versions.minSdk
+                .get()
+                .toInt()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

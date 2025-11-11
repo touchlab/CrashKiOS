@@ -19,7 +19,10 @@ plugins {
     id("com.vanniktech.maven.publish")
 }
 
+@Suppress("ktlint:standard:property-naming")
 val GROUP: String by project
+
+@Suppress("ktlint:standard:property-naming")
 val VERSION_NAME: String by project
 
 group = GROUP
@@ -49,7 +52,7 @@ kotlin {
     tvosArm64()
     tvosSimulatorArm64()
     tvosX64()
-    
+
     sourceSets {
         commonMain {
             dependencies {
@@ -80,15 +83,21 @@ kotlin {
                 compilerOpts("-DNS_FORMAT_ARGUMENT(A)=", "-D_Nullable_result=_Nullable")
 //            extraOpts("-mode", "sourcecode")
             }
-        }   
+        }
     }
 }
 
 android {
     namespace = "co.touchlab.crashkios.crashlytics"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.compileSdk
+            .get()
+            .toInt()
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
+        minSdk =
+            libs.versions.minSdk
+                .get()
+                .toInt()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

@@ -26,24 +26,20 @@ object BugsnagKotlin {
  * Call in startup code in an actual app. Tests should generally skip this. In Kotlin/Native, not calling this
  * for tests avoids linker issues.
  */
-fun enableBugsnag(){
+fun enableBugsnag() {
     BugsnagKotlin.implementation = BugsnagCallsActual()
 }
 
 internal object EmptyCalls : BugsnagCalls {
     override fun logMessage(message: String) {
-
     }
 
     override fun sendHandledException(throwable: Throwable) {
-
     }
 
     override fun sendFatalException(throwable: Throwable) {
-
     }
 
     override fun setCustomValue(section: String, key: String, value: Any) {
-
     }
 }
