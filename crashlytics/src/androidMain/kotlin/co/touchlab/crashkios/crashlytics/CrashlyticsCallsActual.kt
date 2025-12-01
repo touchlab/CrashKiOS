@@ -16,7 +16,7 @@ actual class CrashlyticsCallsActual : CrashlyticsCalls {
     }
 
     override fun setCustomValue(key: String, value: Any) {
-        when(value){
+        when (value) {
             is Boolean -> FirebaseCrashlytics.getInstance().setCustomKey(key, value)
             is Double -> FirebaseCrashlytics.getInstance().setCustomKey(key, value)
             is Float -> FirebaseCrashlytics.getInstance().setCustomKey(key, value)

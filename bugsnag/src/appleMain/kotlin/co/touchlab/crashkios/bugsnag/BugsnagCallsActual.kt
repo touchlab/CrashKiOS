@@ -6,7 +6,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 
 @OptIn(ExperimentalForeignApi::class)
 actual class BugsnagCallsActual : BugsnagCalls {
-
     override fun logMessage(message: String) {
         Bugsnag.leaveBreadcrumbWithMessage(message)
     }

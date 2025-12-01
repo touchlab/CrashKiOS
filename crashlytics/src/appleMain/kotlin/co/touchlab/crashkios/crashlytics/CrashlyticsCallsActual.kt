@@ -19,9 +19,13 @@ actual class CrashlyticsCallsActual : CrashlyticsCalls {
     @OptIn(UnsafeNumber::class)
     override fun sendHandledException(throwable: Throwable) {
         val exceptionClassName = throwable::class.qualifiedName ?: throwable::class.simpleName ?: "kotlin.Throwable"
-        FIRCrashlyticsRecordHandledException(exceptionClassName, throwable.message ?: "", throwable.getFilteredStackTraceAddresses().map {
-            FIRStackFrameWithAddress(it.convert())
-        })
+        FIRCrashlyticsRecordHandledException(
+            exceptionClassName,
+            throwable.message ?: "",
+            throwable.getFilteredStackTraceAddresses().map {
+                FIRStackFrameWithAddress(it.convert())
+            },
+        )
     }
 
     override fun sendFatalException(throwable: Throwable) {

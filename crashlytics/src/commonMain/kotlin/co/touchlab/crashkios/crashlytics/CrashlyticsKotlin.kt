@@ -40,26 +40,20 @@ fun enableCrashlytics() {
 
 internal object EmptyCalls : CrashlyticsCalls {
     override fun logMessage(message: String) {
-
     }
 
     override fun sendHandledException(throwable: Throwable) {
-
     }
 
     override fun sendFatalException(throwable: Throwable) {
-
     }
 
     override fun setCustomValue(key: String, value: Any) {
-
     }
 
     override fun setUserId(identifier: String) {
-
     }
 
     override fun setCollectionEnabled(enabled: Boolean) {
-
     }
 }
