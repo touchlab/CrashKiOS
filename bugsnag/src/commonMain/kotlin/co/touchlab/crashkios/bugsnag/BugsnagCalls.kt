@@ -10,4 +10,9 @@ interface BugsnagCalls {
     fun setCustomValue(section: String, key: String, value: Any)
 }
 
-expect class BugsnagCallsActual() : BugsnagCalls
+expect class BugsnagCallsActual() : BugsnagCalls {
+    override fun logMessage(message: String)
+    override fun sendHandledException(throwable: Throwable)
+    override fun sendFatalException(throwable: Throwable)
+    override fun setCustomValue(section: String, key: String, value: Any)
+}

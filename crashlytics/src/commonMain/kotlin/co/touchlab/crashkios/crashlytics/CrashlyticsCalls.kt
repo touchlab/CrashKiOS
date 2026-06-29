@@ -8,4 +8,10 @@ interface CrashlyticsCalls {
     fun setUserId(identifier: String)
 }
 
-expect class CrashlyticsCallsActual() : CrashlyticsCalls
+expect class CrashlyticsCallsActual() : CrashlyticsCalls {
+    override fun logMessage(message: String)
+    override fun sendHandledException(throwable: Throwable)
+    override fun sendFatalException(throwable: Throwable)
+    override fun setCustomValue(key: String, value: Any)
+    override fun setUserId(identifier: String)
+}
