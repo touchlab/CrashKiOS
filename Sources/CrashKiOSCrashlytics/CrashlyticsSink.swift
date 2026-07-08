@@ -43,4 +43,8 @@ public final class CrashlyticsSink: NSObject, CrashKiOSCrashlyticsSink {
     public func setUserId(_ identifier: String) {
         crashlytics.setUserID(identifier)
     }
+
+    public func setCollectionEnabled(_ enabled: Bool) {
+        crashlytics.setCrashlyticsCollectionEnabled(enabled)
+    }
 }
