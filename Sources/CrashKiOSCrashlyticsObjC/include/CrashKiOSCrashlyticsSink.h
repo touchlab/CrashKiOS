@@ -32,6 +32,9 @@
 /// Crashlytics `setUserID:`.
 - (void)setUserId:(NSString * _Nonnull)identifier;
 
+/// Crashlytics `setCrashlyticsCollectionEnabled:`.
+- (void)setCollectionEnabled:(BOOL)enabled;
+
 @end
 
 #endif /* CrashKiOSCrashlyticsSink_h */
