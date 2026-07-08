@@ -10,11 +10,7 @@
 
 package co.touchlab.crashkiossample
 
-import co.touchlab.crashkios.crashlytics.enableCrashlytics
-import co.touchlab.crashkios.crashlytics.setCrashlyticsUnhandledExceptionHook
-
-@Suppress("unused")
-fun startCrashKiOS(){
-    enableCrashlytics()
-    setCrashlyticsUnhandledExceptionHook()
-}
+// CrashKiOS setup moved to Swift: the app registers a CrashlyticsSink via
+// registerCrashlyticsSink() in AppDelegate (see ios/ios/AppDelegate.swift),
+// which also installs the Kotlin unhandled-exception hook.
+// No Kotlin-side startup call is needed anymore.

@@ -9,13 +9,15 @@
 import UIKit
 import shared
 import Firebase
+import CrashKiOSCrashlytics
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         FirebaseApp.configure()
-        HelperKt.startCrashKiOS()
+        // Registers the Crashlytics sink (from the CrashKiOSCrashlytics Swift package)
+        // and installs the Kotlin unhandled-exception hook.
+        CrashlyticsKt.registerCrashlyticsSink(sink: CrashlyticsSink())
 
         return true
     }
