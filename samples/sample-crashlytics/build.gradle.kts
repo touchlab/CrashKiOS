@@ -15,13 +15,11 @@ buildscript {
     dependencies {
         classpath(libs.google.services)
         classpath(libs.firebase.crashlytics.gradle)
-        classpath(libs.crashkios.utils)
     }
 }
 plugins {
     alias(projectLibs.plugins.kotlin.multiplatform) apply false
     alias(projectLibs.plugins.android.library) apply false
-    alias(projectLibs.plugins.crashkios.crashlyticslink) apply false
 }
 
 allprojects{
