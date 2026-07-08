@@ -23,8 +23,11 @@ object BugsnagKotlin {
 }
 
 /**
- * Call in startup code in an actual app. Tests should generally skip this. In Kotlin/Native, not calling this
- * for tests avoids linker issues.
+ * Call in startup code on Android. Tests should generally skip this.
+ *
+ * On Apple targets this alone is NOT enough: a Swift sink must be registered via
+ * `registerBugsnagSink()` (which also sets the implementation, making this call
+ * redundant there) — otherwise events are dropped with an NSLog warning.
  */
 fun enableBugsnag() {
     BugsnagKotlin.implementation = BugsnagCallsActual()

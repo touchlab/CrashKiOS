@@ -1,6 +1,9 @@
-package = co.touchlab.crashkios.bugsnag
+package = co.touchlab.crashkios.bugsnag.objc
 language = Objective-C
-headers = Bugsnag.h BugsnagConfiguration.h BugsnagConfiguration+NSExceptionKt.h BugsnagError.h BugsnagEvent.h \
-BugsnagFeatureFlag.h BugsnagFeatureFlagStore.h BugsnagStackframe.h Private/BugsnagHandledState.h \
-Private/BugsnagHandledState+NSExceptionKt.h
+headers = CrashKiOSBugsnagSink.h
 
+# Protocol-only cinterop: the header (owned by the Swift package, see
+# Sources/CrashKiOSBugsnagObjC/include/) declares no external classes or
+# functions, so this emits NO undefined symbols — no -U flags, no cacheKind=none,
+# no App Store strip hazard. The Swift app implements the protocol and registers
+# it via registerBugsnagSink().

@@ -63,12 +63,6 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        appleMain {
-            dependencies {
-                implementation(libs.nsexceptionKt.core)
-            }
-        }
-
         androidMain {
             dependencies {
                 compileOnly(libs.bugsnag.android)
@@ -79,10 +73,8 @@ kotlin {
             val mainCompilation = compilations.getByName("main")
 
             mainCompilation.cinterops.create("bugsnag") {
-                includeDirs("$projectDir/src/include")
-                includeDirs("$projectDir/src/include/private")
-                compilerOpts("-DNS_FORMAT_ARGUMENT(A)=", "-D_Nullable_result=_Nullable")
-//            extraOpts("-mode", "sourcecode")
+                // Protocol-only header owned by the Swift package — no SDK symbols.
+                includeDirs("$rootDir/Sources/CrashKiOSBugsnagObjC/include")
             }
         }
     }
