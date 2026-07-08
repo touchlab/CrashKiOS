@@ -1,8 +1,6 @@
 include(":core")
 include(":bugsnag")
 include(":crashlytics")
-include("bugsnag-ios-link")
-include("crashlytics-ios-link")
 
 pluginManagement {
     repositories {
