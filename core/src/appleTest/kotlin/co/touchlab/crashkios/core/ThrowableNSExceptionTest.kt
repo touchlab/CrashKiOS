@@ -39,6 +39,6 @@ class ThrowableNSExceptionTest {
     fun requireSinkFailsLoudWhenUnregistered() {
         val registry = CrashSinkRegistry<Any>("Crashlytics")
         val error = assertFailsWith<IllegalStateException> { registry.requireSink() }
-        assertEquals(true, error.message?.contains("registerCrashlyticsSink"))
+        assertEquals(true, error.message?.contains("CrashKiOS.configure"))
     }
 }

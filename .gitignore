@@ -73,3 +73,4 @@ buildboth.sh
 Pods
 .build/
 Package.resolved
+.swiftpm/

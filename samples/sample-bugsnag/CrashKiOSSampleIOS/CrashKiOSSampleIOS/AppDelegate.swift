@@ -18,10 +18,10 @@ import Bugsnag
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Configures Bugsnag for Kotlin crash handling, starts it, and registers the
-        // sink with the Kotlin side (which installs the unhandled-exception hook).
+        // Configures Bugsnag for Kotlin crash handling, starts it, and configures
+        // CrashKiOS with the sink (which installs the unhandled-exception hook).
         let sink = BugsnagSink.start(BugsnagConfiguration.loadConfig())
-        BugsnagKt.registerBugsnagSink(sink: sink)
+        CrashKiOS.shared.configure(crashReporting: BugsnagCrashReporting(sink: sink))
 
         return true
     }

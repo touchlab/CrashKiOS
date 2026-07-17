@@ -4,14 +4,14 @@ import FirebaseCrashlytics
 
 /// Reference `CrashKiOSCrashlyticsSink` implementation.
 ///
-/// Register from your `AppDelegate`, right after Firebase is configured and before
+/// Configure from your `AppDelegate`, right after Firebase is configured and before
 /// any Kotlin code runs:
 /// ```swift
 /// FirebaseApp.configure()
-/// CrashlyticsKt.registerCrashlyticsSink(sink: CrashlyticsSink())
+/// CrashKiOS.shared.configure(crashReporting: CrashlyticsCrashReporting(sink: CrashlyticsSink()))
 /// ```
-/// (The Kotlin function name depends on your framework's export configuration; add
-/// `export("co.touchlab.crashkios:crashlytics")` to the framework for clean names.)
+/// (Add `export("co.touchlab.crashkios:crashlytics")` AND `export("co.touchlab.crashkios:core")`
+/// to the framework for clean names.)
 public final class CrashlyticsSink: NSObject, CrashKiOSCrashlyticsSink {
 
     private let crashlytics: Crashlytics

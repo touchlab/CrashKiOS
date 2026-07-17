@@ -15,9 +15,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        // Registers the Crashlytics sink (from the CrashKiOSCrashlytics Swift package)
-        // and installs the Kotlin unhandled-exception hook.
-        CrashlyticsKt.registerCrashlyticsSink(sink: CrashlyticsSink())
+        // Configures CrashKiOS with the Crashlytics sink (from the CrashKiOSCrashlytics
+        // Swift package), which installs the Kotlin unhandled-exception hook.
+        CrashKiOS.shared.configure(crashReporting: CrashlyticsCrashReporting(sink: CrashlyticsSink()))
 
         return true
     }

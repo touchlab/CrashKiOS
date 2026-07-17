@@ -59,6 +59,7 @@ kotlin {
         homepage = "https://www.touchlab.co"
         framework {
             export("co.touchlab.crashkios:bugsnag")
+            export("co.touchlab.crashkios:core")
             isStatic = false
         }
     }

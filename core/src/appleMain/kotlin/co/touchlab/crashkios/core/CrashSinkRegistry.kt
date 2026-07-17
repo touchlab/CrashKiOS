@@ -19,8 +19,9 @@ public class CrashSinkRegistry<T : Any>(private val name: String) {
      * than crashing at startup with a clear message.
      */
     public fun requireSink(): T = sinkRef.value ?: error(
-        "CrashKiOS: no $name sink registered. Call register${name}Sink() from Swift at " +
-            "startup (after the $name SDK is initialized) before enabling CrashKiOS from Kotlin.",
+        "CrashKiOS: no $name sink registered. Call CrashKiOS.configure(...) with a $name " +
+            "implementation from Swift at startup (after the $name SDK is initialized) " +
+            "before enabling CrashKiOS from Kotlin.",
     )
 
     public fun register(sink: T, fatalHook: (Throwable) -> Unit) {
