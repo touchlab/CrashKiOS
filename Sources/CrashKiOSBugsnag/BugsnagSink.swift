@@ -26,12 +26,13 @@ public func configureBugsnagForKotlin(_ config: BugsnagConfiguration) {
 /// Reference `CrashKiOSBugsnagSink` implementation.
 ///
 /// Start Bugsnag through this class so the configuration is prepared for Kotlin
-/// crash handling, then register the returned sink with the Kotlin side:
+/// crash handling, then configure CrashKiOS with the returned sink:
 /// ```swift
 /// let sink = BugsnagSink.start(BugsnagConfiguration.loadConfig())
-/// BugsnagKt.registerBugsnagSink(sink: sink)
+/// CrashKiOS.shared.configure(crashReporting: BugsnagCrashReporting(sink: sink))
 /// ```
-/// (Add `export("co.touchlab.crashkios:bugsnag")` to the Kotlin framework for clean names.)
+/// (Add `export("co.touchlab.crashkios:bugsnag")` AND `export("co.touchlab.crashkios:core")`
+/// to the Kotlin framework for clean names.)
 public final class BugsnagSink: NSObject, CrashKiOSBugsnagSink {
 
     /// Configures `config` via `configureBugsnagForKotlin(_:)`, starts Bugsnag,
