@@ -32,10 +32,6 @@ object CrashlyticsKotlin {
 
 /**
  * Call in startup code on Android. Tests should generally skip this.
- *
- * On Apple targets this alone is NOT enough: a Swift sink must be registered via
- * `registerCrashlyticsSink()` (which also sets the implementation, making this call
- * redundant there) — otherwise events are dropped with an NSLog warning.
  */
 fun enableCrashlytics() {
     CrashlyticsKotlin.implementation = CrashlyticsCallsActual()

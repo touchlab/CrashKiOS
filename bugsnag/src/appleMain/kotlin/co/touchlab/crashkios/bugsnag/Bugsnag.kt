@@ -3,37 +3,35 @@
 package co.touchlab.crashkios.bugsnag
 
 import co.touchlab.crashkios.bugsnag.objc.CrashKiOSBugsnagSinkProtocol
+import co.touchlab.crashkios.core.CrashReportingImplementation
 import kotlinx.cinterop.ExperimentalForeignApi
 
 /**
- * Registers the Swift-implemented [sink] that forwards CrashKiOS events to Bugsnag,
- * and installs the unhandled-exception hook so unhandled Kotlin exceptions are
- * reported as fatal crashes.
+ * The Bugsnag backend for [co.touchlab.crashkios.core.CrashKiOS.configure]. Wraps the
+ * Swift-implemented [sink] that forwards CrashKiOS events to Bugsnag.
  *
  * Call once, from Swift, at startup. Start Bugsnag through the shipped sink so the
  * configuration suppresses the duplicate termination crash:
  * ```swift
  * let sink = BugsnagSink.start(BugsnagConfiguration.loadConfig())
- * BugsnagKt.registerBugsnagSink(sink: sink)
+ * CrashKiOS.shared.configure(crashReporting: BugsnagCrashReporting(sink: sink))
  * ```
  * `BugsnagSink` ships in the `CrashKiOSBugsnag` Swift package (this repo's
  * `Package.swift`); custom sink implementations must call
  * `configureBugsnagForKotlin(config)` (from the same package) before `Bugsnag.start`
- * to keep the duplicate-crash suppression. Add
- * `export("co.touchlab.crashkios:bugsnag")` to your framework configuration for
+ * to keep the duplicate-crash suppression. Add `export("co.touchlab.crashkios:bugsnag")`
+ * AND `export("co.touchlab.crashkios:core")` to your framework configuration for
  * clean unmangled names.
  *
- * Replaces `startBugsnag()` / `configureBugsnag()` / `setBugsnagUnhandledExceptionHook()`,
- * which were removed along with the Bugsnag cinterop — Bugsnag start and configuration
- * now live in Swift.
- *
  * Calling `enableBugsnag()` (or constructing `BugsnagCallsActual`) on an Apple target
- * WITHOUT having registered a sink fails fast with a descriptive error rather than
+ * WITHOUT having configured a sink fails fast with a descriptive error rather than
  * silently dropping crash reports.
  */
-public fun registerBugsnagSink(sink: CrashKiOSBugsnagSinkProtocol) {
-    bugsnagRegistry.register(sink, fatalHook(sink))
-    BugsnagKotlin.implementation = BugsnagCallsActual()
+public class BugsnagCrashReporting(private val sink: CrashKiOSBugsnagSinkProtocol) : CrashReportingImplementation {
+    override fun install() {
+        bugsnagRegistry.register(sink, fatalHook(sink))
+        BugsnagKotlin.implementation = BugsnagCallsActual()
+    }
 }
 
 /**
