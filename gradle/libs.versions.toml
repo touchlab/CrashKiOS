@@ -5,8 +5,8 @@ targetSdk = "35"
 compileSdk = "35"
 
 # Dependencies
-kotlin = "2.2.10"
-android-gradle-plugin = "8.10.0"
+kotlin = "2.2.21"
+android-gradle-plugin = "8.11.1"
 mavenPublish = "0.29.0"
 touchlab-docusaurus-template = "0.1.10"
 gradlePublish = "1.2.1"
