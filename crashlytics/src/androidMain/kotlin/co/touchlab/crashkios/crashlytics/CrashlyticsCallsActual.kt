@@ -32,4 +32,8 @@ actual class CrashlyticsCallsActual : CrashlyticsCalls {
     actual override fun setUserId(identifier: String) {
         FirebaseCrashlytics.getInstance().setUserId(identifier)
     }
+
+    actual override fun setCollectionEnabled(enabled: Boolean) {
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(enabled)
+    }
 }

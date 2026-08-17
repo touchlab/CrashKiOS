@@ -42,4 +42,8 @@ actual class CrashlyticsCallsActual : CrashlyticsCalls {
     actual override fun setUserId(identifier: String) {
         FIRCrashlyticsSetUserID(identifier)
     }
+
+    actual override fun setCollectionEnabled(enabled: Boolean) {
+        FIRCrashlyticsSetCollectionEnabled(enabled)
+    }
 }
