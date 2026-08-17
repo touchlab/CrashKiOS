@@ -13,7 +13,6 @@
 
 plugins {
     `kotlin-dsl`
-    kotlin("jvm")
     id("java-gradle-plugin")
     id("com.vanniktech.maven.publish.base")
     id("com.gradle.plugin-publish")

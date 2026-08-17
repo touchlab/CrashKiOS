@@ -59,7 +59,9 @@ private fun KotlinMultiplatformExtension.crashLinkerConfig(linkerOpts: String) {
         val hasDynamicFrameworks = binaries.any { it is Framework && !it.isStatic }
 
         if (hasDynamicFrameworks) {
-            compilations.getByName("main").kotlinOptions.freeCompilerArgs += listOf("-linker-options", linkerOpts)
+            compilations.getByName("main").compileTaskProvider.configure {
+                compilerOptions.freeCompilerArgs.addAll("-linker-options", linkerOpts)
+            }
         }
     }
 }

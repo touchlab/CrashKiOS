@@ -1,12 +1,12 @@
 [versions]
 ## SDK Versions
 minSdk = "21"
-targetSdk = "34"
-compileSdk = "34"
+targetSdk = "35"
+compileSdk = "35"
 
 # Dependencies
-kotlin = "1.9.24"
-android-gradle-plugin = "8.2.1"
+kotlin = "2.2.21"
+android-gradle-plugin = "8.11.1"
 mavenPublish = "0.29.0"
 touchlab-docusaurus-template = "0.1.10"
 gradlePublish = "1.2.1"
