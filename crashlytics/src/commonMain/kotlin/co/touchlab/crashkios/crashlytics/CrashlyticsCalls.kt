@@ -15,4 +15,5 @@ expect class CrashlyticsCallsActual() : CrashlyticsCalls {
     override fun sendFatalException(throwable: Throwable)
     override fun setCustomValue(key: String, value: Any)
     override fun setUserId(identifier: String)
+    override fun setCollectionEnabled(enabled: Boolean)
 }
