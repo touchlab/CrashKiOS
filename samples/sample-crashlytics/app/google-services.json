@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "262996390724",
+    "project_id": "crashkiossample",
+    "storage_bucket": "crashkiossample.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262996390724:android:7a848afa4b4ca8448add11",
+        "android_client_info": {
+          "package_name": "co.touchlab.crashkiossamplecrashlog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEDOEwsd0-F3kg5QbOGqc9fNPsF5Ergbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
