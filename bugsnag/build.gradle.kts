@@ -10,7 +10,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.library")
@@ -28,12 +28,14 @@ group = GROUP
 version = VERSION_NAME
 
 kotlin {
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     androidTarget {
         publishAllLibraryVariants()
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
+        }
     }
 
     macosX64()
@@ -99,9 +101,5 @@ android {
             libs.versions.minSdk
                 .get()
                 .toInt()
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
