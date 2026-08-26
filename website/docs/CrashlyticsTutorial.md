@@ -87,10 +87,13 @@ To workaround this, we need to tell the compiler that these symbols are find and
 If you're using a dynamic framework you may also see a warning on the Crashlytics dashboard about missing dSYMS or "Missing UUID" in the stack trace of Kotlin crashes. If that happens adding a build phase to push the Kotlin framework dSYM to Crashlytics separately should resolve it. 
 
 In Xcode, select your project on the left sidebar, open the Build Phases Tab, and press the `+` in the top left. The select 
-"New Run Script Phase" and give it a name like "Upload Kotlin dSYM".
-Add this script to the build phase 
+"New Run Script Phase" and give it a name like "Upload Kotlin dSYM". Place it after the existing Crashlytics run script phase.
+Add this script to the build phase:
 ```bash
-Pods/FirebaseCrashlytics/upload-symbols -gsp ios/GoogleService-Info.plist -p ios ../shared/build/cocoapods/framework/shared.framework.dSYM
+"${PODS_ROOT}/FirebaseCrashlytics/upload-symbols" \
+  -gsp "${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleService-Info.plist" \
+  -p ios \
+  "${SRCROOT}/../shared/build/cocoapods/framework/shared.framework.dSYM"
 ```
 ![img.png](add_build_phase.png)
 
