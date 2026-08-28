@@ -1,47 +1,36 @@
+@file:OptIn(ExperimentalForeignApi::class)
+
 package co.touchlab.crashkios.bugsnag
 
-import com.rickclephas.kmp.nsexceptionkt.core.asNSException
-import com.rickclephas.kmp.nsexceptionkt.core.causes
+import co.touchlab.crashkios.bugsnag.objc.CrashKiOSBugsnagSinkProtocol
+import co.touchlab.crashkios.core.CrashSinkRegistry
+import co.touchlab.crashkios.core.asNSException
+import co.touchlab.crashkios.core.causes
 import kotlinx.cinterop.ExperimentalForeignApi
 
-@OptIn(ExperimentalForeignApi::class)
+internal val bugsnagRegistry = CrashSinkRegistry<CrashKiOSBugsnagSinkProtocol>("Bugsnag")
+
 actual class BugsnagCallsActual : BugsnagCalls {
+    // Fail-fast: an implementation constructed without a registered Swift sink would
+    // silently lose every event — refuse loudly instead.
+    private val sink: CrashKiOSBugsnagSinkProtocol = bugsnagRegistry.requireSink()
+
     actual override fun logMessage(message: String) {
-        Bugsnag.leaveBreadcrumbWithMessage(message)
+        sink.leaveBreadcrumb(message)
     }
 
-    actual override fun sendHandledException(throwable: Throwable) {
-        sendException(throwable, true)
-    }
+    actual override fun sendHandledException(throwable: Throwable) = sendException(throwable, true)
 
-    actual override fun sendFatalException(throwable: Throwable) {
-        sendException(throwable, false)
-    }
+    actual override fun sendFatalException(throwable: Throwable) = sendException(throwable, false)
 
     actual override fun setCustomValue(section: String, key: String, value: Any) {
-        Bugsnag.addMetadata(value, key, section)
+        sink.addMetadata(value, key = key, section = section)
     }
 
     private fun sendException(throwable: Throwable, handled: Boolean) {
-        val exception = throwable.asNSException()
-        val causes = throwable.causes.map { it.asNSException() }
-        // Notify will persist unhandled events, so we can safely terminate afterwards.
-        // https://github.com/bugsnag/bugsnag-cocoa/blob/6bcd46f5f8dc06ac26537875d501f02b27d219a9/Bugsnag/Client/BugsnagClient.m#L744
-        Bugsnag.notify(exception) { event ->
-            if (event == null) return@notify true
-
-            if (handled) {
-                event.severity = BSGSeverity.BSGSeverityWarning
-            } else {
-                event.unhandled = true
-                event.severity = BSGSeverity.BSGSeverityError
-            }
-
-            if (causes.isNotEmpty()) {
-                event.errors += causes.map { it.asBugsnagError() }
-            }
-
-            true
-        }
+        val exceptions = listOf(throwable.asNSException()) + throwable.causes.map { it.asNSException() }
+        // The sink persists unhandled events synchronously (Bugsnag.notify),
+        // so the caller can safely terminate afterwards.
+        sink.notifyWithExceptions(exceptions, handled = handled)
     }
 }

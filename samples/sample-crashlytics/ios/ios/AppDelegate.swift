@@ -9,14 +9,51 @@
 import UIKit
 import shared
 import Firebase
+import FirebaseCrashlytics
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         FirebaseApp.configure()
-        HelperKt.startCrashKiOS()
+        // Configures CrashKiOS with the Crashlytics sink, which installs the Kotlin
+        // unhandled-exception hook.
+        CrashKiOS.shared.configure(crashReporting: CrashlyticsCrashReporting(sink: CrashlyticsSink()))
 
         return true
     }
 }
+
+// Copy of the reference sink from the CrashKiOS Swift package
+// (Sources/CrashKiOSCrashlytics/CrashlyticsSink.swift), inlined + the protocol
+// declared in BridgingHeader.h so the sample doesn't need the package wired into
+// the Xcode project. Prefer consuming the package product in a real app (see the
+// ios-spm sample).
+final class CrashlyticsSink: NSObject, CrashKiOSCrashlyticsSink {
+
+    func logMessage(_ message: String) {
+        Crashlytics.crashlytics().log(message)
+    }
+
+    func recordHandledException(withName name: String, reason: String, stackAddresses: [NSNumber]) {
+        let model = ExceptionModel(name: name, reason: reason)
+        model.stackTrace = stackAddresses.map { StackFrame(address: $0.uintValue) }
+        Crashlytics.crashlytics().record(exceptionModel: model)
+    }
+
+    func recordFatalException(_ exception: NSException) {
+        FIRCLSExceptionRecordNSException(exception)
+    }
+
+    func setCustomValue(_ value: Any?, forKey key: String) {
+        Crashlytics.crashlytics().setCustomValue(value as Any, forKey: key)
+    }
+
+    func setUserId(_ identifier: String) {
+        Crashlytics.crashlytics().setUserID(identifier)
+    }
+}
+
+// Private Crashlytics SPI that records a FATAL exception and persists it synchronously.
+// Resolved hard at app link time against the FirebaseCrashlytics binary.
+@_silgen_name("FIRCLSExceptionRecordNSException")
+private func FIRCLSExceptionRecordNSException(_ exception: NSException)

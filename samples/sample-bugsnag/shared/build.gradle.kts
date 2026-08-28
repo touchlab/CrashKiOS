@@ -7,13 +7,12 @@
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
     kotlin("native.cocoapods")
-    id("co.touchlab.crashkios.bugsnaglink")
 }
 
 android {
@@ -28,14 +27,14 @@ android {
     }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
 version = "0.0.1"
 
 kotlin {
-    androidTarget()
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
+        }
+    }
     iosX64()
     iosArm64()
     // Note: iosSimulatorArm64 target requires that all dependencies have M1 support
@@ -60,6 +59,7 @@ kotlin {
         homepage = "https://www.touchlab.co"
         framework {
             export("co.touchlab.crashkios:bugsnag")
+            export("co.touchlab.crashkios:core")
             isStatic = false
         }
     }

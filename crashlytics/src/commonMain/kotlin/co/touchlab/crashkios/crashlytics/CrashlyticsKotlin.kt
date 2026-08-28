@@ -31,8 +31,7 @@ object CrashlyticsKotlin {
 }
 
 /**
- * Call in startup code in an actual app. Tests should generally skip this. In Kotlin/Native, not calling this
- * for tests avoids linker issues.
+ * Call in startup code on Android. Tests should generally skip this.
  */
 fun enableCrashlytics() {
     CrashlyticsKotlin.implementation = CrashlyticsCallsActual()

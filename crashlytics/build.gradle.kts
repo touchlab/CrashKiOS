@@ -55,7 +55,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":core"))
+                api(project(":core"))
             }
         }
         commonTest {
@@ -63,12 +63,6 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        appleMain {
-            dependencies {
-                implementation(libs.nsexceptionKt.core)
-            }
-        }
-
         androidMain {
             dependencies {
                 compileOnly(libs.firebase.crashlytics)
@@ -78,9 +72,8 @@ kotlin {
         targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
             val mainCompilation = compilations.getByName("main")
             mainCompilation.cinterops.create("crashlytics") {
-                includeDirs("$projectDir/src/include")
-                compilerOpts("-DNS_FORMAT_ARGUMENT(A)=", "-D_Nullable_result=_Nullable")
-//            extraOpts("-mode", "sourcecode")
+                // Protocol-only header owned by the Swift package — no SDK symbols.
+                includeDirs("$rootDir/Sources/CrashKiOSCrashlyticsObjC/include")
             }
         }
     }

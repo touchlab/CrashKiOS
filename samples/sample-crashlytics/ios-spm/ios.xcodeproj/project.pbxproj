@@ -15,6 +15,7 @@
 		6381FFA5277D0BEC00EF27B0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6381FFA4277D0BEC00EF27B0 /* Preview Assets.xcassets */; };
 		6381FFAE277D0E1200EF27B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6381FFAC277D0E1200EF27B0 /* AppDelegate.swift */; };
 		A30FA4F028DB17F400E4D5A3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A30FA4EF28DB17F400E4D5A3 /* GoogleService-Info.plist */; };
+		AAC4A5110000000000000003 /* CrashKiOSCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = AAC4A5110000000000000002 /* CrashKiOSCrashlytics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1814D0382C2C95A400C93985 /* FirebaseCrashlytics in Frameworks */,
+				AAC4A5110000000000000003 /* CrashKiOSCrashlytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +110,7 @@
 			name = ios;
 			packageProductDependencies = (
 				1814D0372C2C95A400C93985 /* FirebaseCrashlytics */,
+				AAC4A5110000000000000002 /* CrashKiOSCrashlytics */,
 			);
 			productName = ios;
 			productReference = 6381FF9A277D0BE900EF27B0 /* ios.app */;
@@ -139,6 +142,7 @@
 			mainGroup = 6381FF91277D0BE900EF27B0;
 			packageReferences = (
 				1814D0312C2C5B6D00C93985 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				AAC4A5110000000000000001 /* XCLocalSwiftPackageReference "../../.." */,
 			);
 			productRefGroup = 6381FF9B277D0BE900EF27B0 /* Products */;
 			projectDirPath = "";
@@ -354,7 +358,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -391,7 +395,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -432,13 +436,20 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		AAC4A5110000000000000001 /* XCLocalSwiftPackageReference "../../.." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../..;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		1814D0312C2C5B6D00C93985 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.28.1;
+				minimumVersion = 12.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -448,6 +459,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1814D0312C2C5B6D00C93985 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		AAC4A5110000000000000002 /* CrashKiOSCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAC4A5110000000000000001 /* XCLocalSwiftPackageReference "../../.." */;
+			productName = CrashKiOSCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

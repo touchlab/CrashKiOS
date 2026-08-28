@@ -1,49 +1,49 @@
+@file:OptIn(ExperimentalForeignApi::class)
+
 package co.touchlab.crashkios.crashlytics
 
-import com.rickclephas.kmp.nsexceptionkt.core.asNSException
-import com.rickclephas.kmp.nsexceptionkt.core.getFilteredStackTraceAddresses
-import kotlinx.cinterop.UnsafeNumber
-import kotlinx.cinterop.convert
+import co.touchlab.crashkios.core.CrashSinkRegistry
+import co.touchlab.crashkios.core.asNSException
+import co.touchlab.crashkios.core.getFilteredStackTraceAddresses
+import co.touchlab.crashkios.core.throwableName
+import co.touchlab.crashkios.crashlytics.objc.CrashKiOSCrashlyticsSinkProtocol
+import kotlinx.cinterop.ExperimentalForeignApi
 
-@OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
+internal val crashlyticsRegistry = CrashSinkRegistry<CrashKiOSCrashlyticsSinkProtocol>("Crashlytics")
+
 actual class CrashlyticsCallsActual : CrashlyticsCalls {
-
-    init {
-        FIRCheckLinkDependencies()
-    }
+    // Fail-fast: an implementation constructed without a registered Swift sink would
+    // silently lose every event. The pre-1.0 cinterop code failed just as loudly at
+    // this point via FIRCheckLinkDependencies when Firebase wasn't linked.
+    private val sink: CrashKiOSCrashlyticsSinkProtocol = crashlyticsRegistry.requireSink()
 
     actual override fun logMessage(message: String) {
-        FIRCrashlyticsLog(message)
+        sink.logMessage(message)
     }
 
-    @OptIn(UnsafeNumber::class)
     actual override fun sendHandledException(throwable: Throwable) {
-        val exceptionClassName = throwable::class.qualifiedName ?: throwable::class.simpleName ?: "kotlin.Throwable"
-        FIRCrashlyticsRecordHandledException(
-            exceptionClassName,
-            throwable.message ?: "",
-            throwable.getFilteredStackTraceAddresses().map {
-                FIRStackFrameWithAddress(it.convert())
-            },
+        sink.recordHandledExceptionWithName(
+            name = throwable.throwableName,
+            reason = throwable.message ?: "",
+            stackAddresses = throwable.getFilteredStackTraceAddresses(),
         )
     }
 
     actual override fun sendFatalException(throwable: Throwable) {
-        val exception = throwable.asNSException(true)
-        // The recorded exception is persisted, so we can safely terminate afterwards.
-        // https://github.com/firebase/firebase-ios-sdk/blob/82f163bd86566f83c5d7572a1c2c0024a04eb4dc/Crashlytics/Crashlytics/Handlers/FIRCLSException.mm#L227
-        tryFIRCLSExceptionRecordNSException(exception)
+        // The sink persists synchronously (FIRCLSExceptionRecordNSException),
+        // so the caller can safely terminate afterwards.
+        sink.recordFatalException(throwable.asNSException(true))
     }
 
     actual override fun setCustomValue(key: String, value: Any) {
-        FIRCrashlyticsSetCustomValue(key, value)
+        sink.setCustomValue(value, forKey = key)
     }
 
     actual override fun setUserId(identifier: String) {
-        FIRCrashlyticsSetUserID(identifier)
+        sink.setUserId(identifier)
     }
 
     actual override fun setCollectionEnabled(enabled: Boolean) {
-        FIRCrashlyticsSetCollectionEnabled(enabled)
+        sink.setCollectionEnabled(enabled)
     }
 }
