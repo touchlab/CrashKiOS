@@ -15,7 +15,6 @@ buildscript {
     dependencies {
         classpath(libs.google.services)
         classpath(libs.firebase.crashlytics.gradle)
-        classpath(libs.crashkios.utils)
     }
 }
 plugins {
@@ -24,8 +23,8 @@ plugins {
     alias(projectLibs.plugins.crashkios.crashlyticslink) apply false
 }
 
-allprojects{
-    repositories{
+allprojects {
+    repositories {
         mavenCentral()
         google()
     }
