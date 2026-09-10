@@ -38,6 +38,17 @@ kotlin {
         }
     }
 
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
+        }
+    }
+
+    js {
+        nodejs()
+        browser()
+    }
+
     macosX64()
     macosArm64()
     iosX64()

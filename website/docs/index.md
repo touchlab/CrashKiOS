@@ -11,6 +11,12 @@ To use crash reporting with general logging support, check out [Kermit](https://
 
 If you're wondering *why* you need this library, please see [the problem](misc/THE_PROBLEM.md).
 
+## Supported targets
+
+Apple targets (iOS, macOS, watchOS, tvOS) and Android have real implementations. JVM and JS use no-op implementations. Crashlytics has no JVM or JS SDK, and CrashKiOS currently wraps only the mobile Bugsnag SDK.
+
+That means you can declare the CrashKiOS dependency in `commonMain` even in a project that also targets JVM and/or JS.
+
 ## NSExceptionKt
 
 CrashKiOS and Kermit previously created 2 reports on a crash because none of the crash reporting clients had an obvious way to do one. [Rick Clephas](https://github.com/rickclephas) has done some excellent work figuring that out with [NSExceptionKt](https://github.com/rickclephas/NSExceptionKt). CrashKiOS now uses part of that library as a base and we've merged the cinterop from Kermit and NSExeptionKt to handle crashes as well as breadcrumb values and log statements.

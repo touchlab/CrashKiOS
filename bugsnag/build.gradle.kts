@@ -10,6 +10,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
+
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -36,6 +37,17 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_1_8)
         }
+    }
+
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
+        }
+    }
+
+    js {
+        nodejs()
+        browser()
     }
 
     macosX64()
