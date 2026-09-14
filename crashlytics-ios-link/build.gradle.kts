@@ -13,7 +13,7 @@
 plugins {
     `kotlin-dsl`
     id("java-gradle-plugin")
-    id("com.vanniktech.maven.publish.base")
+    id("com.vanniktech.maven.publish")
     id("com.gradle.plugin-publish")
 }
 
@@ -57,11 +57,3 @@ val VERSION_NAME: String by project
 
 group = GROUP
 version = VERSION_NAME
-
-mavenPublishing {
-    publishToMavenCentral()
-    val releaseSigningEnabled =
-        project.properties["RELEASE_SIGNING_ENABLED"]?.toString()?.equals("false", ignoreCase = true) != true
-    if (releaseSigningEnabled) signAllPublications()
-    pomFromGradleProperties()
-}

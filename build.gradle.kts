@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.maven.publish) apply false
@@ -14,6 +16,12 @@ allprojects {
 }
 
 subprojects {
+    plugins.withId("com.vanniktech.maven.publish.base") {
+        configure<MavenPublishBaseExtension> {
+            publishToMavenCentral(automaticRelease = true, validateDeployment = false)
+        }
+    }
+
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
