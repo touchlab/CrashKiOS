@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
+    id("com.vanniktech.maven.publish")
 }
 
 @Suppress("ktlint:standard:property-naming")
@@ -87,5 +88,3 @@ android {
                 .toInt()
     }
 }
-
-apply(plugin = "com.vanniktech.maven.publish")

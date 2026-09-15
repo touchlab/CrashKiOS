@@ -7,7 +7,7 @@ compileSdk = "35"
 # Dependencies
 kotlin = "2.2.21"
 android-gradle-plugin = "8.11.1"
-mavenPublish = "0.29.0"
+mavenPublish = "0.35.0"
 touchlab-docusaurus-template = "0.1.10"
 gradlePublish = "1.2.1"
 nsexceptionKt = "0.1.10"
