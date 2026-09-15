@@ -1,16 +1,68 @@
 # Releasing
 
-To be able to release, you'll need write access to the repo.
+CrashKiOS publishes `co.touchlab.crashkios` artifacts (`core`, `crashlytics`, `bugsnag` and the `crashlytics-ios-link`
+and `bugsnag-ios-link` Gradle plugins) to Maven Central. Releases are cut by pushing a release tag.
 
-Steps:
+## Conventions
 
-1. Make sure any PRs are merged and the release is ready to be published.
-2. Switch to a new release branch and `git pull` the latest.
-3. Change the version in `gradle.properties`.
-4. Update `CHANGELOG.md` with a summary of changes.
-5. Make sure to update the lock file by running the `kotlinUpgradeYarnLock` task.
-6. Push the changes with the message "Version x.y.z".
-7. Open a PR to merge the release branch into `main`.
-8. After the PR is merged, open `Actions` and select the `release` workflow on the left.
-9. Select `Run Workflow` on the right, pick the `main` branch, and click `Run Workflow`.
-10. To check status, look for the library in [https://repo1.maven.org/maven2/co/touchlab/crashkios/](https://repo1.maven.org/maven2/co/touchlab/crashkios/), find an artifact, and refresh until the version you just published shows up.
+- Tags are the bare version, no `v` prefix — `0.10.0`, not `v0.10.0`.
+- The tag and `VERSION_NAME` must be identical.
+- `main` sits on a `-SNAPSHOT` between releases.
+
+## Choosing the version
+
+Standard semver against the published API surface:
+
+- **Patch** — bug fixes, no public declarations added or changed.
+- **Minor** — public declarations added.
+- **Major** — public declarations removed or changed incompatibly.
+
+## Releasing
+
+Steps 1–6 are local. Nothing is published until you push the tag in step 7.
+
+1. **Confirm the working tree is clean and `main` is current.**
+2. **Set the release version** in `gradle.properties`:
+
+   ```
+   VERSION_NAME=X.Y.Z
+   ```
+
+   Then give the `X.Y.Z` entry in `CHANGELOG.md` today's date.
+
+3. **Commit.**
+
+   ```bash
+   git commit -am "Prepare version X.Y.Z"
+   ```
+
+4. **Tag that commit.**
+
+   ```bash
+   git tag -a X.Y.Z -m "Version X.Y.Z"
+   ```
+
+5. **Set the next development version.** Bump the patch and re-add the suffix in
+   `gradle.properties`:
+
+   ```
+   VERSION_NAME=<next patch>-SNAPSHOT
+   ```
+
+   So releasing `0.10.0` leaves `main` on `VERSION_NAME=0.10.1-SNAPSHOT`.
+
+6. **Commit.**
+
+   ```bash
+   git commit -am "Prepare next development version"
+   ```
+
+7. **Push the branch first, then the tag.** Pushing the tag triggers the `release` workflow, which publishes to Maven
+   Central and creates the GitHub release, so push it last:
+
+   ```bash
+   git push origin main
+   git push origin X.Y.Z
+   ```
+
+   Pushing directly to `main` requires write access to the repo.
