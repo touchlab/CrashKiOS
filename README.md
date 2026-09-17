@@ -1,3 +1,3 @@
 # CrashKiOS - Crash reporting for Kotlin/iOS
 
-See [crashkios.touchlab.co](https://crashkios.touchlab.co/)
+See [touchlab.co/crashkios](https://touchlab.co/crashkios)
