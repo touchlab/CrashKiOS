@@ -45,11 +45,15 @@ final class CrashlyticsSink: NSObject, CrashKiOSCrashlyticsSink {
     }
 
     func setCustomValue(_ value: Any?, forKey key: String) {
-        Crashlytics.crashlytics().setCustomValue(value as Any, forKey: key)
+        Crashlytics.crashlytics().setCustomValue(value, forKey: key)
     }
 
     func setUserId(_ identifier: String) {
         Crashlytics.crashlytics().setUserID(identifier)
+    }
+
+    func setCollectionEnabled(_ enabled: Bool) {
+        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(enabled)
     }
 }
 

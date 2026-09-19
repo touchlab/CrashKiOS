@@ -50,7 +50,7 @@ class BugsnagSinkTest {
         val sink = FakeBugsnagSink()
         CrashKiOS.configure(BugsnagCrashReporting(sink))
 
-        fatalHook(sink)(RuntimeException("terminating boom"))
+        fatalHook { sink }(RuntimeException("terminating boom"))
 
         assertEquals(1, sink.fatalMarks)
         assertEquals(1, sink.notifications.size)

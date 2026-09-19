@@ -6,7 +6,8 @@
 /// Receives crash-reporting events from Kotlin and forwards them to Bugsnag.
 ///
 /// Implemented in Swift, inside the app's build graph — where Bugsnag is already
-/// linked — and registered with the Kotlin side via `registerBugsnagSink`.
+/// linked — and handed to the Kotlin side with
+/// `CrashKiOS.shared.configure(crashReporting: BugsnagCrashReporting(sink:))`.
 ///
 /// Contract for implementations (the shipped `BugsnagSink` does all of this):
 /// - MUST NOT throw: Kotlin cannot catch ObjC exceptions thrown across this

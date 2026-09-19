@@ -29,7 +29,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
  */
 public class BugsnagCrashReporting(private val sink: CrashKiOSBugsnagSinkProtocol) : CrashReportingImplementation {
     override fun install() {
-        bugsnagRegistry.register(sink, fatalHook(sink))
+        bugsnagRegistry.register(sink, fatalHook { bugsnagRegistry.requireSink() })
         BugsnagKotlin.implementation = BugsnagCallsActual()
     }
 }
@@ -41,11 +41,15 @@ public class BugsnagCrashReporting(private val sink: CrashKiOSBugsnagSinkProtoco
  * must NOT poison the session (the caller may keep running, and later genuine crashes
  * would be discarded).
  *
+ * Takes the sink lazily rather than by value: the hook is installed once, but
+ * configure() may be called again with a different sink, and marking the session on a
+ * replaced sink would silence the wrong Bugsnag session.
+ *
  * A plain function rather than an inline lambda so tests can exercise the
  * notify-then-mark sequencing directly, without going through the real
  * process-terminating unhandled-exception hook.
  */
-internal fun fatalHook(sink: CrashKiOSBugsnagSinkProtocol): (Throwable) -> Unit = { throwable ->
+internal fun fatalHook(sink: () -> CrashKiOSBugsnagSinkProtocol): (Throwable) -> Unit = { throwable ->
     BugsnagKotlin.sendFatalException(throwable)
-    sink.markFatalCrashRecorded()
+    sink().markFatalCrashRecorded()
 }

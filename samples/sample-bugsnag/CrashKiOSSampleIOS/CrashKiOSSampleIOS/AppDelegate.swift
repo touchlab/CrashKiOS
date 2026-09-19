@@ -13,6 +13,8 @@
 import UIKit
 import shared
 import Bugsnag
+// class_getInstanceMethod / method_setImplementation, used by overrideOriginalUnhandledValue().
+import ObjectiveC
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

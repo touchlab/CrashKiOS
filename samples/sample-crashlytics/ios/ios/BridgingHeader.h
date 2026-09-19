@@ -16,6 +16,7 @@
 - (void)recordFatalException:(NSException * _Nonnull)exception;
 - (void)setCustomValue:(id _Nullable)value forKey:(NSString * _Nonnull)key;
 - (void)setUserId:(NSString * _Nonnull)identifier;
+- (void)setCollectionEnabled:(BOOL)enabled;
 @end
 
 #endif /* BridgingHeader_h */
