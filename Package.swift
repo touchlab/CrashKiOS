@@ -1,6 +1,4 @@
 // swift-tools-version: 5.5
-// CrashKiOS Swift sinks — live in the app's build graph, where the crash-SDK
-// binaries are already linked. See docs-plans/crashkios-linking-remediation-plan.md.
 
 import PackageDescription
 
