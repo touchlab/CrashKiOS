@@ -22,6 +22,8 @@ includeBuild("../..") {
     dependencySubstitution {
         substitute(module("co.touchlab.crashkios:crashlytics"))
             .using(project(":crashlytics")).because("we want to auto-wire up sample dependency")
+        substitute(module("co.touchlab.crashkios:core"))
+            .using(project(":core")).because("we want to auto-wire up sample dependency")
     }
 }
 
