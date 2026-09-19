@@ -6,7 +6,8 @@
 /// Receives crash-reporting events from Kotlin and forwards them to Firebase Crashlytics.
 ///
 /// Implemented in Swift, inside the app's build graph — where FirebaseCrashlytics is
-/// already linked — and registered with the Kotlin side via `registerCrashlyticsSink`.
+/// already linked — and handed to the Kotlin side with
+/// `CrashKiOS.shared.configure(crashReporting: CrashlyticsCrashReporting(sink:))`.
 ///
 /// Implementations MUST NOT throw: Kotlin cannot catch ObjC exceptions thrown across
 /// this boundary (KT-53004), and the fatal path runs inside the unhandled-exception hook.

@@ -5,5 +5,5 @@ headers = CrashKiOSCrashlyticsSink.h
 # Protocol-only cinterop: the header (owned by the Swift package, see
 # Sources/CrashKiOSCrashlyticsObjC/include/) declares no external classes or
 # functions, so this emits NO undefined symbols — no -U flags, no cacheKind=none,
-# no App Store strip hazard. The Swift app implements the protocol and registers
-# it via registerCrashlyticsSink().
+# no App Store strip hazard. The Swift app implements the protocol and passes
+# it to CrashKiOS.shared.configure(crashReporting: CrashlyticsCrashReporting(sink:)).

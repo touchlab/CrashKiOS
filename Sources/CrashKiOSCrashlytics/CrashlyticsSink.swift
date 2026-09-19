@@ -37,7 +37,7 @@ public final class CrashlyticsSink: NSObject, CrashKiOSCrashlyticsSink {
     }
 
     public func setCustomValue(_ value: Any?, forKey key: String) {
-        crashlytics.setCustomValue(value as Any, forKey: key)
+        crashlytics.setCustomValue(value, forKey: key)
     }
 
     public func setUserId(_ identifier: String) {
