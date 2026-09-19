@@ -1,7 +1,8 @@
 # Releasing
 
-CrashKiOS publishes `co.touchlab.crashkios` artifacts (`core`, `crashlytics`, `bugsnag` and the `crashlytics-ios-link`
-and `bugsnag-ios-link` Gradle plugins) to Maven Central. Releases are cut by pushing a release tag.
+CrashKiOS publishes the `co.touchlab.crashkios` artifacts (`core`, `crashlytics`, `bugsnag`) to Maven Central.
+Releases are cut by pushing a release tag. The Apple-side Swift sinks ship as a Swift package from this repo
+(`Package.swift`) and are consumed by tag, so they need no separate publish step.
 
 ## Conventions
 
