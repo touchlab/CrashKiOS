@@ -22,8 +22,8 @@ includeBuild("../..") {
     dependencySubstitution {
         substitute(module("co.touchlab.crashkios:bugsnag"))
             .using(project(":bugsnag")).because("we want to auto-wire up sample dependency")
-        substitute(module("co.touchlab.crashkios.bugsnaglink:co.touchlab.crashkios.bugsnaglink.gradle.plugin"))
-            .using(project(":bugsnag-ios-link")).because("we want to auto-wire up sample dependency")
+        substitute(module("co.touchlab.crashkios:core"))
+            .using(project(":core")).because("we want to auto-wire up sample dependency")
     }
 }
 
