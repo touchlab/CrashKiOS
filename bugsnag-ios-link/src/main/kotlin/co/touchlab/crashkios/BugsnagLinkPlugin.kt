@@ -16,12 +16,9 @@ package co.touchlab.crashkios
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.KotlinArtifactsExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinNativeFrameworkConfig
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.targets.native.tasks.artifact.kotlinArtifactsExtension
 
 internal val Project.kotlinExtension: KotlinMultiplatformExtension get() = extensions.getByType()
 
@@ -37,7 +34,6 @@ class BugsnagLinkPlugin : Plugin<Project> {
                 "-U _OBJC_CLASS_\$_BugsnagError"
         afterEvaluate {
             project.kotlinExtension.crashLinkerConfig(linkerArgs)
-            project.kotlinArtifactsExtension.crashLinkerConfigArtifacts(linkerArgs)
         }
     }
 }
@@ -45,17 +41,6 @@ class BugsnagLinkPlugin : Plugin<Project> {
 private fun Project.withKotlinMultiplatformPlugin(action: Project.() -> Unit) {
     pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
         action()
-    }
-}
-
-private fun KotlinArtifactsExtension.crashLinkerConfigArtifacts(linkerOpts: String) {
-    artifactConfigs.withType(KotlinNativeFrameworkConfig::class.java).configureEach {
-        if (!isStatic) {
-            toolOptions {
-                freeCompilerArgs.add("-linker-options")
-                freeCompilerArgs.add(linkerOpts)
-            }
-        }
     }
 }
 
