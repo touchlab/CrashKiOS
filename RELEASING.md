@@ -28,8 +28,6 @@ Steps 1–6 are local. Nothing is published until you push the tag in step 7.
    VERSION_NAME=X.Y.Z
    ```
 
-   Then give the `X.Y.Z` entry in `CHANGELOG.md` today's date.
-
 3. **Commit.**
 
    ```bash
