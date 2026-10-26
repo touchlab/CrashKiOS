@@ -7,21 +7,22 @@ import kotlin.concurrent.AtomicReference
  * Registration point shared by the CrashKiOS SDK modules: holds the Swift-implemented
  * sink and installs the unhandled-exception hook exactly once.
  *
- * Internal machinery for the crashlytics/bugsnag modules — not API for apps.
+ * Internal machinery for the crashlytics/bugsnag modules.
  */
 public class CrashSinkRegistry<T : Any>(private val name: String) {
     private val sinkRef = AtomicReference<T?>(null)
     private val hookInstalled = AtomicInt(0)
 
+    /** The registered sink, or null until `CrashKiOS.configure(...)` runs from Swift. */
+    public val sink: T? get() = sinkRef.value
+
     /**
-     * Returns the registered sink, or fails loud: a crash-reporting implementation
-     * constructed without a sink would silently lose every event, which is worse
-     * than crashing at startup with a clear message.
+     * Returns the registered sink, or fails loud. For paths that only run after
+     * [register] (such as the fatal hook), where a missing sink is a bug.
      */
-    public fun requireSink(): T = sinkRef.value ?: error(
+    public fun requireSink(): T = sink ?: error(
         "CrashKiOS: no $name sink registered. Call CrashKiOS.configure(...) with a $name " +
-            "implementation from Swift at startup (after the $name SDK is initialized) " +
-            "before enabling CrashKiOS from Kotlin.",
+            "implementation from Swift at startup (after the $name SDK is initialized).",
     )
 
     public fun register(sink: T, fatalHook: (Throwable) -> Unit) {

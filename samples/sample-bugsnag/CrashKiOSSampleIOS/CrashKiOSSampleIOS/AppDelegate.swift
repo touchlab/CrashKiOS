@@ -99,8 +99,13 @@ private let kotlinCrashedFeatureFlag = "crashkios.kotlin_crashed"
 /// https://github.com/bugsnag/bugsnag-cocoa/pull/1549
 private func overrideOriginalUnhandledValue() {
     guard let handledStateClass = NSClassFromString("BugsnagHandledState"),
-          let originalMethod = class_getInstanceMethod(handledStateClass, NSSelectorFromString("originalUnhandledValue")),
-          let method = class_getInstanceMethod(handledStateClass, NSSelectorFromString("unhandled"))
+        let method = class_getInstanceMethod(handledStateClass, NSSelectorFromString("unhandled"))
+    else {
+        assertionFailure("CrashKiOS: BugsnagHandledState internals changed — Kotlin fatal crashes may not be persisted. Update CrashKiOSBugsnag.")
+        return
+    }
+    // Bugsnag < 6.26.2 has no originalUnhandledValue. Nothing to override.
+    guard let originalMethod = class_getInstanceMethod(handledStateClass, NSSelectorFromString("originalUnhandledValue"))
     else { return }
     method_setImplementation(originalMethod, method_getImplementation(method))
 }

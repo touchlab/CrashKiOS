@@ -32,6 +32,11 @@ object CrashlyticsKotlin {
 
 /**
  * Call in startup code on Android. Tests should generally skip this.
+ *
+ * On Apple targets this alone is NOT enough: configure CrashKiOS from Swift with
+ * `CrashKiOS.shared.configure(crashReporting: CrashlyticsCrashReporting(sink: ...))`, which also
+ * sets the implementation and makes this call redundant there. Calling it is still safe in any
+ * order, since the sink is looked up on every event; events sent before `configure` are dropped.
  */
 fun enableCrashlytics() {
     CrashlyticsKotlin.implementation = CrashlyticsCallsActual()

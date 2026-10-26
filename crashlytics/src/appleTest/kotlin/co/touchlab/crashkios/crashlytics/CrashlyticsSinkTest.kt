@@ -40,6 +40,17 @@ class CrashlyticsSinkTest {
         assertTrue(fatal.reason!!.contains("Caused by: kotlin.IllegalStateException: root cause"))
         assertTrue(fatal.callStackReturnAddresses.isNotEmpty(), "fatal exception should carry stack addresses")
     }
+
+    @Test
+    fun implementationCreatedBeforeConfigureForwardsToTheLaterSink() {
+        val early = CrashlyticsCallsActual()
+        val sink = FakeCrashlyticsSink()
+
+        CrashKiOS.configure(CrashlyticsCrashReporting(sink))
+        early.logMessage("hello")
+
+        assertEquals(listOf("hello"), sink.logs)
+    }
 }
 
 private class FakeCrashlyticsSink :

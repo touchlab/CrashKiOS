@@ -58,6 +58,17 @@ class BugsnagSinkTest {
         // Marking first would let the OnSendError filter drop a report that was never sent.
         assertEquals(listOf("notify", "mark"), sink.events)
     }
+
+    @Test
+    fun implementationCreatedBeforeConfigureForwardsToTheLaterSink() {
+        val early = BugsnagCallsActual()
+        val sink = FakeBugsnagSink()
+
+        CrashKiOS.configure(BugsnagCrashReporting(sink))
+        early.logMessage("crumb")
+
+        assertEquals(listOf("crumb"), sink.breadcrumbs)
+    }
 }
 
 private class FakeBugsnagSink :

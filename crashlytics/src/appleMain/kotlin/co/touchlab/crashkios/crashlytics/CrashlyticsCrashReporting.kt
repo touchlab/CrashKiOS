@@ -21,9 +21,8 @@ import kotlinx.cinterop.ExperimentalForeignApi
  * AND `export("co.touchlab.crashkios:core")` to your framework configuration for
  * clean unmangled names.
  *
- * Calling `enableCrashlytics()` (or constructing `CrashlyticsCallsActual`) on an Apple
- * target WITHOUT having configured a sink fails fast with a descriptive error rather
- * than silently dropping crash reports.
+ * `enableCrashlytics()` from shared startup code is safe before or after this call; events
+ * sent before a sink is configured are dropped.
  */
 public class CrashlyticsCrashReporting(private val sink: CrashKiOSCrashlyticsSinkProtocol) : CrashReportingImplementation {
     override fun install() {
@@ -32,15 +31,4 @@ public class CrashlyticsCrashReporting(private val sink: CrashKiOSCrashlyticsSin
         }
         CrashlyticsKotlin.implementation = CrashlyticsCallsActual()
     }
-}
-
-/**
- * The unhandled exception hook is now installed by [CrashlyticsCrashReporting.install];
- * this function does nothing.
- */
-@Deprecated(
-    "CrashKiOS.configure(CrashlyticsCrashReporting(...)) installs the unhandled-exception " +
-        "hook; remove this call.",
-)
-public fun setCrashlyticsUnhandledExceptionHook() {
 }

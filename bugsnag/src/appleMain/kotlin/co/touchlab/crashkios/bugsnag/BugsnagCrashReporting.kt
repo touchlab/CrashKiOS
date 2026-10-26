@@ -23,9 +23,8 @@ import kotlinx.cinterop.ExperimentalForeignApi
  * AND `export("co.touchlab.crashkios:core")` to your framework configuration for
  * clean unmangled names.
  *
- * Calling `enableBugsnag()` (or constructing `BugsnagCallsActual`) on an Apple target
- * WITHOUT having configured a sink fails fast with a descriptive error rather than
- * silently dropping crash reports.
+ * `enableBugsnag()` from shared startup code is safe before or after this call; events
+ * sent before a sink is configured are dropped.
  */
 public class BugsnagCrashReporting(private val sink: CrashKiOSBugsnagSinkProtocol) : CrashReportingImplementation {
     override fun install() {

@@ -1,7 +1,7 @@
+import Bugsnag
+import CrashKiOSBugsnagObjC
 import Foundation
 import ObjectiveC
-import CrashKiOSBugsnagObjC
-import Bugsnag
 
 /// Feature flag used to mark the Kotlin termination crash.
 /// Public so custom `CrashKiOSBugsnagSink` implementations can honor the same contract.
@@ -80,14 +80,14 @@ public final class BugsnagSink: NSObject, CrashKiOSBugsnagSink {
 /// https://github.com/bugsnag/bugsnag-cocoa/pull/1549
 private func overrideOriginalUnhandledValue() {
     guard let handledStateClass = NSClassFromString("BugsnagHandledState"),
-          let originalMethod = class_getInstanceMethod(handledStateClass, NSSelectorFromString("originalUnhandledValue")),
-          let method = class_getInstanceMethod(handledStateClass, NSSelectorFromString("unhandled"))
+        let method = class_getInstanceMethod(handledStateClass, NSSelectorFromString("unhandled"))
     else {
-        // Loud, not silent: if Bugsnag renames these internals, fatal Kotlin crashes
-        // would silently stop reaching the dashboard (>=6.26.2 refuses to persist them).
         assertionFailure("CrashKiOS: BugsnagHandledState internals changed — Kotlin fatal crashes may not be persisted. Update CrashKiOSBugsnag.")
         return
     }
+    // Bugsnag < 6.26.2 has no originalUnhandledValue. Nothing to override.
+    guard let originalMethod = class_getInstanceMethod(handledStateClass, NSSelectorFromString("originalUnhandledValue"))
+    else { return }
     method_setImplementation(originalMethod, method_getImplementation(method))
 }
 
