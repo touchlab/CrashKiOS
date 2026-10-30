@@ -6,6 +6,7 @@ import co.touchlab.crashkios.bugsnag.objc.CrashKiOSBugsnagSinkProtocol
 import co.touchlab.crashkios.core.CrashKiOS
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSException
@@ -36,7 +37,7 @@ class BugsnagSinkTest {
         assertEquals("kotlin.RuntimeException", (handledExceptions.single() as NSException).name)
 
         val (fatalExceptions, fatalFlag) = sink.notifications[1]
-        assertEquals(false, fatalFlag)
+        assertFalse(fatalFlag)
         assertEquals(2, fatalExceptions.size, "fatal should carry the cause chain")
         assertEquals("kotlin.IllegalStateException", (fatalExceptions[1] as NSException).name)
 

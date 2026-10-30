@@ -1,8 +1,12 @@
+@file:OptIn(InternalCrashKiOSApi::class)
+
 package co.touchlab.crashkios.core
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
+import kotlin.test.assertSame
 
 class ThrowableNSExceptionTest {
     @Test
@@ -40,5 +44,20 @@ class ThrowableNSExceptionTest {
         val registry = CrashSinkRegistry<Any>("Crashlytics")
         val error = assertFailsWith<IllegalStateException> { registry.requireSink() }
         assertEquals(true, error.message?.contains("CrashKiOS.configure"))
+    }
+
+    @Test
+    fun sinkIsNullUntilRegisteredThenReturned() {
+        val registry = CrashSinkRegistry<Any>("Test")
+        assertNull(registry.sink)
+
+        val first = Any()
+        registry.register(first) { }
+        assertSame(first, registry.sink)
+        assertSame(first, registry.requireSink())
+
+        val second = Any()
+        registry.register(second) { }
+        assertSame(second, registry.sink)
     }
 }
