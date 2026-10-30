@@ -1,15 +1,15 @@
 package co.touchlab.crashkios.crashlytics
 
-interface CrashlyticsCalls {
-    fun logMessage(message: String)
-    fun sendHandledException(throwable: Throwable)
-    fun sendFatalException(throwable: Throwable)
-    fun setCustomValue(key: String, value: Any)
-    fun setUserId(identifier: String)
-    fun setCollectionEnabled(enabled: Boolean)
+public interface CrashlyticsCalls {
+    public fun logMessage(message: String)
+    public fun sendHandledException(throwable: Throwable)
+    public fun sendFatalException(throwable: Throwable)
+    public fun setCustomValue(key: String, value: Any)
+    public fun setUserId(identifier: String)
+    public fun setCollectionEnabled(enabled: Boolean)
 }
 
-expect class CrashlyticsCallsActual() : CrashlyticsCalls {
+public expect class CrashlyticsCallsActual() : CrashlyticsCalls {
     override fun logMessage(message: String)
     override fun sendHandledException(throwable: Throwable)
     override fun sendFatalException(throwable: Throwable)

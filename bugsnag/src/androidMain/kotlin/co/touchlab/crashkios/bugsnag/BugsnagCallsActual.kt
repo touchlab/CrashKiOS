@@ -2,7 +2,7 @@ package co.touchlab.crashkios.bugsnag
 
 import com.bugsnag.android.Bugsnag
 
-actual class BugsnagCallsActual : BugsnagCalls {
+public actual class BugsnagCallsActual : BugsnagCalls {
     actual override fun logMessage(message: String) {
         Bugsnag.leaveBreadcrumb(message)
     }

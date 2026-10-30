@@ -2,7 +2,7 @@ package co.touchlab.crashkios.crashlytics
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
-actual class CrashlyticsCallsActual : CrashlyticsCalls {
+public actual class CrashlyticsCallsActual : CrashlyticsCalls {
     actual override fun logMessage(message: String) {
         FirebaseCrashlytics.getInstance().log(message)
     }
