@@ -23,12 +23,14 @@ object BugsnagKotlin {
 }
 
 /**
- * Call in startup code on Android. Tests should generally skip this.
+ * Call this function in startup code on Android. Tests should generally skip it.
  *
- * On Apple targets this alone is NOT enough: configure CrashKiOS from Swift with
- * `CrashKiOS.shared.configure(crashReporting: BugsnagCrashReporting(sink: ...))`, which also
- * sets the implementation and makes this call redundant there. Calling it is still safe in any
- * order, since the sink is looked up on every event; events sent before `configure` are dropped.
+ * On Apple targets this call alone is NOT enough. Configure CrashKiOS from Swift with
+ * `CrashKiOS.shared.configure(crashReporting: BugsnagCrashReporting(sink: ...))`.
+ * That call also sets the implementation, so this function is redundant there.
+ *
+ * You can still call this function in any order, because CrashKiOS looks up the sink on
+ * every event. CrashKiOS drops events that Kotlin sends before `configure`.
  */
 fun enableBugsnag() {
     BugsnagKotlin.implementation = BugsnagCallsActual()

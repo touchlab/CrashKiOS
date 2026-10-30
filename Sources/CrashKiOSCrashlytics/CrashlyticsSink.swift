@@ -4,14 +4,14 @@ import FirebaseCrashlytics
 
 /// Reference `CrashKiOSCrashlyticsSink` implementation.
 ///
-/// Configure from your `AppDelegate`, right after Firebase is configured and before
+/// Configure CrashKiOS in your `AppDelegate`, right after you configure Firebase and before
 /// any Kotlin code runs:
 /// ```swift
 /// FirebaseApp.configure()
 /// CrashKiOS.shared.configure(crashReporting: CrashlyticsCrashReporting(sink: CrashlyticsSink()))
 /// ```
-/// (Add `export("co.touchlab.crashkios:crashlytics")` AND `export("co.touchlab.crashkios:core")`
-/// to the framework for clean names.)
+/// Add `export("co.touchlab.crashkios:crashlytics")` AND `export("co.touchlab.crashkios:core")`
+/// to the framework for clean names.
 public final class CrashlyticsSink: NSObject, CrashKiOSCrashlyticsSink {
 
     private let crashlytics: Crashlytics
@@ -31,8 +31,8 @@ public final class CrashlyticsSink: NSObject, CrashKiOSCrashlyticsSink {
     }
 
     public func recordFatalException(_ exception: NSException) {
-        // Persists synchronously; Crashlytics stores a single fatal per session, so the
-        // termination abort that follows is not double-reported.
+        // This call persists synchronously. Crashlytics stores a single fatal per session,
+        // so it does not report the termination abort that follows a second time.
         FIRCLSExceptionRecordNSException(exception)
     }
 

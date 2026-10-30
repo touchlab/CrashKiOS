@@ -3,21 +3,23 @@ import CrashKiOSBugsnagObjC
 import Foundation
 import ObjectiveC
 
-/// Feature flag used to mark the Kotlin termination crash.
-/// Public so custom `CrashKiOSBugsnagSink` implementations can honor the same contract.
+/// Feature flag that marks the Kotlin termination crash.
+/// This flag is public, so custom `CrashKiOSBugsnagSink` implementations can follow the same contract.
 public let kotlinCrashedFeatureFlag = "crashkios.kotlin_crashed"
 
-/// Prepares `config` for Kotlin crash handling: installs the OnSendError filter that
-/// suppresses the duplicate termination crash following a recorded Kotlin fatal, and
-/// works around Bugsnag 6.26.2+ refusing to persist synthetic unhandled events.
+/// Prepares `config` for Kotlin crash handling.
 ///
-/// Custom sink implementations MUST call this before `Bugsnag.start(with: config)` —
-/// otherwise every fatal Kotlin exception is reported twice.
+/// This function does two things:
+/// - It installs an OnSendError filter. The filter suppresses the duplicate termination crash that follows a recorded Kotlin fatal.
+/// - It works around Bugsnag 6.26.2+, which refuses to persist synthetic unhandled events.
+///
+/// Custom sink implementations MUST call this function before `Bugsnag.start(with: config)`.
+/// If they do not, Bugsnag reports every fatal Kotlin exception twice.
 public func configureBugsnagForKotlin(_ config: BugsnagConfiguration) {
     overrideOriginalUnhandledValue()
     config.addOnSendError { event in
-        // Drop Bugsnag's own report of the abort that terminates the app after a
-        // Kotlin fatal was already recorded (flagged via markFatalCrashRecorded).
+        // Drop Bugsnag's own report of the abort that terminates the app.
+        // Drop it only when a Kotlin fatal is already recorded (markFatalCrashRecorded sets the flag).
         !event.unhandled || !event.featureFlags.contains { $0.name == kotlinCrashedFeatureFlag }
     }
     config.clearFeatureFlag(name: kotlinCrashedFeatureFlag)
@@ -25,17 +27,17 @@ public func configureBugsnagForKotlin(_ config: BugsnagConfiguration) {
 
 /// Reference `CrashKiOSBugsnagSink` implementation.
 ///
-/// Start Bugsnag through this class so the configuration is prepared for Kotlin
-/// crash handling, then configure CrashKiOS with the returned sink:
+/// Start Bugsnag through this class. The class prepares the configuration for Kotlin
+/// crash handling. Then configure CrashKiOS with the returned sink:
 /// ```swift
 /// let sink = BugsnagSink.start(BugsnagConfiguration.loadConfig())
 /// CrashKiOS.shared.configure(crashReporting: BugsnagCrashReporting(sink: sink))
 /// ```
-/// (Add `export("co.touchlab.crashkios:bugsnag")` AND `export("co.touchlab.crashkios:core")`
-/// to the Kotlin framework for clean names.)
+/// Add `export("co.touchlab.crashkios:bugsnag")` AND `export("co.touchlab.crashkios:core")`
+/// to the Kotlin framework for clean names.
 public final class BugsnagSink: NSObject, CrashKiOSBugsnagSink {
 
-    /// Configures `config` via `configureBugsnagForKotlin(_:)`, starts Bugsnag,
+    /// Prepares `config` with `configureBugsnagForKotlin(_:)`, starts Bugsnag,
     /// and returns the sink.
     public static func start(_ config: BugsnagConfiguration) -> BugsnagSink {
         configureBugsnagForKotlin(config)
@@ -49,7 +51,7 @@ public final class BugsnagSink: NSObject, CrashKiOSBugsnagSink {
 
     public func notify(with exceptions: [NSException], handled: Bool) {
         guard let exception = exceptions.first else { return }
-        // Notify persists unhandled events, so the caller can safely terminate afterwards.
+        // `Bugsnag.notify` persists unhandled events, so the caller can safely terminate afterwards.
         // https://github.com/bugsnag/bugsnag-cocoa/blob/6bcd46f5f8dc06ac26537875d501f02b27d219a9/Bugsnag/Client/BugsnagClient.m#L744
         Bugsnag.notify(exception) { event in
             if handled {
@@ -68,15 +70,15 @@ public final class BugsnagSink: NSObject, CrashKiOSBugsnagSink {
     }
 
     public func markFatalCrashRecorded() {
-        // Called only by the Kotlin unhandled-exception hook, right before termination —
-        // never on direct sendFatalException() calls, which would poison the session and
-        // make the OnSendError filter discard later genuine crashes.
+        // Only the Kotlin unhandled-exception hook calls this method, right before termination.
+        // A direct sendFatalException() call must never trigger it. That call would poison
+        // the session, and the OnSendError filter would discard later genuine crashes.
         Bugsnag.addFeatureFlag(name: kotlinCrashedFeatureFlag)
     }
 }
 
-/// In Bugsnag 6.26.2+ the `originalUnhandledValue` property prevents our synthetic
-/// unhandled exceptions from being stored to disk; alias it to `unhandled`.
+/// In Bugsnag 6.26.2+, the `originalUnhandledValue` property prevents Bugsnag from storing our
+/// synthetic unhandled exceptions to disk. This function aliases it to `unhandled`.
 /// https://github.com/bugsnag/bugsnag-cocoa/pull/1549
 private func overrideOriginalUnhandledValue() {
     guard let handledStateClass = NSClassFromString("BugsnagHandledState"),
