@@ -1,23 +1,25 @@
 package co.touchlab.crashkios.bugsnag
 
+import co.touchlab.crashkios.core.InternalCrashKiOSApi
 import co.touchlab.crashkios.core.ThreadSafeVar
 
-object BugsnagKotlin {
-    var implementation: BugsnagCalls by ThreadSafeVar(EmptyCalls)
+public object BugsnagKotlin {
+    @OptIn(InternalCrashKiOSApi::class)
+    public var implementation: BugsnagCalls by ThreadSafeVar(EmptyCalls)
 
-    fun logMessage(message: String) {
+    public fun logMessage(message: String) {
         implementation.logMessage(message)
     }
 
-    fun sendHandledException(throwable: Throwable) {
+    public fun sendHandledException(throwable: Throwable) {
         implementation.sendHandledException(throwable)
     }
 
-    fun sendFatalException(throwable: Throwable) {
+    public fun sendFatalException(throwable: Throwable) {
         implementation.sendFatalException(throwable)
     }
 
-    fun setCustomValue(section: String, key: String, value: Any) {
+    public fun setCustomValue(section: String, key: String, value: Any) {
         implementation.setCustomValue(section, key, value)
     }
 }
@@ -32,7 +34,7 @@ object BugsnagKotlin {
  * You can still call this function in any order, because CrashKiOS looks up the sink on
  * every event. CrashKiOS drops events that Kotlin sends before `configure`.
  */
-fun enableBugsnag() {
+public fun enableBugsnag() {
     BugsnagKotlin.implementation = BugsnagCallsActual()
 }
 

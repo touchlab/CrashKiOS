@@ -1,25 +1,26 @@
-@file:OptIn(ExperimentalForeignApi::class)
+@file:OptIn(ExperimentalForeignApi::class, InternalCrashKiOSApi::class)
 
 package co.touchlab.crashkios.bugsnag
 
 import co.touchlab.crashkios.bugsnag.objc.CrashKiOSBugsnagSinkProtocol
 import co.touchlab.crashkios.core.CrashSinkRegistry
+import co.touchlab.crashkios.core.InternalCrashKiOSApi
 import co.touchlab.crashkios.core.asNSException
 import co.touchlab.crashkios.core.causes
 import kotlinx.cinterop.ExperimentalForeignApi
 
 internal val bugsnagRegistry = CrashSinkRegistry<CrashKiOSBugsnagSinkProtocol>("Bugsnag")
 
-actual class BugsnagCallsActual : BugsnagCalls {
+public actual class BugsnagCallsActual : BugsnagCalls {
     private val sink get() = bugsnagRegistry.sink
 
     actual override fun logMessage(message: String) {
         sink?.leaveBreadcrumb(message)
     }
 
-    actual override fun sendHandledException(throwable: Throwable) = sendException(throwable, true)
+    actual override fun sendHandledException(throwable: Throwable): Unit = sendException(throwable, true)
 
-    actual override fun sendFatalException(throwable: Throwable) = sendException(throwable, false)
+    actual override fun sendFatalException(throwable: Throwable): Unit = sendException(throwable, false)
 
     actual override fun setCustomValue(section: String, key: String, value: Any) {
         sink?.addMetadata(value, key = key, section = section)

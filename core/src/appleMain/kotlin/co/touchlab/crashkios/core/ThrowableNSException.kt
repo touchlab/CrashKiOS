@@ -20,6 +20,8 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+@file:OptIn(InternalCrashKiOSApi::class)
+
 package co.touchlab.crashkios.core
 
 import kotlin.concurrent.AtomicReference
@@ -39,6 +41,7 @@ import platform.darwin.NSUInteger
  * If [appendCausedBy] is `true` then the name, message and stack trace
  * of the [causes][Throwable.cause] will be appended, else causes are ignored.
  */
+@InternalCrashKiOSApi
 @OptIn(UnsafeNumber::class, ExperimentalForeignApi::class)
 public fun Throwable.asNSException(appendCausedBy: Boolean = false): NSException {
     val returnAddresses = getFilteredStackTraceAddresses().let { addresses ->
@@ -61,6 +64,7 @@ public fun Throwable.asNSException(appendCausedBy: Boolean = false): NSException
  *
  * Public so the SDK modules report the same name on the handled and fatal paths.
  */
+@InternalCrashKiOSApi
 public val Throwable.throwableName: String
     get() = this::class.qualifiedName ?: this::class.simpleName ?: "Throwable"
 
@@ -92,6 +96,7 @@ internal class ThrowableNSException(name: String, reason: String?, private val r
  * The first element will be the cause, the second the cause of the cause, etc.
  * This function stops once a reference cycle is detected.
  */
+@InternalCrashKiOSApi
 public val Throwable.causes: List<Throwable> get() = buildList {
     val causes = mutableSetOf<Throwable>()
     var cause = cause
@@ -108,6 +113,7 @@ public val Throwable.causes: List<Throwable> get() = buildList {
  * @param commonAddresses a list of addresses used to drop the last common addresses.
  * @see kotlin.getStackTraceAddresses
  */
+@InternalCrashKiOSApi
 @OptIn(ExperimentalNativeApi::class)
 public fun Throwable.getFilteredStackTraceAddresses(keepLastInit: Boolean = false, commonAddresses: List<Long> = emptyList()): List<Long> =
     getStackTraceAddresses().dropInitAddresses(
@@ -158,7 +164,7 @@ internal fun List<Long>.dropCommonAddresses(commonAddresses: List<Long>): List<L
  * @see terminateWithUnhandledException
  */
 @OptIn(ExperimentalNativeApi::class)
-public fun wrapUnhandledExceptionHook(hook: (Throwable) -> Unit) {
+internal fun wrapUnhandledExceptionHook(hook: (Throwable) -> Unit) {
     val prevHook = AtomicReference<ReportUnhandledExceptionHook?>(null)
     val wrappedHook: ReportUnhandledExceptionHook = {
         hook(it)

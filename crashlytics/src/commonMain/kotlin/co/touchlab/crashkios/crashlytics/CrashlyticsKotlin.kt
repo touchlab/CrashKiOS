@@ -1,31 +1,33 @@
 package co.touchlab.crashkios.crashlytics
 
+import co.touchlab.crashkios.core.InternalCrashKiOSApi
 import co.touchlab.crashkios.core.ThreadSafeVar
 
-object CrashlyticsKotlin {
-    var implementation: CrashlyticsCalls by ThreadSafeVar(EmptyCalls)
+public object CrashlyticsKotlin {
+    @OptIn(InternalCrashKiOSApi::class)
+    public var implementation: CrashlyticsCalls by ThreadSafeVar(EmptyCalls)
 
-    fun logMessage(message: String) {
+    public fun logMessage(message: String) {
         implementation.logMessage(message)
     }
 
-    fun sendHandledException(throwable: Throwable) {
+    public fun sendHandledException(throwable: Throwable) {
         implementation.sendHandledException(throwable)
     }
 
-    fun sendFatalException(throwable: Throwable) {
+    public fun sendFatalException(throwable: Throwable) {
         implementation.sendFatalException(throwable)
     }
 
-    fun setCustomValue(key: String, value: Any) {
+    public fun setCustomValue(key: String, value: Any) {
         implementation.setCustomValue(key, value)
     }
 
-    fun setUserId(identifier: String) {
+    public fun setUserId(identifier: String) {
         implementation.setUserId(identifier)
     }
 
-    fun setCollectionEnabled(enabled: Boolean) {
+    public fun setCollectionEnabled(enabled: Boolean) {
         implementation.setCollectionEnabled(enabled)
     }
 }
@@ -40,7 +42,7 @@ object CrashlyticsKotlin {
  * You can still call this function in any order, because CrashKiOS looks up the sink on
  * every event. CrashKiOS drops events that Kotlin sends before `configure`.
  */
-fun enableCrashlytics() {
+public fun enableCrashlytics() {
     CrashlyticsKotlin.implementation = CrashlyticsCallsActual()
 }
 

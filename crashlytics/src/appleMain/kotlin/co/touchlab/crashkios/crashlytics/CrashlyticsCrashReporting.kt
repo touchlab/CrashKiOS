@@ -1,8 +1,9 @@
-@file:OptIn(ExperimentalForeignApi::class)
+@file:OptIn(ExperimentalForeignApi::class, InternalCrashKiOSApi::class)
 
 package co.touchlab.crashkios.crashlytics
 
 import co.touchlab.crashkios.core.CrashReportingImplementation
+import co.touchlab.crashkios.core.InternalCrashKiOSApi
 import co.touchlab.crashkios.crashlytics.objc.CrashKiOSCrashlyticsSinkProtocol
 import kotlinx.cinterop.ExperimentalForeignApi
 

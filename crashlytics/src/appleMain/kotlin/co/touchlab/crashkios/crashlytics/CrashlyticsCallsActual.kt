@@ -1,8 +1,9 @@
-@file:OptIn(ExperimentalForeignApi::class)
+@file:OptIn(ExperimentalForeignApi::class, InternalCrashKiOSApi::class)
 
 package co.touchlab.crashkios.crashlytics
 
 import co.touchlab.crashkios.core.CrashSinkRegistry
+import co.touchlab.crashkios.core.InternalCrashKiOSApi
 import co.touchlab.crashkios.core.asNSException
 import co.touchlab.crashkios.core.getFilteredStackTraceAddresses
 import co.touchlab.crashkios.core.throwableName
@@ -11,7 +12,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 
 internal val crashlyticsRegistry = CrashSinkRegistry<CrashKiOSCrashlyticsSinkProtocol>("Crashlytics")
 
-actual class CrashlyticsCallsActual : CrashlyticsCalls {
+public actual class CrashlyticsCallsActual : CrashlyticsCalls {
     private val sink get() = crashlyticsRegistry.sink
 
     actual override fun logMessage(message: String) {

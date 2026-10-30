@@ -1,9 +1,10 @@
-@file:OptIn(ExperimentalForeignApi::class)
+@file:OptIn(ExperimentalForeignApi::class, InternalCrashKiOSApi::class)
 
 package co.touchlab.crashkios.bugsnag
 
 import co.touchlab.crashkios.bugsnag.objc.CrashKiOSBugsnagSinkProtocol
 import co.touchlab.crashkios.core.CrashReportingImplementation
+import co.touchlab.crashkios.core.InternalCrashKiOSApi
 import kotlinx.cinterop.ExperimentalForeignApi
 
 /**

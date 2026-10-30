@@ -9,6 +9,7 @@ import kotlin.concurrent.AtomicReference
  *
  * Internal machinery for the crashlytics/bugsnag modules.
  */
+@InternalCrashKiOSApi
 public class CrashSinkRegistry<T : Any>(private val name: String) {
     private val sinkRef = AtomicReference<T?>(null)
     private val hookInstalled = AtomicInt(0)
