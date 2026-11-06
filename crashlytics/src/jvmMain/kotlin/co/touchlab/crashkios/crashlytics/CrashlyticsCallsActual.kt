@@ -4,7 +4,7 @@ package co.touchlab.crashkios.crashlytics
  * No-op implementation for targets without a Crashlytics SDK. Lets CrashKiOS be declared once in
  * `commonMain` in projects that also target JVM.
  */
-actual class CrashlyticsCallsActual : CrashlyticsCalls {
+public actual class CrashlyticsCallsActual : CrashlyticsCalls {
     actual override fun logMessage(message: String) {
     }
 

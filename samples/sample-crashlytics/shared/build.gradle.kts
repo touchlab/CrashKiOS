@@ -14,7 +14,6 @@ plugins {
     id("com.android.library")
     kotlin("multiplatform")
     kotlin("native.cocoapods")
-    id("co.touchlab.crashkios.crashlyticslink")
 }
 
 android {
@@ -57,6 +56,8 @@ kotlin {
         homepage = "https://www.touchlab.co"
         ios.deploymentTarget = "14.1"
         framework {
+            export("co.touchlab.crashkios:crashlytics")
+            export("co.touchlab.crashkios:core")
             isStatic = false
         }
     }

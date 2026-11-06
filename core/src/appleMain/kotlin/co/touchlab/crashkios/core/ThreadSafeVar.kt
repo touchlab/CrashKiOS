@@ -3,12 +3,13 @@ package co.touchlab.crashkios.core
 import kotlin.concurrent.AtomicReference
 import kotlin.reflect.KProperty
 
-actual class ThreadSafeVar<T> actual constructor(target: T) {
+@InternalCrashKiOSApi
+public actual class ThreadSafeVar<T> actual constructor(target: T) {
     private val atom = AtomicReference(target)
 
-    actual operator fun getValue(thisRef: Any?, property: KProperty<*>): T = atom.value
+    public actual operator fun getValue(thisRef: Any?, property: KProperty<*>): T = atom.value
 
-    actual operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+    public actual operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
         atom.value = value
     }
 }

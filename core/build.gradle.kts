@@ -29,6 +29,8 @@ group = GROUP
 version = VERSION_NAME
 
 kotlin {
+    explicitApi()
+
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }

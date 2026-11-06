@@ -1,16 +1,16 @@
 package co.touchlab.crashkios.bugsnag
 
-interface BugsnagCalls {
-    fun logMessage(message: String)
+public interface BugsnagCalls {
+    public fun logMessage(message: String)
 
-    fun sendHandledException(throwable: Throwable)
+    public fun sendHandledException(throwable: Throwable)
 
-    fun sendFatalException(throwable: Throwable)
+    public fun sendFatalException(throwable: Throwable)
 
-    fun setCustomValue(section: String, key: String, value: Any)
+    public fun setCustomValue(section: String, key: String, value: Any)
 }
 
-expect class BugsnagCallsActual() : BugsnagCalls {
+public expect class BugsnagCallsActual() : BugsnagCalls {
     override fun logMessage(message: String)
     override fun sendHandledException(throwable: Throwable)
     override fun sendFatalException(throwable: Throwable)
